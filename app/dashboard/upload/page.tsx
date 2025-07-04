@@ -2,18 +2,19 @@
 
 import type React from "react"
 
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Checkbox } from "@/components/ui/checkbox"
 import { Progress } from "@/components/ui/progress"
-import { FileText, Upload, ArrowLeft, CheckCircle, AlertCircle, Loader2 } from "lucide-react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Textarea } from "@/components/ui/textarea"
+import { AlertCircle, ArrowLeft, CheckCircle, FileText, Loader2, Upload } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
 
 export default function UploadPage() {
   const [uploadStep, setUploadStep] = useState<"upload" | "processing" | "complete">("upload")
@@ -74,6 +75,9 @@ export default function UploadPage() {
                   Settings
                 </Link>
               </nav>
+            </div>
+            <div className="flex items-center space-x-4">
+              <ThemeToggle />
             </div>
           </div>
         </div>

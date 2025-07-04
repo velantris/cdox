@@ -1,42 +1,44 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { FileText, Upload, AlertTriangle, Users, TrendingUp, BarChart3 } from "lucide-react"
-import Link from "next/link"
 import { ComprehensibilityGauge } from "@/components/comprehensibility-gauge"
-import { RecentDocuments } from "@/components/recent-documents"
 import { IssuesSummary } from "@/components/issues-summary"
+import { RecentDocuments } from "@/components/recent-documents"
 import { TeamActivity } from "@/components/team-activity"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { AlertTriangle, BarChart3, FileText, TrendingUp, Upload, Users } from "lucide-react"
+import Link from "next/link"
 
 export default function DashboardPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-white border-b">
+      <header className="bg-background border-b border-border">
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Link href="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-white" />
+                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-primary-foreground" />
                 </div>
-                <span className="text-xl font-bold text-gray-900">ClearDoc</span>
+                <span className="text-xl font-bold text-foreground">ClearDoc</span>
               </Link>
               <nav className="hidden md:flex items-center space-x-6">
-                <Link href="/dashboard" className="text-blue-600 font-medium">
+                <Link href="/dashboard" className="text-primary font-medium">
                   Dashboard
                 </Link>
-                <Link href="/dashboard/documents" className="text-gray-600 hover:text-gray-900">
+                <Link href="/dashboard/documents" className="text-muted-foreground hover:text-foreground">
                   Documents
                 </Link>
-                <Link href="/dashboard/teams" className="text-gray-600 hover:text-gray-900">
+                <Link href="/dashboard/teams" className="text-muted-foreground hover:text-foreground">
                   Teams
                 </Link>
-                <Link href="/dashboard/settings" className="text-gray-600 hover:text-gray-900">
+                <Link href="/dashboard/settings" className="text-muted-foreground hover:text-foreground">
                   Settings
                 </Link>
               </nav>
             </div>
             <div className="flex items-center space-x-4">
+              <ThemeToggle />
               <Link href="/dashboard/upload">
                 <Button>
                   <Upload className="w-4 h-4 mr-2" />
@@ -51,8 +53,8 @@ export default function DashboardPage() {
       <div className="p-6">
         {/* Welcome Section */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome back, Legal Team</h1>
-          <p className="text-gray-600">Here's an overview of your document comprehensibility analysis</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Welcome back, Legal Team</h1>
+          <p className="text-muted-foreground">Here's an overview of your document comprehensibility analysis</p>
         </div>
 
         {/* Key Metrics */}

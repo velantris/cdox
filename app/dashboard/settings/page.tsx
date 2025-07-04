@@ -1,17 +1,18 @@
 "use client"
 
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { ThemeToggle } from "@/components/theme-toggle"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Switch } from "@/components/ui/switch"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Badge } from "@/components/ui/badge"
-import { FileText, Plus, Trash2, Edit, Save } from "lucide-react"
+import { Textarea } from "@/components/ui/textarea"
+import { Edit, FileText, Plus, Save, Trash2 } from "lucide-react"
 import Link from "next/link"
+import { useState } from "react"
 
 const customRules = [
   {
@@ -133,6 +134,9 @@ export default function SettingsPage() {
                   Settings
                 </Link>
               </nav>
+            </div>
+            <div className="flex items-center space-x-4">
+              <ThemeToggle />
             </div>
           </div>
         </div>

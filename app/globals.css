@@ -10,6 +10,24 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  .bg-gray-50, .bg-white {
+    @apply bg-background !important;
+  }
+  .bg-blue-600 {
+    @apply bg-primary !important;
+  }
+  .text-blue-600 {
+    @apply text-primary !important;
+  }
+  .text-gray-900 {
+    @apply text-foreground !important;
+  }
+  .text-gray-800, .text-gray-700, .text-gray-600, .text-gray-500, .text-gray-400 {
+    @apply text-muted-foreground !important;
+  }
+  .border-gray-800, .border-gray-500, .border-gray-300 {
+    @apply border-border !important;
+  }
 }
 
 @layer base {

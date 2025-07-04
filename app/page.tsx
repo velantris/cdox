@@ -1,38 +1,42 @@
+import { ThemeToggle } from "@/components/theme-toggle"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { ArrowRight, FileText, Users, Shield, BarChart3, Zap, CheckCircle } from "lucide-react"
+import { ArrowRight, BarChart3, CheckCircle, FileText, Shield, Users, Zap } from "lucide-react"
 import Link from "next/link"
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-800">
       {/* Header */}
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50 dark:bg-gray-900/80 dark:border-gray-700">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <FileText className="w-5 h-5 text-white" />
+              <FileText className="w-5 h-5 text-white dark:text-black" />
             </div>
-            <span className="text-xl font-bold text-gray-900">ClearDoc</span>
+            <span className="text-xl font-bold text-gray-900 dark:text-white">ClearDoc</span>
           </div>
           <nav className="hidden md:flex items-center space-x-6">
-            <Link href="#features" className="text-gray-600 hover:text-gray-900">
+            <Link href="#features" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
               Features
             </Link>
-            <Link href="#compliance" className="text-gray-600 hover:text-gray-900">
+            <Link href="#compliance" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
               Compliance
             </Link>
-            <Link href="#pricing" className="text-gray-600 hover:text-gray-900">
+            <Link href="#pricing" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
               Pricing
             </Link>
-            <Link href="/dashboard" className="text-blue-600 hover:text-blue-700 font-medium">
+            <Link href="/dashboard" className="text-blue-600 hover:text-blue-700 font-medium dark:text-blue-400 dark:hover:text-blue-300">
               Dashboard
             </Link>
           </nav>
-          <Link href="/dashboard">
-            <Button>Get Started</Button>
-          </Link>
+          <div className="flex items-center space-x-4">
+            <ThemeToggle />
+            <Link href="/dashboard">
+              <Button>Get Started</Button>
+            </Link>
+          </div>
         </div>
       </header>
 
@@ -42,11 +46,11 @@ export default function HomePage() {
           <Badge variant="secondary" className="mb-4">
             EU Compliance Ready
           </Badge>
-          <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
+          <h1 className="text-5xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
             Make Legal Documents
             <span className="text-blue-600"> Crystal Clear</span>
           </h1>
-          <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
             ClearDoc uses AI to analyze and improve the comprehensibility of banking legal documents, ensuring EU
             compliance while maintaining legal integrity.
           </p>
@@ -64,24 +68,24 @@ export default function HomePage() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-white dark:bg-gray-800">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
             <div>
               <div className="text-3xl font-bold text-blue-600 mb-2">95%</div>
-              <div className="text-gray-600">Compliance Rate</div>
+              <div className="text-gray-600 dark:text-gray-300">Compliance Rate</div>
             </div>
             <div>
               <div className="text-3xl font-bold text-blue-600 mb-2">60%</div>
-              <div className="text-gray-600">Time Saved</div>
+              <div className="text-gray-600 dark:text-gray-300">Time Saved</div>
             </div>
             <div>
               <div className="text-3xl font-bold text-blue-600 mb-2">50+</div>
-              <div className="text-gray-600">EU Banks</div>
+              <div className="text-gray-600 dark:text-gray-300">EU Banks</div>
             </div>
             <div>
               <div className="text-3xl font-bold text-blue-600 mb-2">10k+</div>
-              <div className="text-gray-600">Documents Analyzed</div>
+              <div className="text-gray-600 dark:text-gray-300">Documents Analyzed</div>
             </div>
           </div>
         </div>
@@ -91,8 +95,8 @@ export default function HomePage() {
       <section id="features" className="py-20 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Comprehensive Document Analysis</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Comprehensive Document Analysis</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               From upload to compliance, ClearDoc provides end-to-end document comprehensibility analysis
             </p>
           </div>
@@ -160,22 +164,22 @@ export default function HomePage() {
       </section>
 
       {/* Compliance Section */}
-      <section id="compliance" className="py-20 bg-gray-50">
+      <section id="compliance" className="py-20 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8">Built for European Banking Compliance</h2>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Built for European Banking Compliance</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-              <div className="bg-white p-6 rounded-lg shadow-sm">
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
                 <h3 className="font-semibold text-lg mb-2">GDPR Ready</h3>
-                <p className="text-gray-600">Privacy policy analysis with GDPR compliance checking</p>
+                <p className="text-gray-600 dark:text-gray-300">Privacy policy analysis with GDPR compliance checking</p>
               </div>
-              <div className="bg-white p-6 rounded-lg shadow-sm">
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
                 <h3 className="font-semibold text-lg mb-2">MiFID II</h3>
-                <p className="text-gray-600">Investment service document clarity requirements</p>
+                <p className="text-gray-600 dark:text-gray-300">Investment service document clarity requirements</p>
               </div>
-              <div className="bg-white p-6 rounded-lg shadow-sm">
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
                 <h3 className="font-semibold text-lg mb-2">PSD2</h3>
-                <p className="text-gray-600">Payment service transparency and disclosure standards</p>
+                <p className="text-gray-600 dark:text-gray-300">Payment service transparency and disclosure standards</p>
               </div>
             </div>
             <Link href="/dashboard">
@@ -194,7 +198,7 @@ export default function HomePage() {
             <div>
               <div className="flex items-center space-x-2 mb-4">
                 <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-white" />
+                  <FileText className="w-5 h-5 text-white dark:text-black" />
                 </div>
                 <span className="text-xl font-bold">ClearDoc</span>
               </div>

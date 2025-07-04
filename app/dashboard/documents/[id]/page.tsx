@@ -1,25 +1,26 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { ComprehensibilityGauge } from "@/components/comprehensibility-gauge"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
-  FileText,
-  AlertTriangle,
   AlertCircle,
-  Info,
-  CheckCircle,
+  AlertTriangle,
   ArrowLeft,
-  Download,
-  Share,
-  Edit,
-  MessageSquare,
-  User,
+  CheckCircle,
   Clock,
+  Download,
+  Edit,
+  FileText,
   Flag,
+  Info,
+  MessageSquare,
+  Share,
+  User,
 } from "lucide-react"
 import Link from "next/link"
-import { ComprehensibilityGauge } from "@/components/comprehensibility-gauge"
 
 // Mock data for the document analysis
 const documentData = {
@@ -128,6 +129,7 @@ export default function DocumentAnalysisPage({ params }: { params: { id: string 
               </nav>
             </div>
             <div className="flex items-center space-x-4">
+              <ThemeToggle />
               <Button variant="outline">
                 <Share className="w-4 h-4 mr-2" />
                 Share

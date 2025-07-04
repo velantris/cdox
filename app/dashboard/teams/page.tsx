@@ -1,9 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import { FileText, Users, Mail, Phone, Calendar, AlertTriangle } from "lucide-react"
+import { AlertTriangle, Calendar, FileText, Mail, Phone, Users } from "lucide-react"
 import Link from "next/link"
 
 const teams = [
@@ -153,6 +154,9 @@ export default function TeamsPage() {
                   Settings
                 </Link>
               </nav>
+            </div>
+            <div className="flex items-center space-x-4">
+              <ThemeToggle />
             </div>
           </div>
         </div>

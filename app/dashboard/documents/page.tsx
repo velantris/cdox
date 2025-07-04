@@ -1,9 +1,10 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { FileText, Upload, Search, ExternalLink, Download, MoreHorizontal } from "lucide-react"
+import { Download, ExternalLink, FileText, MoreHorizontal, Search, Upload } from "lucide-react"
 import Link from "next/link"
 
 const documents = [
@@ -89,34 +90,35 @@ const documents = [
 
 export default function DocumentsPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="bg-white border-b">
+      <header className="bg-background border-b border-border">
         <div className="px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <Link href="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-white" />
+                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                  <FileText className="w-5 h-5 text-primary-foreground" />
                 </div>
-                <span className="text-xl font-bold text-gray-900">ClearDoc</span>
+                <span className="text-xl font-bold text-foreground">ClearDoc</span>
               </Link>
               <nav className="hidden md:flex items-center space-x-6">
-                <Link href="/dashboard" className="text-gray-600 hover:text-gray-900">
+                <Link href="/dashboard" className="text-muted-foreground hover:text-foreground">
                   Dashboard
                 </Link>
-                <Link href="/dashboard/documents" className="text-blue-600 font-medium">
+                <Link href="/dashboard/documents" className="text-primary font-medium">
                   Documents
                 </Link>
-                <Link href="/dashboard/teams" className="text-gray-600 hover:text-gray-900">
+                <Link href="/dashboard/teams" className="text-muted-foreground hover:text-foreground">
                   Teams
                 </Link>
-                <Link href="/dashboard/settings" className="text-gray-600 hover:text-gray-900">
+                <Link href="/dashboard/settings" className="text-muted-foreground hover:text-foreground">
                   Settings
                 </Link>
               </nav>
             </div>
             <div className="flex items-center space-x-4">
+              <ThemeToggle />
               <Link href="/dashboard/upload">
                 <Button>
                   <Upload className="w-4 h-4 mr-2" />
@@ -131,8 +133,8 @@ export default function DocumentsPage() {
       <div className="p-6">
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Documents</h1>
-          <p className="text-gray-600">Manage and analyze your legal documents</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">Documents</h1>
+          <p className="text-muted-foreground">Manage and analyze your legal documents</p>
         </div>
 
         {/* Filters and Search */}
@@ -141,7 +143,7 @@ export default function DocumentsPage() {
             <div className="flex flex-col md:flex-row gap-4">
               <div className="flex-1">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
                   <Input placeholder="Search documents..." className="pl-10" />
                 </div>
               </div>
@@ -201,8 +203,8 @@ export default function DocumentsPage() {
                       <FileText className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
-                      <h4 className="font-medium text-gray-900">{doc.title}</h4>
-                      <div className="flex items-center space-x-2 text-sm text-gray-500">
+                      <h4 className="font-medium text-foreground">{doc.title}</h4>
+                      <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                         <span>{doc.type}</span>
                         <span>•</span>
                         <span>{doc.version}</span>
@@ -211,7 +213,7 @@ export default function DocumentsPage() {
                         <span>•</span>
                         <span>{new Date(doc.lastUpdated).toLocaleDateString()}</span>
                       </div>
-                      <div className="text-sm text-gray-500 mt-1">Assigned to: {doc.assignedTo}</div>
+                      <div className="text-sm text-muted-foreground mt-1">Assigned to: {doc.assignedTo}</div>
                     </div>
                   </div>
                   <div className="flex items-center space-x-6">
@@ -226,7 +228,7 @@ export default function DocumentsPage() {
                     </div>
                     <div className="text-center">
                       <div className="text-lg font-medium">{doc.issues}</div>
-                      <div className="text-xs text-gray-500">issues</div>
+                      <div className="text-xs text-muted-foreground">issues</div>
                     </div>
                     <Badge
                       variant={
