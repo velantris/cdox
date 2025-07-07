@@ -4,91 +4,42 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import connectDB from "@/lib/db/client"
+import { Document as DocModel } from "@/lib/db/models"
 import { Download, ExternalLink, FileText, MoreHorizontal, Search, Upload } from "lucide-react"
 import Link from "next/link"
 
-const documents = [
-  {
-    id: "doc-001",
-    title: "Terms & Conditions v4.2",
-    type: "Terms & Conditions",
-    score: 68,
-    grade: "C+",
-    status: "In Review",
-    lastUpdated: "2025-01-02T10:30:00Z",
-    assignedTo: "Legal Team",
-    issues: 12,
-    version: "v4.2",
-    size: "2.4 MB",
-  },
-  {
-    id: "doc-002",
-    title: "Privacy Policy GDPR Update",
-    type: "Privacy Policy",
-    score: 82,
-    grade: "A-",
-    status: "Approved",
-    lastUpdated: "2025-01-01T14:20:00Z",
-    assignedTo: "Compliance Team",
-    issues: 3,
-    version: "v2.1",
-    size: "1.8 MB",
-  },
-  {
-    id: "doc-003",
-    title: "Loan Agreement Template",
-    type: "Loan Agreement",
-    score: 45,
-    grade: "D",
-    status: "Needs Work",
-    lastUpdated: "2024-12-30T09:15:00Z",
-    assignedTo: "Legal Team",
-    issues: 28,
-    version: "v1.5",
-    size: "3.2 MB",
-  },
-  {
-    id: "doc-004",
-    title: "Fee Schedule 2025",
-    type: "Fee Schedule",
-    score: 91,
-    grade: "A+",
-    status: "Published",
-    lastUpdated: "2024-12-28T16:45:00Z",
-    assignedTo: "Product Team",
-    issues: 1,
-    version: "v1.0",
-    size: "0.9 MB",
-  },
-  {
-    id: "doc-005",
-    title: "Account Opening Procedures",
-    type: "Procedures",
-    score: 76,
-    grade: "B+",
-    status: "In Review",
-    lastUpdated: "2024-12-27T11:30:00Z",
-    assignedTo: "Operations Team",
-    issues: 8,
-    version: "v3.0",
-    size: "1.5 MB",
-  },
-  {
-    id: "doc-006",
-    title: "Investment Disclosure MiFID II",
-    type: "Regulatory Disclosure",
-    score: 59,
-    grade: "D+",
-    status: "Needs Work",
-    lastUpdated: "2024-12-25T13:20:00Z",
-    assignedTo: "Compliance Team",
-    issues: 19,
-    version: "v2.3",
-    size: "2.1 MB",
-  },
-]
+// Ensure this page is always rendered dynamically so we get fresh data
+export const dynamic = "force-dynamic"
 
-export default function DocumentsPage() {
+// Helper to fetch documents from the API and massage the data into the UI-friendly
+// shape that this component expects. In a future refactor we can tighten the
+// UI to the real schema, but for now we keep the existing table layout.
+async function getDocuments() {
+  await connectDB()
+
+  const docs = (await DocModel.find({}).sort({ createdAt: -1 }).lean()) as any[]
+
+  const mapToUi = (doc: any) => ({
+    id: doc.doc_id,
+    title: doc.title,
+    type: doc.options?.type ?? "Document",
+    score: 0,
+    grade: "-",
+    status: "Uploaded",
+    lastUpdated: doc.updatedAt ?? doc.createdAt,
+    assignedTo: "—",
+    issues: 0,
+    version: "—",
+    size: "—",
+  })
+
+  return docs.map(mapToUi)
+}
+
+export default async function DocumentsPage() {
+  const documents = await getDocuments()
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}

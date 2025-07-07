@@ -2,10 +2,14 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { withAuth } from '@workos-inc/authkit-nextjs'
 import { ArrowRight, BarChart3, CheckCircle, FileText, Shield, Users, Zap } from "lucide-react"
 import Link from "next/link"
 
-export default function HomePage() {
+export default async function HomePage() {
+  const { user } = await withAuth()
+  const dashboardHref = user ? '/dashboard' : '/auth/signin'
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-800">
       {/* Header */}
@@ -27,13 +31,13 @@ export default function HomePage() {
             <Link href="#pricing" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
               Pricing
             </Link>
-            <Link href="/dashboard" className="text-blue-600 hover:text-blue-700 font-medium dark:text-blue-400 dark:hover:text-blue-300">
+            <Link href={dashboardHref} className="text-blue-600 hover:text-blue-700 font-medium dark:text-blue-400 dark:hover:text-blue-300">
               Dashboard
             </Link>
           </nav>
           <div className="flex items-center space-x-4">
             <ThemeToggle />
-            <Link href="/dashboard">
+            <Link href={dashboardHref}>
               <Button>Get Started</Button>
             </Link>
           </div>
@@ -55,7 +59,7 @@ export default function HomePage() {
             compliance while maintaining legal integrity.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/dashboard">
+            <Link href={dashboardHref}>
               <Button size="lg" className="text-lg px-8">
                 Try Demo <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
@@ -182,7 +186,7 @@ export default function HomePage() {
                 <p className="text-gray-600 dark:text-gray-300">Payment service transparency and disclosure standards</p>
               </div>
             </div>
-            <Link href="/dashboard">
+            <Link href={dashboardHref}>
               <Button size="lg">
                 Explore Dashboard <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
@@ -208,7 +212,7 @@ export default function HomePage() {
               <h4 className="font-semibold mb-4">Product</h4>
               <ul className="space-y-2 text-gray-400">
                 <li>
-                  <Link href="/dashboard" className="hover:text-white">
+                  <Link href={dashboardHref} className="hover:text-white">
                     Dashboard
                   </Link>
                 </li>

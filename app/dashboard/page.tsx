@@ -1,8 +1,8 @@
 import { ComprehensibilityGauge } from "@/components/comprehensibility-gauge"
+import { DashboardHeader } from "@/components/dashboard-header"
 import { IssuesSummary } from "@/components/issues-summary"
 import { RecentDocuments } from "@/components/recent-documents"
 import { TeamActivity } from "@/components/team-activity"
-import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { AlertTriangle, BarChart3, FileText, TrendingUp, Upload, Users } from "lucide-react"
@@ -11,44 +11,7 @@ import Link from "next/link"
 export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="bg-background border-b border-border">
-        <div className="px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Link href="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-primary-foreground" />
-                </div>
-                <span className="text-xl font-bold text-foreground">ClearDoc</span>
-              </Link>
-              <nav className="hidden md:flex items-center space-x-6">
-                <Link href="/dashboard" className="text-primary font-medium">
-                  Dashboard
-                </Link>
-                <Link href="/dashboard/documents" className="text-muted-foreground hover:text-foreground">
-                  Documents
-                </Link>
-                <Link href="/dashboard/teams" className="text-muted-foreground hover:text-foreground">
-                  Teams
-                </Link>
-                <Link href="/dashboard/settings" className="text-muted-foreground hover:text-foreground">
-                  Settings
-                </Link>
-              </nav>
-            </div>
-            <div className="flex items-center space-x-4">
-              <ThemeToggle />
-              <Link href="/dashboard/upload">
-                <Button>
-                  <Upload className="w-4 h-4 mr-2" />
-                  Upload Document
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+      <DashboardHeader />
 
       <div className="p-6">
         {/* Welcome Section */}
@@ -175,7 +138,7 @@ export default function DashboardPage() {
                 <CardTitle>Quick Actions</CardTitle>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Link href="/dashboard/upload">
+                <Link href="/dashboard/doc-new">
                   <Button className="w-full justify-start">
                     <Upload className="w-4 h-4 mr-2" />
                     Upload New Document

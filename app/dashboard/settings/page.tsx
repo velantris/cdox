@@ -1,6 +1,6 @@
 "use client"
 
-import { ThemeToggle } from "@/components/theme-toggle"
+import { DashboardHeader } from "@/components/dashboard-header"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -10,8 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
-import { Edit, FileText, Plus, Save, Trash2 } from "lucide-react"
-import Link from "next/link"
+import { Edit, Plus, Save, Trash2 } from "lucide-react"
 import { useState } from "react"
 
 const customRules = [
@@ -109,38 +108,7 @@ export default function SettingsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b">
-        <div className="px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Link href="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-xl font-bold text-gray-900">ClearDoc</span>
-              </Link>
-              <nav className="hidden md:flex items-center space-x-6">
-                <Link href="/dashboard" className="text-gray-600 hover:text-gray-900">
-                  Dashboard
-                </Link>
-                <Link href="/dashboard/documents" className="text-gray-600 hover:text-gray-900">
-                  Documents
-                </Link>
-                <Link href="/dashboard/teams" className="text-gray-600 hover:text-gray-900">
-                  Teams
-                </Link>
-                <Link href="/dashboard/settings" className="text-blue-600 font-medium">
-                  Settings
-                </Link>
-              </nav>
-            </div>
-            <div className="flex items-center space-x-4">
-              <ThemeToggle />
-            </div>
-          </div>
-        </div>
-      </header>
+      <DashboardHeader />
 
       <div className="p-6">
         {/* Page Header */}

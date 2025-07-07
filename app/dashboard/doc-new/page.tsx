@@ -1,47 +1,48 @@
-"use client"
-// upload the file get the url pass on with other data to the api/document/new route
-import type React from "react"
+'use client';
 
-import { DashboardHeader } from "@/components/dashboard-header"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Progress } from "@/components/ui/progress"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Textarea } from "@/components/ui/textarea"
-import { useUser } from "@/lib/auth/hooks"
-import { AlertCircle, ArrowLeft, CheckCircle, Clock, Loader2, Upload, Zap } from "lucide-react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { useEffect, useRef, useState } from "react"
+import { DashboardHeader } from "@/components/dashboard-header";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Progress } from "@/components/ui/progress";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/components/ui/use-toast";
+import { useUser } from "@/lib/auth/hooks";
+import { AlertCircle, ArrowLeft, CheckCircle, Clock, Loader2, Upload, Zap } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 interface AnalysisStep {
-  id: string
-  label: string
-  status: "pending" | "running" | "completed" | "error"
-  progress?: number
+  id: string;
+  label: string;
+  status: "pending" | "running" | "completed" | "error";
+  progress?: number;
 }
 
 export default function UploadPage() {
-  const [uploadStep, setUploadStep] = useState<"upload" | "processing" | "analyzing" | "complete">("upload")
-  const [uploadProgress, setUploadProgress] = useState(0)
-  const [analysisProgress, setAnalysisProgress] = useState(0)
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const [title, setTitle] = useState("")
-  const [docType, setDocType] = useState("")
-  const [audience, setAudience] = useState("")
-  const [jurisdiction, setJurisdiction] = useState("")
-  const [team, setTeam] = useState("")
-  const [versionTag, setVersionTag] = useState("")
-  const [notes, setNotes] = useState("")
-  const [isDragOver, setIsDragOver] = useState(false)
-  const [currentDocId, setCurrentDocId] = useState<string | null>(null)
-  const [analysisError, setAnalysisError] = useState<string | null>(null)
-  const router = useRouter()
-  const { user } = useUser()
-  const pollIntervalRef = useRef<NodeJS.Timeout | null>(null)
+  const [uploadStep, setUploadStep] = useState<"upload" | "processing" | "analyzing" | "complete">("upload");
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [analysisProgress, setAnalysisProgress] = useState(0);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [title, setTitle] = useState("");
+  const [docType, setDocType] = useState("");
+  const [audience, setAudience] = useState("");
+  const [jurisdiction, setJurisdiction] = useState("");
+  const [team, setTeam] = useState("");
+  const [versionTag, setVersionTag] = useState("");
+  const [notes, setNotes] = useState("");
+  const [compliance, setCompliance] = useState<string[]>(["GDPR", "MiFID"]);
+  const [isDragOver, setIsDragOver] = useState(false);
+  const [currentDocId, setCurrentDocId] = useState<string | null>(null);
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
+  const router = useRouter();
+  const { user } = useUser();
+  const { toast } = useToast();
+  const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const [analysisSteps, setAnalysisSteps] = useState<AnalysisStep[]>([
     { id: "extraction", label: "Extracting text content", status: "pending" },
@@ -50,198 +51,135 @@ export default function UploadPage() {
     { id: "compliance", label: "Checking regulatory compliance", status: "pending" },
     { id: "suggestions", label: "Generating improvement suggestions", status: "pending" },
     { id: "scoring", label: "Calculating comprehensibility score", status: "pending" },
-  ])
+  ]);
 
   // Cleanup polling on unmount
   useEffect(() => {
     return () => {
       if (pollIntervalRef.current) {
-        clearInterval(pollIntervalRef.current)
+        clearInterval(pollIntervalRef.current);
       }
-    }
-  }, [])
-
-  const pollAnalysisStatus = async (docId: string) => {
-    try {
-      const response = await fetch(`/api/documents/${docId}/status`)
-      if (response.ok) {
-        const status = await response.json()
-
-        if (status.analysisComplete) {
-          // Analysis is complete
-          setAnalysisSteps(prev => prev.map(step => ({ ...step, status: "completed" })))
-          setAnalysisProgress(100)
-          if (pollIntervalRef.current) {
-            clearInterval(pollIntervalRef.current)
-          }
-
-          setTimeout(() => {
-            setUploadStep("complete")
-          }, 1000)
-
-          return
-        }
-
-        if (status.analysisError) {
-          setAnalysisError(status.analysisError)
-          if (pollIntervalRef.current) {
-            clearInterval(pollIntervalRef.current)
-          }
-          return
-        }
-
-        // Update steps based on current progress
-        if (status.currentStep) {
-          updateAnalysisSteps(status.currentStep, status.progress || 0)
-        }
-
-      }
-    } catch (error) {
-      console.error("Error polling analysis status:", error)
-    }
-  }
-
-  const updateAnalysisSteps = (currentStepId: string, progress: number) => {
-    setAnalysisSteps(prev => {
-      const stepIndex = prev.findIndex(step => step.id === currentStepId)
-
-      return prev.map((step, index) => {
-        if (index < stepIndex) {
-          return { ...step, status: "completed" as const }
-        } else if (index === stepIndex) {
-          return { ...step, status: "running" as const, progress }
-        } else {
-          return { ...step, status: "pending" as const }
-        }
-      })
-    })
-
-    // Calculate overall progress
-    const completedSteps = analysisSteps.filter(step => step.status === "completed").length
-    const currentStepProgress = progress || 0
-    const overallProgress = ((completedSteps + (currentStepProgress / 100)) / analysisSteps.length) * 100
-    setAnalysisProgress(Math.min(overallProgress, 95)) // Cap at 95% until complete
-  }
+    };
+  }, []);
 
   const simulateAnalysisProgress = () => {
-    let currentStepIndex = 0
-    const stepDurations = [2000, 3000, 4000, 3500, 3000, 2500] // Different durations for each step
+    let currentStepIndex = 0;
+    const stepDurations = [2000, 3000, 4000, 3500, 3000, 2500]; // Different durations for each step
 
     const processStep = () => {
-      if (currentStepIndex >= analysisSteps.length) return
+      if (currentStepIndex >= analysisSteps.length) return;
 
-      const currentStep = analysisSteps[currentStepIndex]
+      const currentStep = analysisSteps[currentStepIndex];
 
       // Mark current step as running
       setAnalysisSteps(prev => prev.map((step, index) => {
-        if (index < currentStepIndex) return { ...step, status: "completed" }
-        if (index === currentStepIndex) return { ...step, status: "running" }
-        return step
-      }))
+        if (index < currentStepIndex) return { ...step, status: "completed" };
+        if (index === currentStepIndex) return { ...step, status: "running" };
+        return step;
+      }));
 
       // Simulate progress within the step
-      let stepProgress = 0
+      let stepProgress = 0;
       const stepInterval = setInterval(() => {
-        stepProgress += Math.random() * 15 + 5
+        stepProgress += Math.random() * 15 + 5;
         if (stepProgress >= 100) {
-          stepProgress = 100
-          clearInterval(stepInterval)
+          stepProgress = 100;
+          clearInterval(stepInterval);
 
           // Mark step as completed
           setAnalysisSteps(prev => prev.map((step, index) =>
             index === currentStepIndex ? { ...step, status: "completed", progress: 100 } : step
-          ))
+          ));
 
-          currentStepIndex++
+          currentStepIndex++;
 
           if (currentStepIndex < analysisSteps.length) {
-            setTimeout(processStep, 500) // Small delay between steps
+            setTimeout(processStep, 500); // Small delay between steps
           } else {
             // All steps completed
-            setAnalysisProgress(100)
+            setAnalysisProgress(100);
             setTimeout(() => {
-              setUploadStep("complete")
-            }, 1000)
+              setUploadStep("complete");
+            }, 1000);
           }
         } else {
           setAnalysisSteps(prev => prev.map((step, index) =>
             index === currentStepIndex ? { ...step, progress: stepProgress } : step
-          ))
+          ));
         }
 
         // Update overall progress
-        const completedSteps = currentStepIndex
-        const currentStepProg = stepProgress / 100
-        const overall = ((completedSteps + currentStepProg) / analysisSteps.length) * 100
-        setAnalysisProgress(overall)
-      }, 100)
-    }
+        const completedSteps = currentStepIndex;
+        const currentStepProg = stepProgress / 100;
+        const overall = ((completedSteps + currentStepProg) / analysisSteps.length) * 100;
+        setAnalysisProgress(overall);
+      }, 100);
+    };
 
-    processStep()
-  }
+    processStep();
+  };
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+    const file = event.target.files?.[0];
     if (file) {
-      setSelectedFile(file)
+      setSelectedFile(file);
     }
-  }
+  };
 
   const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragOver(true)
-  }
+    e.preventDefault();
+    setIsDragOver(true);
+  };
 
   const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragOver(false)
-  }
+    e.preventDefault();
+    setIsDragOver(false);
+  };
 
   const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    setIsDragOver(false)
+    e.preventDefault();
+    setIsDragOver(false);
 
-    const files = e.dataTransfer.files
+    const files = e.dataTransfer.files;
     if (files.length > 0) {
-      const file = files[0]
+      const file = files[0];
       // Check file type
       if (file.type === 'application/msword' ||
         file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
         file.type.startsWith('text/') ||
         file.type === 'application/pdf') {
-        setSelectedFile(file)
+        setSelectedFile(file);
       } else {
-        alert('Please upload a DOC, DOCX, PDF, or text file.')
+        toast({
+          title: "Invalid File Type",
+          description: "Please upload a DOC, DOCX, PDF, or text file.",
+          variant: "destructive",
+        });
       }
     }
-  }
+  };
 
   const handleUpload = async () => {
-    if (!selectedFile) return
+    if (!selectedFile) return;
 
-    setUploadStep("processing")
-    setAnalysisError(null)
+    setUploadStep("processing");
+    setAnalysisError(null);
 
     try {
-      // initial progress indicator
-      setUploadProgress(20)
+      setUploadProgress(20);
 
-      // 1. upload file to blob storage and grab URL
-      const uploadRes = await fetch(`/api/upload?filename=${encodeURIComponent(selectedFile.name)}`, {
+      // 1. Upload file to Vercel Blob
+      const uploadRes = await fetch(`/api/upload?filename=${selectedFile.name}`, {
         method: "POST",
-        headers: {
-          "Content-Type": selectedFile.type || "application/octet-stream"
-        },
-        body: selectedFile
-      })
+        body: selectedFile,
+      });
 
-      if (!uploadRes.ok) throw new Error("Upload failed")
+      if (!uploadRes.ok) throw new Error("Upload to Vercel Blob failed");
+      const { url } = await uploadRes.json();
 
-      const { url } = await uploadRes.json()
+      setUploadProgress(60);
 
-      setUploadProgress(60)
-
-      // 2. create document record with metadata
+      // 2. Create document record with the new URL
       const docRes = await fetch("/api/document/new", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -256,74 +194,60 @@ export default function UploadPage() {
             team_id: team,
             version: versionTag,
             additional_instructions: notes,
-            compliance: []
+            compliance: compliance
           }
         })
-      })
+      });
 
-      if (!docRes.ok) throw new Error("Failed to create document record")
+      if (!docRes.ok) throw new Error("Failed to create document record");
 
-      const newDoc = await docRes.json()
-      setCurrentDocId(newDoc.doc_id)
+      const newDoc = await docRes.json();
+      setCurrentDocId(newDoc.doc_id);
 
-      setUploadProgress(100)
+      setUploadProgress(100);
 
-      // Wait a moment then start analysis step
       setTimeout(() => {
-        setUploadStep("analyzing")
+        setUploadStep("analyzing");
 
-        // Start analysis
         fetch("/api/analyze", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            doc_id: newDoc.doc_id,
-            documentType: docType,
-            targetAudience: audience,
-            jurisdiction,
-            regulations: "GDPR"
-          })
+          body: JSON.stringify({ doc_id: newDoc.doc_id })
         }).catch((error) => {
-          console.error("Analysis failed:", error)
-          setAnalysisError("Analysis failed to start. Please try again.")
-        })
+          console.error("Analysis failed:", error);
+          setAnalysisError("Analysis failed to start. Please try again.");
+        });
 
-        // Start progress simulation (replace with real polling when status endpoint is available)
-        simulateAnalysisProgress()
+        simulateAnalysisProgress();
 
-        // Uncomment this when you have a status endpoint:
-        // pollIntervalRef.current = setInterval(() => {
-        //   pollAnalysisStatus(newDoc.doc_id)
-        // }, 2000)
-
-      }, 1000)
+      }, 1000);
 
     } catch (error) {
-      console.error("Upload error:", error)
-      setUploadStep("upload")
-      setAnalysisError("Upload failed. Please try again.")
+      console.error("Upload error:", error);
+      setUploadStep("upload");
+      const message = error instanceof Error ? error.message : "An unknown error occurred";
+      setAnalysisError(message);
     }
-  }
+  };
 
   const getStepIcon = (step: AnalysisStep) => {
     switch (step.status) {
       case "completed":
-        return <CheckCircle className="w-4 h-4 text-green-500" />
+        return <CheckCircle className="w-4 h-4 text-green-500" />;
       case "running":
-        return <Loader2 className="w-4 h-4 animate-spin text-blue-500" />
+        return <Loader2 className="w-4 h-4 animate-spin text-blue-500" />;
       case "error":
-        return <AlertCircle className="w-4 h-4 text-red-500" />
+        return <AlertCircle className="w-4 h-4 text-red-500" />;
       default:
-        return <Clock className="w-4 h-4 text-gray-400" />
+        return <Clock className="w-4 h-4 text-gray-400" />;
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <DashboardHeader />
 
       <div className="p-6">
-        {/* Breadcrumb */}
         <div className="mb-6">
           <Link href="/dashboard" className="flex items-center text-blue-600 hover:text-blue-700 mb-4">
             <ArrowLeft className="w-4 h-4 mr-2" />
@@ -341,14 +265,14 @@ export default function UploadPage() {
                 <CardDescription>Upload your legal document and configure analysis settings</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                {/* File Upload */}
                 <div className="space-y-2">
                   <Label htmlFor="file">Document File</Label>
                   <div
-                    className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${isDragOver
-                      ? 'border-blue-400 bg-blue-50'
-                      : 'border-gray-300 hover:border-gray-400'
-                      }`}
+                    className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
+                      isDragOver
+                        ? 'border-blue-400 bg-blue-50'
+                        : 'border-gray-300 hover:border-gray-400'
+                    }`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
@@ -381,7 +305,6 @@ export default function UploadPage() {
                   )}
                 </div>
 
-                {/* Document Details */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label htmlFor="title">Document Title</Label>
@@ -479,30 +402,53 @@ export default function UploadPage() {
                   />
                 </div>
 
-                {/* Analysis Options */}
                 <div className="space-y-4">
                   <Label className="text-base font-medium">Analysis Options</Label>
                   <div className="space-y-3">
                     <div className="flex items-center space-x-2">
-                      <Checkbox id="gdpr" defaultChecked />
+                      <Checkbox id="gdpr" checked={compliance.includes("GDPR")} onCheckedChange={(checked) => {
+                        if (checked) {
+                          setCompliance([...compliance, "GDPR"]);
+                        } else {
+                          setCompliance(compliance.filter((c) => c !== "GDPR"));
+                        }
+                      }} />
                       <Label htmlFor="gdpr" className="text-sm">
                         GDPR Compliance Check
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Checkbox id="mifid" defaultChecked />
+                      <Checkbox id="mifid" checked={compliance.includes("MiFID")} onCheckedChange={(checked) => {
+                        if (checked) {
+                          setCompliance([...compliance, "MiFID"]);
+                        } else {
+                          setCompliance(compliance.filter((c) => c !== "MiFID"));
+                        }
+                      }} />
                       <Label htmlFor="mifid" className="text-sm">
                         MiFID II Requirements
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Checkbox id="psd2" />
+                      <Checkbox id="psd2" checked={compliance.includes("PSD2")} onCheckedChange={(checked) => {
+                        if (checked) {
+                          setCompliance([...compliance, "PSD2"]);
+                        } else {
+                          setCompliance(compliance.filter((c) => c !== "PSD2"));
+                        }
+                      }} />
                       <Label htmlFor="psd2" className="text-sm">
                         PSD2 Transparency Standards
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Checkbox id="custom-rules" defaultChecked />
+                      <Checkbox id="custom-rules" checked={compliance.includes("Custom")} onCheckedChange={(checked) => {
+                        if (checked) {
+                          setCompliance([...compliance, "Custom"]);
+                        } else {
+                          setCompliance(compliance.filter((c) => c !== "Custom"));
+                        }
+                      }} />
                       <Label htmlFor="custom-rules" className="text-sm">
                         Apply Custom Organization Rules
                       </Label>
@@ -709,5 +655,5 @@ export default function UploadPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

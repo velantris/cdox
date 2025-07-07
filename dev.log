@@ -1,0 +1,65 @@
+
+> cleardoc@0.1.0 dev /Users/vivekkornepalli/Downloads/Cleardoc Platform
+> next dev
+
+   ▲ Next.js 15.2.4
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.29.212:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 1336ms
+ ○ Compiling /api/analyze ...
+ ✓ Compiled /api/analyze in 614ms (469 modules)
+Connected to MongoDB
+ ⨯ CastError: Cast to ObjectId failed for value "123" (type string) at path "_id" for model "Document"
+    at async POST (app/api/analyze/route.ts:34:31)
+  32 |     // If docId is provided, fetch document metadata and, if missing, content
+  33 |     if (doc_id) {
+> 34 |         const docRecord: any = await DocModel.findById(doc_id).lean();
+     |                               ^
+  35 |         if (!docRecord) {
+  36 |             return NextResponse.json({ error: "Document not found" }, { status: 404 });
+  37 |         } {
+  stringValue: '"123"',
+  messageFormat: undefined,
+  kind: 'ObjectId',
+  value: '123',
+  path: '_id',
+  reason: BSONError: input must be a 24 character hex string, 12 byte Uint8Array, or an integer
+      at async POST (app/api/analyze/route.ts:34:31)
+    32 |     // If docId is provided, fetch document metadata and, if missing, content
+    33 |     if (doc_id) {
+  > 34 |         const docRecord: any = await DocModel.findById(doc_id).lean();
+       |                               ^
+    35 |         if (!docRecord) {
+    36 |             return NextResponse.json({ error: "Document not found" }, { status: 404 });
+    37 |         },
+  valueType: 'string'
+}
+ ⨯ CastError: Cast to ObjectId failed for value "123" (type string) at path "_id" for model "Document"
+    at async POST (app/api/analyze/route.ts:34:31)
+  32 |     // If docId is provided, fetch document metadata and, if missing, content
+  33 |     if (doc_id) {
+> 34 |         const docRecord: any = await DocModel.findById(doc_id).lean();
+     |                               ^
+  35 |         if (!docRecord) {
+  36 |             return NextResponse.json({ error: "Document not found" }, { status: 404 });
+  37 |         } {
+  stringValue: '"123"',
+  messageFormat: undefined,
+  kind: 'ObjectId',
+  value: '123',
+  path: '_id',
+  reason: BSONError: input must be a 24 character hex string, 12 byte Uint8Array, or an integer
+      at async POST (app/api/analyze/route.ts:34:31)
+    32 |     // If docId is provided, fetch document metadata and, if missing, content
+    33 |     if (doc_id) {
+  > 34 |         const docRecord: any = await DocModel.findById(doc_id).lean();
+       |                               ^
+    35 |         if (!docRecord) {
+    36 |             return NextResponse.json({ error: "Document not found" }, { status: 404 });
+    37 |         },
+  valueType: 'string'
+}
+ POST /api/analyze 500 in 1125ms

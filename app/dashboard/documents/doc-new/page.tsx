@@ -1,24 +1,23 @@
 import { ComprehensibilityGauge } from "@/components/comprehensibility-gauge"
-import { ThemeToggle } from "@/components/theme-toggle"
+import { DashboardHeader } from "@/components/dashboard-header"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
-    AlertCircle,
-    AlertTriangle,
-    ArrowLeft,
-    CheckCircle,
-    Clock,
-    Download,
-    Edit,
-    FileText,
-    Flag,
-    Info,
-    MessageSquare,
-    Share,
-    User,
+  AlertCircle,
+  AlertTriangle,
+  ArrowLeft,
+  CheckCircle,
+  Clock,
+  Download,
+  Edit,
+  Flag,
+  Info,
+  MessageSquare,
+  Share,
+  User
 } from "lucide-react"
 import Link from "next/link"
 
@@ -103,46 +102,20 @@ const newDocumentData = {
 export default function NewDocumentAnalysisPage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b">
-        <div className="px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Link href="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-xl font-bold text-gray-900">ClearDoc</span>
-              </Link>
-              <nav className="hidden md:flex items-center space-x-6">
-                <Link href="/dashboard" className="text-gray-600 hover:text-gray-900">
-                  Dashboard
-                </Link>
-                <Link href="/dashboard/documents" className="text-blue-600 font-medium">
-                  Documents
-                </Link>
-                <Link href="/dashboard/teams" className="text-gray-600 hover:text-gray-900">
-                  Teams
-                </Link>
-                <Link href="/dashboard/settings" className="text-gray-600 hover:text-gray-900">
-                  Settings
-                </Link>
-              </nav>
-            </div>
-            <div className="flex items-center space-x-4">
-              <ThemeToggle />
-              <Button variant="outline">
-                <Share className="w-4 h-4 mr-2" />
-                Share
-              </Button>
-              <Button variant="outline">
-                <Download className="w-4 h-4 mr-2" />
-                Export
-              </Button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <DashboardHeader
+        actions={
+          <>
+            <Button variant="outline">
+              <Share className="w-4 h-4 mr-2" />
+              Share
+            </Button>
+            <Button variant="outline">
+              <Download className="w-4 h-4 mr-2" />
+              Export
+            </Button>
+          </>
+        }
+      />
 
       <div className="p-6">
         {/* Breadcrumb */}
@@ -233,15 +206,14 @@ export default function NewDocumentAnalysisPage() {
                       <div className="flex items-start justify-between">
                         <div className="flex items-start space-x-3">
                           <div
-                            className={`w-8 h-8 rounded-lg flex items-center justify-center ${
-                              issue.severity === "Critical"
+                            className={`w-8 h-8 rounded-lg flex items-center justify-center ${issue.severity === "Critical"
                                 ? "bg-red-100"
                                 : issue.severity === "High"
                                   ? "bg-orange-100"
                                   : issue.severity === "Medium"
                                     ? "bg-yellow-100"
                                     : "bg-green-100"
-                            }`}
+                              }`}
                           >
                             {issue.severity === "Critical" ? (
                               <AlertTriangle className="w-4 h-4 text-red-500" />
@@ -348,13 +320,12 @@ export default function NewDocumentAnalysisPage() {
                           </div>
                           <Progress
                             value={section.score}
-                            className={`h-3 ${
-                              section.score >= 80
+                            className={`h-3 ${section.score >= 80
                                 ? "text-green-500"
                                 : section.score >= 60
                                   ? "text-blue-500"
                                   : "text-red-500"
-                            }`}
+                              }`}
                           />
                         </div>
                       ))}

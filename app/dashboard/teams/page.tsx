@@ -1,11 +1,10 @@
-import { ThemeToggle } from "@/components/theme-toggle"
+import { DashboardHeader } from "@/components/dashboard-header"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
-import { AlertTriangle, Calendar, FileText, Mail, Phone, Users } from "lucide-react"
-import Link from "next/link"
+import { AlertTriangle, Calendar, Mail, Phone, Users } from "lucide-react"
 
 const teams = [
   {
@@ -129,38 +128,7 @@ const teams = [
 export default function TeamsPage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b">
-        <div className="px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Link href="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-xl font-bold text-gray-900">ClearDoc</span>
-              </Link>
-              <nav className="hidden md:flex items-center space-x-6">
-                <Link href="/dashboard" className="text-gray-600 hover:text-gray-900">
-                  Dashboard
-                </Link>
-                <Link href="/dashboard/documents" className="text-gray-600 hover:text-gray-900">
-                  Documents
-                </Link>
-                <Link href="/dashboard/teams" className="text-blue-600 font-medium">
-                  Teams
-                </Link>
-                <Link href="/dashboard/settings" className="text-gray-600 hover:text-gray-900">
-                  Settings
-                </Link>
-              </nav>
-            </div>
-            <div className="flex items-center space-x-4">
-              <ThemeToggle />
-            </div>
-          </div>
-        </div>
-      </header>
+      <DashboardHeader />
 
       <div className="p-6">
         {/* Page Header */}
@@ -238,13 +206,12 @@ export default function TeamsPage() {
                             </AvatarFallback>
                           </Avatar>
                           <div
-                            className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white ${
-                              member.status === "active"
+                            className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white ${member.status === "active"
                                 ? "bg-green-500"
                                 : member.status === "away"
                                   ? "bg-yellow-500"
                                   : "bg-gray-500"
-                            }`}
+                              }`}
                           ></div>
                         </div>
                         <div>
