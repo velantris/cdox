@@ -6,7 +6,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
     await connectDB();
 
     try {
-        const doc_id = params.id;
+        const { id } = await params;
+        const doc_id = id;
 
         if (!doc_id) {
             return NextResponse.json({ error: "Document ID is required" }, { status: 400 });

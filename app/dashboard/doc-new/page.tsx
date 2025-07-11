@@ -35,6 +35,7 @@ export default function UploadPage() {
   const [team, setTeam] = useState("");
   const [versionTag, setVersionTag] = useState("");
   const [notes, setNotes] = useState("");
+  const [language, setLanguage] = useState("");
   const [compliance, setCompliance] = useState<string[]>(["GDPR", "MiFID"]);
   const [isDragOver, setIsDragOver] = useState(false);
   const [currentDocId, setCurrentDocId] = useState<string | null>(null);
@@ -191,6 +192,7 @@ export default function UploadPage() {
             type: docType,
             target_audience: audience,
             jurisdiction,
+            language,
             team_id: team,
             version: versionTag,
             additional_instructions: notes,
@@ -268,11 +270,10 @@ export default function UploadPage() {
                 <div className="space-y-2">
                   <Label htmlFor="file">Document File</Label>
                   <div
-                    className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${
-                      isDragOver
+                    className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${isDragOver
                         ? 'border-blue-400 bg-blue-50'
                         : 'border-gray-300 hover:border-gray-400'
-                    }`}
+                      }`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}
                     onDrop={handleDrop}
@@ -361,6 +362,24 @@ export default function UploadPage() {
                         <SelectItem value="it">Italy</SelectItem>
                         <SelectItem value="es">Spain</SelectItem>
                         <SelectItem value="nl">Netherlands</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                {/* Language Selector */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="language">Language</Label>
+                    <Select value={language} onValueChange={(val) => setLanguage(val)}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select language" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="english">English</SelectItem>
+                        <SelectItem value="italian">Italian</SelectItem>
+                        <SelectItem value="french">French</SelectItem>
+                        <SelectItem value="hindi">Hindi</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>

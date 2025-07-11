@@ -5,36 +5,86 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import connectDB from "@/lib/db/client"
-import { Document as DocModel } from "@/lib/db/models"
+import { Analysis, Document as DocModel } from "@/lib/db/models"
 import { Download, ExternalLink, FileText, MoreHorizontal, Search, Upload } from "lucide-react"
 import Link from "next/link"
 
 // Ensure this page is always rendered dynamically so we get fresh data
 export const dynamic = "force-dynamic"
 
-// Helper to fetch documents from the API and massage the data into the UI-friendly
-// shape that this component expects. In a future refactor we can tighten the
-// UI to the real schema, but for now we keep the existing table layout.
+// Helper to map score to letter grade
+const gradeForScore = (score: number | undefined) => {
+  if (score === undefined || score === null) return "-"
+  if (score >= 90) return "A+"
+  if (score >= 80) return "A"
+  if (score >= 70) return "B"
+  if (score >= 60) return "C"
+  if (score >= 50) return "D"
+  return "F"
+}
+
 async function getDocuments() {
   await connectDB()
 
   const docs = (await DocModel.find({}).sort({ createdAt: -1 }).lean()) as any[]
 
-  const mapToUi = (doc: any) => ({
-    id: doc.doc_id,
-    title: doc.title,
-    type: doc.options?.type ?? "Document",
-    score: 0,
-    grade: "-",
-    status: "Uploaded",
-    lastUpdated: doc.updatedAt ?? doc.createdAt,
-    assignedTo: "—",
-    issues: 0,
-    version: "—",
-    size: "—",
-  })
+  // Fetch latest analyses for the documents
+  const docIds = docs.map((d) => d.doc_id)
+  const analyses = (await Analysis.find({ doc_id: { $in: docIds } })
+    .sort({ createdAt: -1 })
+    .lean()) as any[]
 
-  return docs.map(mapToUi)
+  const latestAnalysisMap = new Map<string, any>()
+  for (const a of analyses) {
+    if (!latestAnalysisMap.has(a.doc_id)) {
+      latestAnalysisMap.set(a.doc_id, a)
+    }
+  }
+
+  const fs = await import("fs/promises")
+  const path = await import("path")
+
+  const mapToUi = async (doc: any) => {
+    const analysis = latestAnalysisMap.get(doc.doc_id)
+
+    const score: number | undefined = analysis?.analysis?.score
+    const issues: any[] = analysis?.analysis?.issues || []
+
+    // Attempt to compute file size for local uploads
+    let size = "—"
+    if (doc.url && doc.url.startsWith("/uploads")) {
+      try {
+        const filePath = path.join(process.cwd(), doc.url.startsWith("/") ? doc.url.substring(1) : doc.url)
+        const stat = await fs.stat(filePath)
+        const bytes = stat.size
+        size = bytes < 1024
+          ? `${bytes} B`
+          : bytes < 1024 * 1024
+            ? `${(bytes / 1024).toFixed(1)} KB`
+            : `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+      } catch {
+        // ignore errors – keep placeholder
+      }
+    }
+
+    return {
+      id: doc.doc_id,
+      title: doc.title,
+      type: doc.options?.type ?? "Document",
+      score: score,
+      grade: gradeForScore(score),
+      status: analysis ? "Analyzed" : "Uploaded",
+      lastUpdated: doc.updatedAt ?? doc.createdAt,
+      assignedTo: "—", // TBD when assignment feature exists
+      issues: issues.length,
+      version: doc.options?.version ?? "—",
+      size,
+    }
+  }
+
+  const uiDocs = await Promise.all(docs.map(mapToUi))
+
+  return uiDocs
 }
 
 export default async function DocumentsPage() {
@@ -169,9 +219,17 @@ export default async function DocumentsPage() {
                   </div>
                   <div className="flex items-center space-x-6">
                     <div className="text-center">
-                      <div className="text-2xl font-bold">{doc.score}</div>
+                      <div className="text-2xl font-bold">{doc.score ?? "-"}</div>
                       <Badge
-                        variant={doc.score >= 80 ? "default" : doc.score >= 60 ? "secondary" : "destructive"}
+                        variant={
+                          typeof doc.score === "number"
+                            ? doc.score >= 80
+                              ? "default"
+                              : doc.score >= 60
+                                ? "secondary"
+                                : "destructive"
+                            : "outline"
+                        }
                         className="text-xs"
                       >
                         {doc.grade}

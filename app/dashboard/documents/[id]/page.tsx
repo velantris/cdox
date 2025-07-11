@@ -19,7 +19,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 async function getDocumentAndAnalysis(id: string) {
   const response = await fetch(`/api/documents/${id}`)
@@ -39,6 +39,8 @@ export default function DocumentAnalysisPage({ params }: { params: { id: string 
   const [isAnalyzing, setIsAnalyzing] = useState(false)
   const router = useRouter()
   const { toast } = useToast()
+  // Store polling interval to allow cleanup on unmount
+  const pollIntervalRef = useRef<NodeJS.Timeout | null>(null)
 
   // Small helper to capitalise first letter
   const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
@@ -117,11 +119,14 @@ export default function DocumentAnalysisPage({ params }: { params: { id: string 
       }
 
       // Poll for results
-      const pollInterval = setInterval(async () => {
+      pollIntervalRef.current = setInterval(async () => {
         const newData = await getDocumentAndAnalysis(params.id)
         if (newData?.analysis?._id !== analysis?._id) {
           setAnalysis(newData.analysis)
-          clearInterval(pollInterval)
+          if (pollIntervalRef.current) {
+            clearInterval(pollIntervalRef.current)
+            pollIntervalRef.current = null
+          }
           setIsAnalyzing(false)
           toast({
             title: "Analysis Complete",
@@ -140,6 +145,16 @@ export default function DocumentAnalysisPage({ params }: { params: { id: string 
       setIsAnalyzing(false)
     }
   }
+
+  // Clear polling interval on component unmount to avoid memory leaks
+  useEffect(() => {
+    return () => {
+      if (pollIntervalRef.current) {
+        clearInterval(pollIntervalRef.current)
+        pollIntervalRef.current = null
+      }
+    }
+  }, [])
 
   if (isLoading) {
     return (
@@ -205,7 +220,7 @@ export default function DocumentAnalysisPage({ params }: { params: { id: string 
               <CardTitle>Analysis Pending</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>This document has not been analyzed yet. Click the button below to start the analysis.</p>
+              <p>The document is currently being analyzed. This page will update automatically when it's complete.</p>
               <Button onClick={handleReanalysis} disabled={isAnalyzing} className="mt-4">
                 <RefreshCw className={`w-4 h-4 mr-2 ${isAnalyzing ? "animate-spin" : ""}`} />
                 {isAnalyzing ? "Analyzing..." : "Analyze Now"}
@@ -220,7 +235,7 @@ export default function DocumentAnalysisPage({ params }: { params: { id: string 
               <CardTitle>Analysis in Progress</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>The document is currently being analyzed. This page will update automatically when it'''s complete.</p>
+              <p>The document is currently being analyzed. This page will update automatically when it's complete.</p>
             </CardContent>
           </Card>
         )}

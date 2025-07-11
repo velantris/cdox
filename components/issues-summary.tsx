@@ -1,7 +1,17 @@
 import { Progress } from "@/components/ui/progress"
-import { AlertTriangle, AlertCircle, Info, CheckCircle } from "lucide-react"
+import { AlertCircle, AlertTriangle, CheckCircle, Info } from "lucide-react"
+import type { ComponentType } from "react"
 
-const issuesSummary = [
+export interface IssueSummaryItem {
+  type: string
+  count: number
+  icon: ComponentType<{ className?: string }>
+  color: string
+  bgColor: string
+  description: string
+}
+
+const issuesSummary: IssueSummaryItem[] = [
   {
     type: "Critical",
     count: 23,
@@ -36,12 +46,13 @@ const issuesSummary = [
   },
 ]
 
-export function IssuesSummary() {
-  const totalIssues = issuesSummary.reduce((sum, item) => sum + item.count, 0)
+export function IssuesSummary({ data }: { data?: IssueSummaryItem[] }) {
+  const items = data ?? issuesSummary
+  const totalIssues = items.reduce((sum, item) => sum + item.count, 0)
 
   return (
     <div className="space-y-4">
-      {issuesSummary.map((item) => {
+      {items.map((item) => {
         const Icon = item.icon
         const percentage = (item.count / totalIssues) * 100
 

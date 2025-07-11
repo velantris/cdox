@@ -1,9 +1,24 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { FileText, ExternalLink } from "lucide-react"
+import { ExternalLink, FileText } from "lucide-react"
 import Link from "next/link"
 
-const recentDocs = [
+// Allow external callers to provide their own document list while preserving
+// the current mocked data as a sensible fallback.
+
+export interface RecentDoc {
+  id: string
+  title: string
+  type?: string
+  score?: number
+  grade?: string
+  status?: string
+  lastUpdated?: string
+  assignedTo?: string
+  issues?: number
+}
+
+const recentDocs: RecentDoc[] = [
   {
     id: "doc-001",
     title: "Terms & Conditions v4.2",
@@ -50,10 +65,12 @@ const recentDocs = [
   },
 ]
 
-export function RecentDocuments() {
+export function RecentDocuments({ docs }: { docs?: RecentDoc[] }) {
+  const data = docs ?? recentDocs
+
   return (
     <div className="space-y-4">
-      {recentDocs.map((doc) => (
+      {data.map((doc) => (
         <div key={doc.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50">
           <div className="flex items-center space-x-4">
             <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
