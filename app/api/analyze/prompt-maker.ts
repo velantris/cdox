@@ -58,6 +58,7 @@ export const makePrompt = (document: string, documentType: string, targetAudienc
     You will be given a document and a set of criteria to evaluate the document against.
     You will need to evaluate the document against the criteria and return a score for each criterion.
     You will also need to provide a summary of the document and any recommendations for improvement.
+    Dont nitpick small issues, if given 1 to 100 this should be 70% strict.
 
         Document:
         ${document}

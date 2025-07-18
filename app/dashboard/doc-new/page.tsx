@@ -65,7 +65,8 @@ export default function UploadPage() {
 
   const simulateAnalysisProgress = () => {
     let currentStepIndex = 0;
-    const stepDurations = [2000, 3000, 4000, 3500, 3000, 2500]; // Different durations for each step
+    // Rough duration (ms) each analysis step should take – tweak these to adjust total analysis time
+    const stepDurations = [6000, 8000, 10000, 9000, 8000, 7000];
 
     const processStep = () => {
       if (currentStepIndex >= analysisSteps.length) return;
@@ -81,8 +82,10 @@ export default function UploadPage() {
 
       // Simulate progress within the step
       let stepProgress = 0;
+      const intervalMs = 200; // update frequency
+      const increment = 100 / (stepDurations[currentStepIndex] / intervalMs);
       const stepInterval = setInterval(() => {
-        stepProgress += Math.random() * 15 + 5;
+        stepProgress += increment;
         if (stepProgress >= 100) {
           stepProgress = 100;
           clearInterval(stepInterval);
@@ -114,7 +117,7 @@ export default function UploadPage() {
         const currentStepProg = stepProgress / 100;
         const overall = ((completedSteps + currentStepProg) / analysisSteps.length) * 100;
         setAnalysisProgress(overall);
-      }, 100);
+      }, intervalMs);
     };
 
     processStep();
@@ -271,8 +274,8 @@ export default function UploadPage() {
                   <Label htmlFor="file">Document File</Label>
                   <div
                     className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors ${isDragOver
-                        ? 'border-blue-400 bg-blue-50'
-                        : 'border-gray-300 hover:border-gray-400'
+                      ? 'border-blue-400 bg-blue-50'
+                      : 'border-gray-300 hover:border-gray-400'
                       }`}
                     onDragOver={handleDragOver}
                     onDragLeave={handleDragLeave}

@@ -101,7 +101,7 @@ export default async function DocumentsPage() {
                 <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                   <FileText className="w-5 h-5 text-primary-foreground" />
                 </div>
-                <span className="text-xl font-bold text-foreground">ClearDoc</span>
+                <span className="text-xl font-bold text-foreground">CDox</span>
               </Link>
               <nav className="hidden md:flex items-center space-x-6">
                 <Link href="/dashboard" className="text-muted-foreground hover:text-foreground">

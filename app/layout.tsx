@@ -6,8 +6,8 @@ import { cn } from '@/lib/utils'
 import { AuthKitProvider } from '@workos-inc/authkit-nextjs/components'
 
 export const metadata: Metadata = {
-  title: 'ClearDoc',
-  description: 'ClearDoc',
+  title: 'CDox AI - Making documents comprehensible for everyday.',
+  description: 'CDox AI - Making legal documents comprehensible for everyday.',
   generator: 'Vivek Kornepalli',
   icons: {
     icon: '/favicon.ico',
