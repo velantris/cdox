@@ -89,9 +89,20 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
     try {
       const data = await getDocumentAndAnalysis(id)
       if (data) {
+        let issues = data.issues || [];
         if (data.analysis?.analysis?.issues) {
-          data.analysis.analysis.issues = adaptIssues(data.analysis.analysis.issues)
+          // Fallback to embedded issues if separate issues not available
+          issues = data.analysis.analysis.issues;
         }
+        
+        if (issues.length > 0) {
+          issues = adaptIssues(issues);
+          if (data.analysis) {
+            data.analysis.analysis = data.analysis.analysis || {};
+            data.analysis.analysis.issues = issues;
+          }
+        }
+        
         setDocument(data.document)
         setAnalysis(data.analysis)
       }
@@ -161,17 +172,16 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
   // Define handler for issue status change
   const handleStatusChange = async (issueId: string, newStatus: string) => {
     try {
-      const response = await fetch(`/api/documents/${id}`, {
+      const response = await fetch(`/api/issues/${issueId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ issueId, status: newStatus }),
+        body: JSON.stringify({ status: newStatus }),
       });
+      
       if (!response.ok) throw new Error("Failed to update status");
-      const data = await response.json();
-      if (data.analysis && Array.isArray(data.analysis.analysis.issues)) {
-        data.analysis.analysis.issues = adaptIssues(data.analysis.analysis.issues);
-      }
-      setAnalysis(data.analysis);
+      
+      await loadData();
+      
       toast({ title: "Status Updated", description: `Status set to ${newStatus}.` });
     } catch (error) {
       console.error("Failed to update issue status:", error);
