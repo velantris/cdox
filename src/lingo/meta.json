@@ -37,6 +37,726 @@
         }
       }
     },
+    "../app/auth/signup/page.tsx": {
+      "scopes": {
+        "5/declaration/body/5/argument/1": {
+          "type": "element",
+          "hash": "6869934866071665c6ef0a395b58567a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Create your ClearDoc account"
+        },
+        "5/declaration/body/5/argument/3/1/1": {
+          "type": "element",
+          "hash": "354fad7f7a19e2af09413e557fd25b5d",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Continue with WorkOS"
+        },
+        "5/declaration/body/5/argument/3/3/1": {
+          "type": "element",
+          "hash": "5c47c98e0a0f9ae9a74f914f5d34b177",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Sign in instead"
+        },
+        "5/declaration/body/5/argument/5": {
+          "type": "element",
+          "hash": "999f26e2993da54d93c33cda92376196",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Already have an account? <element:Link>Sign in</element:Link>"
+        }
+      }
+    },
+    "../app/dashboard/doc-new/page.tsx": {
+      "scopes": {
+        "16/declaration/body/29/argument/3/1/1": {
+          "type": "element",
+          "hash": "f939e4cdfb54e4d38f6ce2e8ceab5030",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:ArrowLeft></element:ArrowLeft> Back to Dashboard"
+        },
+        "16/declaration/body/29/argument/3/1/3": {
+          "type": "element",
+          "hash": "cd031ddd3caa6de9f29e54a3940985a3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Upload Document"
+        },
+        "16/declaration/body/29/argument/3/1/5": {
+          "type": "element",
+          "hash": "19e3dd8185c1cc23cfc1e8b761644771",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Upload a legal document for comprehensibility analysis"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/1/1": {
+          "type": "element",
+          "hash": "541a4b640961937ca473d3025cc88e79",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Document Upload"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/1/3": {
+          "type": "element",
+          "hash": "76cca59f2414cbbc69a73a91c76120fb",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Upload your legal document and configure analysis settings"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/1/1": {
+          "type": "element",
+          "hash": "e8aa24245f4386307065ec1ad3ff51c2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Document File"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/1/3/3/1": {
+          "type": "element",
+          "hash": "42b0bef1e0e86309a78da34f6d9da741",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Drop your file here, or click to browse"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/1/3/3/3": {
+          "type": "element",
+          "hash": "848a70e7c3c6a5a7dc3acf4a3b3a4fec",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Supports DOC, DOCX, PDF, and text files up to 10MB"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/1/3/7": {
+          "type": "element",
+          "hash": "327e09665f63175ad8dc94f10d023265",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Choose File"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/1/5/expression/right/3": {
+          "type": "element",
+          "hash": "3c2ebdbd4ce39042eedf739c51afb1e1",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Selected: {selectedFile.name}"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/11/1": {
+          "type": "element",
+          "hash": "a57e6756d3a16e8edd437e2d5516ae4a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Assign to Team"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/11/3/1/1-placeholder": {
+          "type": "attribute",
+          "hash": "83003e3bfd0d6d9cd49702f4d20bfef5",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Select team"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/11/3/3/1": {
+          "type": "element",
+          "hash": "2827f91e50ede5b91f9e386376312ed3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Legal Team"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/11/3/3/3": {
+          "type": "element",
+          "hash": "b2b62aa125140c762f00c88680b9494a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Compliance Team"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/11/3/3/5": {
+          "type": "element",
+          "hash": "ec8c8711fce61265a4fe296ce2ba3b6f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Product Team"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/11/3/3/7": {
+          "type": "element",
+          "hash": "1b37611c5bcb0bd1ad34ae0b4bdfc19b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Operations Team"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/13/1": {
+          "type": "element",
+          "hash": "d043281c156839674ec1cc9fbdeda860",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Version Tag"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/13/3-placeholder": {
+          "type": "attribute",
+          "hash": "3d616c88d6c753f5e2ebf8645756350d",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "e.g., v5.0, 2025-Q1"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/15/1": {
+          "type": "element",
+          "hash": "3ad6cf2a59d78059060df65047d3367e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Additional Notes"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/15/3-placeholder": {
+          "type": "attribute",
+          "hash": "c3a47adc7af7566f11eb974eca1a9a7d",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Any specific requirements or context for this analysis..."
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/17/1": {
+          "type": "element",
+          "hash": "04011dbc17405b9fe89fb732936fc93d",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Analysis Options"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/17/3/1/3": {
+          "type": "element",
+          "hash": "264ca50c7b52858c0750baba79273553",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "GDPR Compliance Check"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/17/3/3/3": {
+          "type": "element",
+          "hash": "c416d49a2ccade38a19474fcbab9fc84",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "MiFID II Requirements"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/17/3/5/3": {
+          "type": "element",
+          "hash": "a73e350d90a9ddc963e3a8d24df23d37",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "PSD2 Transparency Standards"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/17/3/7/3": {
+          "type": "element",
+          "hash": "900e2c5a70409d9bbf260adf970dcae8",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Apply Custom Organization Rules"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/19/expression/right/1/3/1": {
+          "type": "element",
+          "hash": "3c95bcb32c2104b99a46f5b3dd015248",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Error"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/21": {
+          "type": "element",
+          "hash": "b97ede2265078302b2e6afef7187900b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:Upload></element:Upload> Start Analysis"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/3/1/1": {
+          "type": "element",
+          "hash": "7dfdd523c9607f8e1735f4ced828fc4e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Document Title"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/3/1/3-placeholder": {
+          "type": "attribute",
+          "hash": "a71cfcca9823768997f1bcb5ceccc99c",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "e.g., Terms & Conditions v5.0"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/3/3/1": {
+          "type": "element",
+          "hash": "abf0202f127616cf3d3f2e3914b089f3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Document Type"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/3/3/3/1/1-placeholder": {
+          "type": "attribute",
+          "hash": "fb329e90353adf369111b2b3c9f2817e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Select document type"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/3/3/3/3/1": {
+          "type": "element",
+          "hash": "69d0219661f5fa7c1536e6f883925fb2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Terms & Conditions"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/3/3/3/3/11": {
+          "type": "element",
+          "hash": "79acaa6cd481262bea4e743a422529d2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Other"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/3/3/3/3/3": {
+          "type": "element",
+          "hash": "7459744a63ef8af4e517a09024bd7c08",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Privacy Policy"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/3/3/3/3/5": {
+          "type": "element",
+          "hash": "8b57e9c349cfb05286388fec7247d078",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Loan Agreement"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/3/3/3/3/7": {
+          "type": "element",
+          "hash": "63ad82cb4ebf3d3f5bd770a322d005ab",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Fee Schedule"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/3/3/3/3/9": {
+          "type": "element",
+          "hash": "3c856d0c0a9f92180bdfb0a20187e7bc",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Regulatory Disclosure"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/1/1": {
+          "type": "element",
+          "hash": "ca47151c4f0ddb348e52ec43ce15eb03",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Target Audience"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/1/3/1/1-placeholder": {
+          "type": "attribute",
+          "hash": "47e8fc27db3a8a589c18ea86a53f0958",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Select audience"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/1/3/3/1": {
+          "type": "element",
+          "hash": "27efd72f4529ba693b7a21198545fea5",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Retail Customers"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/1/3/3/3": {
+          "type": "element",
+          "hash": "e6bf71935e8575e84f119b02ad95deb2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Business Customers"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/1/3/3/5": {
+          "type": "element",
+          "hash": "66a0b483bafd11b58c2e5caee5bd00d0",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Institutional Clients"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/1/3/3/7": {
+          "type": "element",
+          "hash": "582f9fe94f58925659ebd7beccdbe014",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "General Public"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/3/1": {
+          "type": "element",
+          "hash": "228117c85b4b668acc77c4fd65e2e78d",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Jurisdiction"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/3/3/1/1-placeholder": {
+          "type": "attribute",
+          "hash": "fa20df75597a80cd691651ac81400b71",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Select jurisdiction"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/3/3/3/1": {
+          "type": "element",
+          "hash": "7fb40e3925c4416935f4984dab3ebfa3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "European Union"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/3/3/3/11": {
+          "type": "element",
+          "hash": "7850c2fba664ddcdb8e8e3b24fbed47e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Netherlands"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/3/3/3/3": {
+          "type": "element",
+          "hash": "e8ea12e55a5498b6a9ae6ea6803352c1",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Germany"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/3/3/3/5": {
+          "type": "element",
+          "hash": "6fe713692ef82e7d7ead4f433b541b04",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "France"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/3/3/3/7": {
+          "type": "element",
+          "hash": "9065e7f0c93e893172e8709d20d6c98f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Italy"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/3/3/3/9": {
+          "type": "element",
+          "hash": "e3481a44f59493a1dba20f52605e128f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Spain"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/9/1/1": {
+          "type": "element",
+          "hash": "277fd1a41cc237a437cd1d5e4a80463b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Language"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/9/1/3/1/1-placeholder": {
+          "type": "attribute",
+          "hash": "7fa8806eeb911aa9ba9f013b274a2e47",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Select language"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/9/1/3/3/1": {
+          "type": "element",
+          "hash": "e1eeeb379f86a015d6e581fcbc4af7f3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "English"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/9/1/3/3/3": {
+          "type": "element",
+          "hash": "a9fc8de8236d4c1f6bc1eec0942f4457",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Italian"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/9/1/3/3/5": {
+          "type": "element",
+          "hash": "b6c77a4e718a978af58895b27731413c",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "French"
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/9/1/3/3/7": {
+          "type": "element",
+          "hash": "83ef511fe3291eb3eeb7404470003c4b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Hindi"
+        },
+        "16/declaration/body/29/argument/3/3/3/expression/right/1/1": {
+          "type": "element",
+          "hash": "a87c6257bdbffb58ea07b0a43c3f9d0d",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:Loader2></element:Loader2> Uploading Document"
+        },
+        "16/declaration/body/29/argument/3/3/3/expression/right/1/3": {
+          "type": "element",
+          "hash": "58e3a369ff5f180cbce77cfc0f5c0f26",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Preparing your document for analysis"
+        },
+        "16/declaration/body/29/argument/3/3/3/expression/right/3/1/1/1": {
+          "type": "element",
+          "hash": "8f59cb61f35ed0a40ff197ca80dabcfe",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Upload Progress"
+        },
+        "16/declaration/body/29/argument/3/3/3/expression/right/3/1/1/3": {
+          "type": "element",
+          "hash": "5ffe4a4526d680df3dc6d6e7880cbc9a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "{uploadProgress}%"
+        },
+        "16/declaration/body/29/argument/3/3/3/expression/right/3/3/1/3": {
+          "type": "element",
+          "hash": "b6dcb60a6dde40bf54c4ea01e9d24bf5",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Uploading file to secure storage"
+        },
+        "16/declaration/body/29/argument/3/3/3/expression/right/3/3/3/3": {
+          "type": "element",
+          "hash": "77aec6d40f1a736ba94dce1cebe2bb75",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Creating document record"
+        },
+        "16/declaration/body/29/argument/3/3/3/expression/right/3/3/5/3": {
+          "type": "element",
+          "hash": "4833a72384a89d4072160919fd85a604",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Preparing for analysis"
+        },
+        "16/declaration/body/29/argument/3/3/5/expression/right/1/1": {
+          "type": "element",
+          "hash": "31ca702b22879efce478e03ab31056c4",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:Zap></element:Zap> Analyzing Document"
+        },
+        "16/declaration/body/29/argument/3/3/5/expression/right/1/3": {
+          "type": "element",
+          "hash": "88ce5f6ed6162ec004e4cfa52690a256",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Running comprehensive comprehensibility analysis"
+        },
+        "16/declaration/body/29/argument/3/3/5/expression/right/3/1/1/1": {
+          "type": "element",
+          "hash": "4a9dfef75b28d92cdcbda78ff4f83729",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Analysis Progress"
+        },
+        "16/declaration/body/29/argument/3/3/5/expression/right/3/1/1/3": {
+          "type": "element",
+          "hash": "5ffe4a4526d680df3dc6d6e7880cbc9a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<function:Math.round/>%"
+        },
+        "16/declaration/body/29/argument/3/3/5/expression/right/3/3/1/expression/0/body/5/expression/right": {
+          "type": "element",
+          "hash": "ffd408fa29d5bc9039ef8ea1b9b699bb",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Done"
+        },
+        "16/declaration/body/29/argument/3/3/5/expression/right/3/3/1/expression/0/body/7/expression/right": {
+          "type": "element",
+          "hash": "b18b0715d5ed5226537cb0af05a603d2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<function:Math.round/>%"
+        },
+        "16/declaration/body/29/argument/3/3/5/expression/right/3/5/1/3/1": {
+          "type": "element",
+          "hash": "0a342256cc4f0d802d95b8f3bc03cac2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "AI Analysis in Progress"
+        },
+        "16/declaration/body/29/argument/3/3/5/expression/right/3/5/1/3/3": {
+          "type": "element",
+          "hash": "eea17476da37cdacc067a0e31e4df36d",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Our AI is examining your document for readability, compliance, and improvement opportunities. This typically takes 2-5 minutes."
+        },
+        "16/declaration/body/29/argument/3/3/5/expression/right/3/7/expression/right/1/3/1": {
+          "type": "element",
+          "hash": "809aa411addc2f700b3fa05b23f86cdf",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Analysis Error"
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/1/1": {
+          "type": "element",
+          "hash": "18f37f4e9f66a731f497389423b1b6f4",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:CheckCircle></element:CheckCircle> Analysis Complete"
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/1/3": {
+          "type": "element",
+          "hash": "4c676732460a851cb18da3f47d5360f2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Your document has been successfully analyzed"
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/3/1/3/1": {
+          "type": "element",
+          "hash": "f1cb0588852783b9676c6b939eff52d8",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Analysis Complete!"
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/3/1/3/3": {
+          "type": "element",
+          "hash": "70016b025a06542bbe11583d2d223ebf",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Your document has been fully analyzed with comprehensive insights and recommendations."
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/3/3/1/1": {
+          "type": "element",
+          "hash": "c98e649bd9091a5238d8543d65e6c130",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "✓"
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/3/3/1/3": {
+          "type": "element",
+          "hash": "cc04b77fa4bfd479fc80b05a769d49ce",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Uploaded"
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/3/3/3/1": {
+          "type": "element",
+          "hash": "c98e649bd9091a5238d8543d65e6c130",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "✓"
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/3/3/3/3": {
+          "type": "element",
+          "hash": "72b7a117ea2d60eaa4abfaa6048e6208",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Analyzed"
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/3/3/5/1": {
+          "type": "element",
+          "hash": "c98e649bd9091a5238d8543d65e6c130",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "✓"
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/3/3/5/3": {
+          "type": "element",
+          "hash": "437c0eea608e15ad5cdab94bde2f4b48",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Ready"
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/3/5/1": {
+          "type": "element",
+          "hash": "d0996e7dc9efd21995fd1669f2db9486",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "View Analysis Results"
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/3/5/3": {
+          "type": "element",
+          "hash": "a7c8c822534c8b04c02595055bdc0c14",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Return to Dashboard"
+        }
+      }
+    },
     "../app/dashboard/documents/[id]/page.tsx": {
       "scopes": {
         "12/declaration/body/13/consequent/0/argument/1": {
@@ -1013,7 +1733,7 @@
           "context": "",
           "skip": false,
           "overrides": {},
-          "content": "Issues ({analysis.analysis.issues.length})"
+          "content": "Issues (<expression/>)"
         },
         "13/declaration/body/20/argument/3/7/expression/right/1/1/1/5": {
           "type": "element",
@@ -1198,6 +1918,402 @@
           "skip": false,
           "overrides": {},
           "content": "Created:"
+        }
+      }
+    },
+    "../app/dashboard/documents/doc-new/page.tsx": {
+      "scopes": {
+        "11/declaration/body/0/argument/3/3/1": {
+          "type": "element",
+          "hash": "d096547035f6bb4a3f8cacd894e166a5",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:ArrowLeft></element:ArrowLeft> Back to Documents"
+        },
+        "11/declaration/body/0/argument/3/3/3/1/3/11": {
+          "type": "element",
+          "hash": "5f1c90d0fd46023ba1bfaaa2537f59fb",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "•"
+        },
+        "11/declaration/body/0/argument/3/3/3/1/3/13": {
+          "type": "element",
+          "hash": "1db5e70e89a5fb521566432ffd16d25c",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Analyzed <function:Date.toLocaleDateString/>"
+        },
+        "11/declaration/body/0/argument/3/3/3/1/3/3": {
+          "type": "element",
+          "hash": "5f1c90d0fd46023ba1bfaaa2537f59fb",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "•"
+        },
+        "11/declaration/body/0/argument/3/3/3/1/3/7": {
+          "type": "element",
+          "hash": "5f1c90d0fd46023ba1bfaaa2537f59fb",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "•"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/1/1": {
+          "type": "element",
+          "hash": "30c54e4dc4ce599b87d94be34a8617f5",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Overview"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/1/3": {
+          "type": "element",
+          "hash": "a1429e3de106995940813541272e8235",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Issues ({newDocumentData.issues.length})"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/1/5": {
+          "type": "element",
+          "hash": "4365354c7f482ac8e6cdfa642da98bbd",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Heatmap"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/1/7": {
+          "type": "element",
+          "hash": "a40df24d40b6ee81bf761f24895eb685",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Rewrite"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/3/11/1/1": {
+          "type": "element",
+          "hash": "710bb60c3812fe35b719bbe2305fc3eb",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Recommendations"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/3/11/1/3": {
+          "type": "element",
+          "hash": "43bba557d06a1d9cbbd658a34d4e69ec",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Key improvements to enhance document comprehensibility"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/3/3/1/1/3/1": {
+          "type": "element",
+          "hash": "f1cb0588852783b9676c6b939eff52d8",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Analysis Complete!"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/3/3/1/1/3/3": {
+          "type": "element",
+          "hash": "01c8e14f6abaf7dfe25b24eea5aa1928",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Your document has been successfully analyzed and is ready for review."
+        },
+        "11/declaration/body/0/argument/3/5/3/1/3/7/1/1": {
+          "type": "element",
+          "hash": "4efe3b6be13bffa24bff24d8635357c6",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Analysis Summary"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/5/1/expression/0/body/3/1/1": {
+          "type": "element",
+          "hash": "bce52baa2d6845ab44e3210bd820ff0b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Original Text:"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/5/1/expression/0/body/3/3/1": {
+          "type": "element",
+          "hash": "ea12c1d7dbf9c0bf0fe1989b600c6714",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Issue Explanation:"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/5/1/expression/0/body/3/5/1": {
+          "type": "element",
+          "hash": "6c8fc12c9854f9db7030376bf2963d92",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Suggested Rewrite:"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/5/1/expression/0/body/3/5/5/expression/right/3": {
+          "type": "element",
+          "hash": "648bc0ce9779d911ef85e69fdc56df32",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Legal review required - meaning may change"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/5/1/expression/0/body/3/7/1/3": {
+          "type": "element",
+          "hash": "3c0f5b71eae53ec1c7485ca22ae50541",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Assigned to {issue.assignedTo}"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/5/1/expression/0/body/3/7/3/1": {
+          "type": "element",
+          "hash": "2efed62eed56639f827c7f17b7821c5d",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:Edit></element:Edit> Edit"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/5/1/expression/0/body/3/7/3/3": {
+          "type": "element",
+          "hash": "24b6c19892911f2310302b6a01360650",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Accept Rewrite"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/7/1/1/1": {
+          "type": "element",
+          "hash": "5e43e4ded0eb56f85b1fb47360f7012e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Section Heatmap"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/7/1/1/3": {
+          "type": "element",
+          "hash": "a9ff5dd39914d5c4d6bdbe6541924a8a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Comprehensibility scores by document section"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/7/1/3/1/1/expression/0/body/1/3/1": {
+          "type": "element",
+          "hash": "f548ea870214bb8b501943583788a889",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "{section.issues} issues"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/9/1/1/1": {
+          "type": "element",
+          "hash": "fa751807d8b354138521ec3f6441bc5f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Document Rewrite"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/9/1/1/3": {
+          "type": "element",
+          "hash": "434fbcf648a328fd5b36e9ec20c05c21",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "AI-generated improved version with better comprehensibility"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/9/1/3/1/1/1": {
+          "type": "element",
+          "hash": "7e55782bdf7cb49f5616b326c003c278",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Original"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/9/1/3/1/1/3/1": {
+          "type": "element",
+          "hash": "6e3d16794d19ea62122ff30c66a101f6",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "In the event that the customer fails to maintain the minimum balance requirements as specified herein, the bank reserves the right to impose applicable fees and charges as outlined in the fee schedule, notwithstanding any other provisions contained within this agreement..."
+        },
+        "11/declaration/body/0/argument/3/5/3/1/9/1/3/1/3/1": {
+          "type": "element",
+          "hash": "b6bcb9afc004f78a17e3101ea1ab45da",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Improved Version"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/9/1/3/1/3/3/1": {
+          "type": "element",
+          "hash": "47d55b3e63ba296c2bb5a8970e347b1e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "If your account balance falls below the minimum requirement, we may charge fees as shown in our fee schedule. Your account processes transactions instantly and uses advanced security measures to protect your information..."
+        },
+        "11/declaration/body/0/argument/3/5/3/1/9/1/3/3/1": {
+          "type": "element",
+          "hash": "1651c6aace7aefa0c9186b040a9f3458",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Comprehensibility improved from 72 to 86 (+14 points)"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/9/1/3/3/3/1": {
+          "type": "element",
+          "hash": "24dbb00c160aaf63e94e5c126da3234f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:Download></element:Download> Download Rewrite"
+        },
+        "11/declaration/body/0/argument/3/5/3/1/9/1/3/3/3/3": {
+          "type": "element",
+          "hash": "ed3da8072dbd27dc0c959777cdcbebf3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Apply Changes"
+        },
+        "11/declaration/body/0/argument/3/5/7/11/1/1": {
+          "type": "element",
+          "hash": "fe0ec208df1e8b48d0bb4efcbb9153ff",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Issues Summary"
+        },
+        "11/declaration/body/0/argument/3/5/7/11/3/1/1/3": {
+          "type": "element",
+          "hash": "eb327cd411b50aee954f8d1d215d003a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Critical"
+        },
+        "11/declaration/body/0/argument/3/5/7/11/3/3/1/3": {
+          "type": "element",
+          "hash": "dabe777f3b670e9407e46c186197d188",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "High"
+        },
+        "11/declaration/body/0/argument/3/5/7/11/3/5/1/3": {
+          "type": "element",
+          "hash": "43983f2178fb28aacaef6c5f41282c4a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Medium"
+        },
+        "11/declaration/body/0/argument/3/5/7/11/3/7/1/3": {
+          "type": "element",
+          "hash": "97359f18d6648e0980854c5e68bb0969",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Low"
+        },
+        "11/declaration/body/0/argument/3/5/7/15/1/1": {
+          "type": "element",
+          "hash": "c46571856723b03262fd33f511116298",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Actions"
+        },
+        "11/declaration/body/0/argument/3/5/7/15/3/1": {
+          "type": "element",
+          "hash": "5e255e6d94d48b38f67f471671f84cc5",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:Edit></element:Edit> Edit Document"
+        },
+        "11/declaration/body/0/argument/3/5/7/15/3/3": {
+          "type": "element",
+          "hash": "7f9be716f38f351221033c86414f5da7",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:MessageSquare></element:MessageSquare> Add Comment"
+        },
+        "11/declaration/body/0/argument/3/5/7/15/3/5": {
+          "type": "element",
+          "hash": "01d573be8f08b910266a598d0f03c08a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:Clock></element:Clock> View History"
+        },
+        "11/declaration/body/0/argument/3/5/7/3/1/1": {
+          "type": "element",
+          "hash": "624968366b373b25af6f9b2776395b9b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Comprehensibility Score"
+        },
+        "11/declaration/body/0/argument/3/5/7/7/1/1": {
+          "type": "element",
+          "hash": "1f7274720ebe93b3adbb59647090299a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Document Details"
+        },
+        "11/declaration/body/0/argument/3/5/7/7/3/1/1": {
+          "type": "element",
+          "hash": "fce9d6a826b5cddb6f87a11cdc11eb04",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Type:"
+        },
+        "11/declaration/body/0/argument/3/5/7/7/3/3/1": {
+          "type": "element",
+          "hash": "6fdb8111b3c56e39244409fd784f3b83",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Version:"
+        },
+        "11/declaration/body/0/argument/3/5/7/7/3/5/1": {
+          "type": "element",
+          "hash": "abcaf8be932a31415016105dab2773b3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Size:"
+        },
+        "11/declaration/body/0/argument/3/5/7/7/3/7/1": {
+          "type": "element",
+          "hash": "3380cd896e4fe15178253305ec7260dd",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Assigned to:"
+        },
+        "11/declaration/body/0/argument/3/5/7/7/3/9/1": {
+          "type": "element",
+          "hash": "0f1d08ee101de1b47fe05789b646a982",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Analyzed:"
         }
       }
     },
@@ -1670,6 +2786,810 @@
           "skip": false,
           "overrides": {},
           "content": "Team Members"
+        },
+        "13/declaration/body/24/argument/3/11/3/3/1/1": {
+          "type": "element",
+          "hash": "0535e8aee30a1a5515ab63a7d9064b1f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Recent Document Analysis"
+        },
+        "13/declaration/body/24/argument/3/11/3/3/1/3": {
+          "type": "element",
+          "hash": "0555d466a0bf4347efdc65fbb8523da4",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Latest comprehensibility scores and status updates"
+        },
+        "13/declaration/body/24/argument/3/11/3/7/1/1": {
+          "type": "element",
+          "hash": "a4fb161a0e0696f75c5987fa7ff049de",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Issues Overview"
+        },
+        "13/declaration/body/24/argument/3/11/3/7/1/3": {
+          "type": "element",
+          "hash": "5925c1b609df1a08e07b33856a6755c3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Current issues by severity and type"
+        },
+        "13/declaration/body/24/argument/3/11/7/11/1/1": {
+          "type": "element",
+          "hash": "157a51ac3ffbc527a52379a547499fe2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Quick Actions"
+        },
+        "13/declaration/body/24/argument/3/11/7/11/3/1/1": {
+          "type": "element",
+          "hash": "dacc47715b968c56cd09c4b4ba5333e7",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:Upload></element:Upload> Upload New Document"
+        },
+        "13/declaration/body/24/argument/3/11/7/11/3/3/1": {
+          "type": "element",
+          "hash": "4c6f4c2875f915ce328e1fd4acd3883d",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:FileText></element:FileText> View All Documents"
+        },
+        "13/declaration/body/24/argument/3/11/7/11/3/5/1": {
+          "type": "element",
+          "hash": "6eab552e79943511ac3779618ad848ff",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:BarChart3></element:BarChart3> Configure Rules"
+        },
+        "13/declaration/body/24/argument/3/11/7/3/1/1": {
+          "type": "element",
+          "hash": "b4dd1c3493590c5b20147fb5b98f5883",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Overall Score"
+        },
+        "13/declaration/body/24/argument/3/11/7/3/1/3": {
+          "type": "element",
+          "hash": "cc1f33394bb93594ae1d144d1791b174",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Average comprehensibility across all documents"
+        },
+        "13/declaration/body/24/argument/3/11/7/3/3/3/1/1": {
+          "type": "element",
+          "hash": "b13a47fd7e42431b578fe272fb1cb18e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Excellent (80-100)"
+        },
+        "13/declaration/body/24/argument/3/11/7/3/3/3/1/3": {
+          "type": "element",
+          "hash": "c2d25d07c24d18eb2da7605777ccebaf",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "{excellentDocs} docs"
+        },
+        "13/declaration/body/24/argument/3/11/7/3/3/3/3/1": {
+          "type": "element",
+          "hash": "ec4d107f068357c77d05e321032830f1",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Good (60-79)"
+        },
+        "13/declaration/body/24/argument/3/11/7/3/3/3/3/3": {
+          "type": "element",
+          "hash": "c2d25d07c24d18eb2da7605777ccebaf",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "{goodDocs} docs"
+        },
+        "13/declaration/body/24/argument/3/11/7/3/3/3/5/1": {
+          "type": "element",
+          "hash": "113674189d5399fea9ae16648e33b1d8",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Needs Work (<60)"
+        },
+        "13/declaration/body/24/argument/3/11/7/3/3/3/5/3": {
+          "type": "element",
+          "hash": "c2d25d07c24d18eb2da7605777ccebaf",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "{needsWorkDocs} docs"
+        },
+        "13/declaration/body/24/argument/3/11/7/7/1/1": {
+          "type": "element",
+          "hash": "d4e9042d7b98dffcc28f8464eb39c882",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Team Activity"
+        },
+        "13/declaration/body/24/argument/3/11/7/7/1/3": {
+          "type": "element",
+          "hash": "a5d0d3c174bc0cf40e74948f802f22a7",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Recent actions and assignments"
+        },
+        "13/declaration/body/24/argument/3/3/1": {
+          "type": "element",
+          "hash": "d00fc53a3e7b8d149ba28b72958fcd7e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Welcome back, Legal Team"
+        },
+        "13/declaration/body/24/argument/3/3/3": {
+          "type": "element",
+          "hash": "56e0754423ce8acf69f5cee43fd717ea",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Here's an overview of your document comprehensibility analysis"
+        },
+        "13/declaration/body/24/argument/3/7/1/1/1": {
+          "type": "element",
+          "hash": "6084740eece881715f26d54c1d3d33fa",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Total Documents"
+        },
+        "13/declaration/body/24/argument/3/7/3/1/1": {
+          "type": "element",
+          "hash": "1fa41665292e95d84b731e1f58bdac28",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Avg. Score"
+        },
+        "13/declaration/body/24/argument/3/7/5/1/1": {
+          "type": "element",
+          "hash": "7036645f7f03fa15f5e90a3089600d03",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Critical Issues"
+        },
+        "13/declaration/body/24/argument/3/7/7/1/1": {
+          "type": "element",
+          "hash": "61333c4a765e10b2ad46774951725233",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Team Members"
+        }
+      }
+    },
+    "../app/dashboard/settings/page.tsx": {
+      "scopes": {
+        "13/declaration/body/6/argument/3/3/1": {
+          "type": "element",
+          "hash": "8df6777277469c1fd88cc18dde2f1cc3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Settings"
+        },
+        "13/declaration/body/6/argument/3/3/3": {
+          "type": "element",
+          "hash": "4db602c2ab38e82657941367509d7fa7",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Configure analysis rules and system preferences"
+        },
+        "13/declaration/body/6/argument/3/5/1/1": {
+          "type": "element",
+          "hash": "16d14d17ba58d179b2b7adb0ae023719",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Custom Rules"
+        },
+        "13/declaration/body/6/argument/3/5/1/3": {
+          "type": "element",
+          "hash": "8c769b66f33999ac37075e110344bf70",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Compliance"
+        },
+        "13/declaration/body/6/argument/3/5/1/5": {
+          "type": "element",
+          "hash": "c52df856139b50dbb1cae7bfb1cf73bb",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Notifications"
+        },
+        "13/declaration/body/6/argument/3/5/1/7": {
+          "type": "element",
+          "hash": "b891e8f15579fc5d97bcaf3637f5ae59",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "General"
+        },
+        "13/declaration/body/6/argument/3/5/3/11/1/expression/0/body/1/1/1/7/1": {
+          "type": "element",
+          "hash": "646d864aab5966792b627be467287682",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Created: {rule.created}"
+        },
+        "13/declaration/body/6/argument/3/5/3/11/1/expression/0/body/1/1/1/7/3": {
+          "type": "element",
+          "hash": "5f1c90d0fd46023ba1bfaaa2537f59fb",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "•"
+        },
+        "13/declaration/body/6/argument/3/5/3/11/1/expression/0/body/1/1/1/7/5": {
+          "type": "element",
+          "hash": "920654a6d9e105af54fe5340e30c4668",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Modified: {rule.lastModified}"
+        },
+        "13/declaration/body/6/argument/3/5/3/3/1/1": {
+          "type": "element",
+          "hash": "b1835c2de658732412b2591b00fb317f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Custom Analysis Rules"
+        },
+        "13/declaration/body/6/argument/3/5/3/3/1/3": {
+          "type": "element",
+          "hash": "ea1d7777a024a32c61395b93e754bf90",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Define organization-specific patterns and requirements"
+        },
+        "13/declaration/body/6/argument/3/5/3/3/3": {
+          "type": "element",
+          "hash": "cef45c8412226b50e3497e7571837b6e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:Plus></element:Plus> Add Rule"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/1/1": {
+          "type": "element",
+          "hash": "702b74894c2549c74d39323478d99b97",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Add New Rule"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/1/3": {
+          "type": "element",
+          "hash": "6a0cee4b9cafc1d99c5b03ae7398209e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Create a custom rule to flag specific patterns in documents"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/1/1/1": {
+          "type": "element",
+          "hash": "0fc51a00377ee8a70303c2eb1772b33b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Rule Name"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/1/1/3-placeholder": {
+          "type": "attribute",
+          "hash": "a981e0cee1d14fec9f86186d41ce40b3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "e.g., Avoid Complex Terms"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/1/3/1": {
+          "type": "element",
+          "hash": "32cd3b774bf5883e750ab26e9558b6b3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Pattern Type"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/1/3/3/3/1": {
+          "type": "element",
+          "hash": "c85a01aa86d4b45d821978d2159e0f1b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Keyword"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/1/3/3/3/3": {
+          "type": "element",
+          "hash": "8bf1080ca1086b638fa308aca2595384",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Regular Expression"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/1/3/3/3/5": {
+          "type": "element",
+          "hash": "85b1f1733d4622d2c0f7651032fbf74c",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Exact Phrase"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/3/1": {
+          "type": "element",
+          "hash": "6ba542b08cb28ded70c7b812b6ad4b14",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Pattern"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/1/1": {
+          "type": "element",
+          "hash": "e00483f1a5caf82f5a04b1cbb3204319",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Issue Label"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/1/3/3/1": {
+          "type": "element",
+          "hash": "253ccd54a22be268420d7ab5914f6fc0",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Legal Jargon"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/1/3/3/3": {
+          "type": "element",
+          "hash": "cbc881f5502898fd034c04d103f1b967",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Ambiguity"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/1/3/3/5": {
+          "type": "element",
+          "hash": "65ca7f3ba75c2f8dbeff8b380e2304b6",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Readability"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/1/3/3/7": {
+          "type": "element",
+          "hash": "8c769b66f33999ac37075e110344bf70",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Compliance"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/1/3/3/9": {
+          "type": "element",
+          "hash": "b7b89901f46267f532600a23cfc54ae2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Custom"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/3/1": {
+          "type": "element",
+          "hash": "a97b76f683d8a2732ecc75f2892dac71",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Severity"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/3/3/3/1": {
+          "type": "element",
+          "hash": "eb327cd411b50aee954f8d1d215d003a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Critical"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/3/3/3/3": {
+          "type": "element",
+          "hash": "dabe777f3b670e9407e46c186197d188",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "High"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/3/3/3/5": {
+          "type": "element",
+          "hash": "43983f2178fb28aacaef6c5f41282c4a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Medium"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/3/3/3/7": {
+          "type": "element",
+          "hash": "97359f18d6648e0980854c5e68bb0969",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Low"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/7/1": {
+          "type": "element",
+          "hash": "e17686a22ffad04cc7bb70524ed4478b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Description"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/7/3-placeholder": {
+          "type": "attribute",
+          "hash": "4e5a6f3f52b2bed028c773e088706b49",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Describe what this rule checks for and why it's important"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/9/1": {
+          "type": "element",
+          "hash": "432f3883ff89be326dc740c250fdf85b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:Save></element:Save> Save Rule"
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/9/3": {
+          "type": "element",
+          "hash": "7afaa05272026382c83d9f963f45e3e2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Cancel"
+        },
+        "13/declaration/body/6/argument/3/5/5/1/1/1": {
+          "type": "element",
+          "hash": "0624ddcd02eca0a3210299ce3579e1d2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Compliance Settings"
+        },
+        "13/declaration/body/6/argument/3/5/5/1/1/3": {
+          "type": "element",
+          "hash": "801b4c6bbf7e807272a76360754c7831",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Configure regulatory compliance checks and standards"
+        },
+        "13/declaration/body/6/argument/3/5/5/1/3/1/1/1/1": {
+          "type": "element",
+          "hash": "739b106e2a9876d5022cf7f5f5d432fd",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "GDPR Compliance"
+        },
+        "13/declaration/body/6/argument/3/5/5/1/3/1/1/1/3": {
+          "type": "element",
+          "hash": "e5a569a39125f96cebc990f9965f8f9c",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Check privacy policies for GDPR requirements"
+        },
+        "13/declaration/body/6/argument/3/5/5/1/3/1/3/1/1": {
+          "type": "element",
+          "hash": "81808d788297efacba7364f4edf63121",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "MiFID II Requirements"
+        },
+        "13/declaration/body/6/argument/3/5/5/1/3/1/3/1/3": {
+          "type": "element",
+          "hash": "689891738936ee7a3bf999c84fa11fe7",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Validate investment service disclosures"
+        },
+        "13/declaration/body/6/argument/3/5/5/1/3/1/5/1/1": {
+          "type": "element",
+          "hash": "b7f9b21f80c6e0ef358950188854e681",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "PSD2 Transparency"
+        },
+        "13/declaration/body/6/argument/3/5/5/1/3/1/5/1/3": {
+          "type": "element",
+          "hash": "3e026950b18ea351361f880dc2aa085b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Ensure payment service clarity standards"
+        },
+        "13/declaration/body/6/argument/3/5/5/1/3/1/7/1/1": {
+          "type": "element",
+          "hash": "a794e7344700cc5f17af2a81074225c4",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Plain Language Guidelines"
+        },
+        "13/declaration/body/6/argument/3/5/5/1/3/1/7/1/3": {
+          "type": "element",
+          "hash": "9e33d590dcb0311502ad6d03b7e9608e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Apply EU Commission plain language standards"
+        },
+        "13/declaration/body/6/argument/3/5/7/1/1/1": {
+          "type": "element",
+          "hash": "d530d68bff011161294d6e84799164c8",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Notification Preferences"
+        },
+        "13/declaration/body/6/argument/3/5/7/1/1/3": {
+          "type": "element",
+          "hash": "4ac24b679988c864c78455f6bc8bbb4f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Configure how and when you receive alerts"
+        },
+        "13/declaration/body/6/argument/3/5/7/1/3/1/1/1/1": {
+          "type": "element",
+          "hash": "732b7ca23498e2956f674fa32a320192",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Email Notifications"
+        },
+        "13/declaration/body/6/argument/3/5/7/1/3/1/1/1/3": {
+          "type": "element",
+          "hash": "b9e4c6801a5976cdb3eeb07c27c11ab4",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Receive email alerts for document analysis completion"
+        },
+        "13/declaration/body/6/argument/3/5/7/1/3/1/3/1/1": {
+          "type": "element",
+          "hash": "97746a52259491833f7b11f16790a55c",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Critical Issue Alerts"
+        },
+        "13/declaration/body/6/argument/3/5/7/1/3/1/3/1/3": {
+          "type": "element",
+          "hash": "40370be74a677b607fd05a646bf01e00",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Immediate notifications for critical compliance issues"
+        },
+        "13/declaration/body/6/argument/3/5/7/1/3/1/5/1/1": {
+          "type": "element",
+          "hash": "4b625fb22bd034f62cff2d66d39eb3d4",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Weekly Summary"
+        },
+        "13/declaration/body/6/argument/3/5/7/1/3/1/5/1/3": {
+          "type": "element",
+          "hash": "1d3f5f8232de1cdcc6b7e56d83e43f5c",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Weekly digest of team activity and progress"
+        },
+        "13/declaration/body/6/argument/3/5/7/1/3/1/7/1/1": {
+          "type": "element",
+          "hash": "354f293c6fb818345ef49f8a0ba11f23",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Slack Integration"
+        },
+        "13/declaration/body/6/argument/3/5/7/1/3/1/7/1/3": {
+          "type": "element",
+          "hash": "a65bb490a396b5a8f43e38eaf636f483",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Send notifications to Slack channels"
+        },
+        "13/declaration/body/6/argument/3/5/9/1/1/1": {
+          "type": "element",
+          "hash": "651afaa0d070ecc9a98b70581e25872f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "General Settings"
+        },
+        "13/declaration/body/6/argument/3/5/9/1/1/3": {
+          "type": "element",
+          "hash": "b8aa6d2c2a226018a056901e0f2059dc",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "System preferences and default configurations"
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/1/1": {
+          "type": "element",
+          "hash": "e5e0cb907db1d73621a5124ebf94adb4",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Default Language"
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/1/3/3/1": {
+          "type": "element",
+          "hash": "e1eeeb379f86a015d6e581fcbc4af7f3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "English"
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/1/3/3/3": {
+          "type": "element",
+          "hash": "1e23c97d063f7235e94e00517f1786c2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "German"
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/1/3/3/5": {
+          "type": "element",
+          "hash": "b6c77a4e718a978af58895b27731413c",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "French"
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/1/3/3/7": {
+          "type": "element",
+          "hash": "881640609abd94ca50cbafb21f085042",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Spanish"
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/1/3/3/9": {
+          "type": "element",
+          "hash": "a9fc8de8236d4c1f6bc1eec0942f4457",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Italian"
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/3/1": {
+          "type": "element",
+          "hash": "71a83598fcfd7d4884a0b4ae6f1810ac",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Default Jurisdiction"
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/3/3/3/1": {
+          "type": "element",
+          "hash": "7fb40e3925c4416935f4984dab3ebfa3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "European Union"
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/3/3/3/3": {
+          "type": "element",
+          "hash": "e8ea12e55a5498b6a9ae6ea6803352c1",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Germany"
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/3/3/3/5": {
+          "type": "element",
+          "hash": "6fe713692ef82e7d7ead4f433b541b04",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "France"
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/3/3/3/7": {
+          "type": "element",
+          "hash": "9065e7f0c93e893172e8709d20d6c98f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Italy"
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/3/3/3/9": {
+          "type": "element",
+          "hash": "e3481a44f59493a1dba20f52605e128f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Spain"
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/3/1": {
+          "type": "element",
+          "hash": "95afcc38588e88f97773f4ba8961eb88",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Minimum Acceptable Score"
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/3/5": {
+          "type": "element",
+          "hash": "68321d686be571236de6caf69cf56d20",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Documents below this score will be flagged for review"
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/5/1/1": {
+          "type": "element",
+          "hash": "0313fdf44130e12cadbf41179ec1cc9f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Auto-assign Documents"
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/5/1/3": {
+          "type": "element",
+          "hash": "3e5aee07c413042f71ef53d4f822fd2c",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Automatically assign documents to teams based on type"
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/7/1/1": {
+          "type": "element",
+          "hash": "b0a842329515317f031405bd42af9c99",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Version Control"
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/7/1/3": {
+          "type": "element",
+          "hash": "52ea823bfea5861a8965d2cb7eeb429e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Track document versions and changes"
         }
       }
     },
@@ -1898,6 +3818,642 @@
           "skip": false,
           "overrides": {},
           "content": "{team.stats.criticalIssues} critical issues"
+        }
+      }
+    },
+    "../app/dashboard/upload/page.tsx": {
+      "scopes": {
+        "16/declaration/body/28/argument/3/3/1": {
+          "type": "element",
+          "hash": "f939e4cdfb54e4d38f6ce2e8ceab5030",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:ArrowLeft></element:ArrowLeft> Back to Dashboard"
+        },
+        "16/declaration/body/28/argument/3/3/3": {
+          "type": "element",
+          "hash": "cd031ddd3caa6de9f29e54a3940985a3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Upload Document"
+        },
+        "16/declaration/body/28/argument/3/3/5": {
+          "type": "element",
+          "hash": "19e3dd8185c1cc23cfc1e8b761644771",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Upload a legal document for comprehensibility analysis"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/1/1": {
+          "type": "element",
+          "hash": "541a4b640961937ca473d3025cc88e79",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Document Upload"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/1/3": {
+          "type": "element",
+          "hash": "76cca59f2414cbbc69a73a91c76120fb",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Upload your legal document and configure analysis settings"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/11/1": {
+          "type": "element",
+          "hash": "a57e6756d3a16e8edd437e2d5516ae4a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Assign to Team"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/11/3/1/1-placeholder": {
+          "type": "attribute",
+          "hash": "83003e3bfd0d6d9cd49702f4d20bfef5",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Select team"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/11/3/3/1": {
+          "type": "element",
+          "hash": "2827f91e50ede5b91f9e386376312ed3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Legal Team"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/11/3/3/3": {
+          "type": "element",
+          "hash": "b2b62aa125140c762f00c88680b9494a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Compliance Team"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/11/3/3/5": {
+          "type": "element",
+          "hash": "ec8c8711fce61265a4fe296ce2ba3b6f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Product Team"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/11/3/3/7": {
+          "type": "element",
+          "hash": "1b37611c5bcb0bd1ad34ae0b4bdfc19b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Operations Team"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/13/1": {
+          "type": "element",
+          "hash": "d043281c156839674ec1cc9fbdeda860",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Version Tag"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/13/3-placeholder": {
+          "type": "attribute",
+          "hash": "3d616c88d6c753f5e2ebf8645756350d",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "e.g., v5.0, 2025-Q1"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/15/1": {
+          "type": "element",
+          "hash": "3ad6cf2a59d78059060df65047d3367e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Additional Notes"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/15/3-placeholder": {
+          "type": "attribute",
+          "hash": "c3a47adc7af7566f11eb974eca1a9a7d",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Any specific requirements or context for this analysis..."
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/19/1": {
+          "type": "element",
+          "hash": "04011dbc17405b9fe89fb732936fc93d",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Analysis Options"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/19/3/1/3": {
+          "type": "element",
+          "hash": "264ca50c7b52858c0750baba79273553",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "GDPR Compliance Check"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/19/3/3/3": {
+          "type": "element",
+          "hash": "c416d49a2ccade38a19474fcbab9fc84",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "MiFID II Requirements"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/19/3/5/3": {
+          "type": "element",
+          "hash": "a73e350d90a9ddc963e3a8d24df23d37",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "PSD2 Transparency Standards"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/19/3/7/3": {
+          "type": "element",
+          "hash": "900e2c5a70409d9bbf260adf970dcae8",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Apply Custom Organization Rules"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/21/expression/right/1/3/1": {
+          "type": "element",
+          "hash": "3c95bcb32c2104b99a46f5b3dd015248",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Error"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/23": {
+          "type": "element",
+          "hash": "b97ede2265078302b2e6afef7187900b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:Upload></element:Upload> Start Analysis"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/3/1": {
+          "type": "element",
+          "hash": "e8aa24245f4386307065ec1ad3ff51c2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Document File"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/3/3/3/1": {
+          "type": "element",
+          "hash": "42b0bef1e0e86309a78da34f6d9da741",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Drop your file here, or click to browse"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/3/3/3/3": {
+          "type": "element",
+          "hash": "848a70e7c3c6a5a7dc3acf4a3b3a4fec",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Supports DOC, DOCX, PDF, and text files up to 10MB"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/3/3/7": {
+          "type": "element",
+          "hash": "327e09665f63175ad8dc94f10d023265",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Choose File"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/3/5/expression/right/3": {
+          "type": "element",
+          "hash": "3c2ebdbd4ce39042eedf739c51afb1e1",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Selected: {selectedFile.name}"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/7/1/1": {
+          "type": "element",
+          "hash": "7dfdd523c9607f8e1735f4ced828fc4e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Document Title"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/7/1/3-placeholder": {
+          "type": "attribute",
+          "hash": "a71cfcca9823768997f1bcb5ceccc99c",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "e.g., Terms & Conditions v5.0"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/7/3/1": {
+          "type": "element",
+          "hash": "abf0202f127616cf3d3f2e3914b089f3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Document Type"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/7/3/3/1/1-placeholder": {
+          "type": "attribute",
+          "hash": "fb329e90353adf369111b2b3c9f2817e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Select document type"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/7/3/3/3/1": {
+          "type": "element",
+          "hash": "69d0219661f5fa7c1536e6f883925fb2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Terms & Conditions"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/7/3/3/3/11": {
+          "type": "element",
+          "hash": "79acaa6cd481262bea4e743a422529d2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Other"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/7/3/3/3/3": {
+          "type": "element",
+          "hash": "7459744a63ef8af4e517a09024bd7c08",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Privacy Policy"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/7/3/3/3/5": {
+          "type": "element",
+          "hash": "8b57e9c349cfb05286388fec7247d078",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Loan Agreement"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/7/3/3/3/7": {
+          "type": "element",
+          "hash": "63ad82cb4ebf3d3f5bd770a322d005ab",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Fee Schedule"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/7/3/3/3/9": {
+          "type": "element",
+          "hash": "3c856d0c0a9f92180bdfb0a20187e7bc",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Regulatory Disclosure"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/1/1": {
+          "type": "element",
+          "hash": "ca47151c4f0ddb348e52ec43ce15eb03",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Target Audience"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/1/3/1/1-placeholder": {
+          "type": "attribute",
+          "hash": "47e8fc27db3a8a589c18ea86a53f0958",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Select audience"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/1/3/3/1": {
+          "type": "element",
+          "hash": "27efd72f4529ba693b7a21198545fea5",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Retail Customers"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/1/3/3/3": {
+          "type": "element",
+          "hash": "e6bf71935e8575e84f119b02ad95deb2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Business Customers"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/1/3/3/5": {
+          "type": "element",
+          "hash": "66a0b483bafd11b58c2e5caee5bd00d0",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Institutional Clients"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/1/3/3/7": {
+          "type": "element",
+          "hash": "582f9fe94f58925659ebd7beccdbe014",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "General Public"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/3/1": {
+          "type": "element",
+          "hash": "228117c85b4b668acc77c4fd65e2e78d",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Jurisdiction"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/3/3/1/1-placeholder": {
+          "type": "attribute",
+          "hash": "fa20df75597a80cd691651ac81400b71",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Select jurisdiction"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/3/3/3/1": {
+          "type": "element",
+          "hash": "7fb40e3925c4416935f4984dab3ebfa3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "European Union"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/3/3/3/11": {
+          "type": "element",
+          "hash": "7850c2fba664ddcdb8e8e3b24fbed47e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Netherlands"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/3/3/3/3": {
+          "type": "element",
+          "hash": "e8ea12e55a5498b6a9ae6ea6803352c1",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Germany"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/3/3/3/5": {
+          "type": "element",
+          "hash": "6fe713692ef82e7d7ead4f433b541b04",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "France"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/3/3/3/7": {
+          "type": "element",
+          "hash": "9065e7f0c93e893172e8709d20d6c98f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Italy"
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/3/3/3/9": {
+          "type": "element",
+          "hash": "e3481a44f59493a1dba20f52605e128f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Spain"
+        },
+        "16/declaration/body/28/argument/3/5/3/expression/right/1/1": {
+          "type": "element",
+          "hash": "a87c6257bdbffb58ea07b0a43c3f9d0d",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:Loader2></element:Loader2> Uploading Document"
+        },
+        "16/declaration/body/28/argument/3/5/3/expression/right/1/3": {
+          "type": "element",
+          "hash": "58e3a369ff5f180cbce77cfc0f5c0f26",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Preparing your document for analysis"
+        },
+        "16/declaration/body/28/argument/3/5/3/expression/right/3/1/1/1": {
+          "type": "element",
+          "hash": "8f59cb61f35ed0a40ff197ca80dabcfe",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Upload Progress"
+        },
+        "16/declaration/body/28/argument/3/5/3/expression/right/3/1/1/3": {
+          "type": "element",
+          "hash": "5ffe4a4526d680df3dc6d6e7880cbc9a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "{uploadProgress}%"
+        },
+        "16/declaration/body/28/argument/3/5/3/expression/right/3/3/1/3": {
+          "type": "element",
+          "hash": "b6dcb60a6dde40bf54c4ea01e9d24bf5",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Uploading file to secure storage"
+        },
+        "16/declaration/body/28/argument/3/5/3/expression/right/3/3/3/3": {
+          "type": "element",
+          "hash": "77aec6d40f1a736ba94dce1cebe2bb75",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Creating document record"
+        },
+        "16/declaration/body/28/argument/3/5/3/expression/right/3/3/5/3": {
+          "type": "element",
+          "hash": "4833a72384a89d4072160919fd85a604",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Preparing for analysis"
+        },
+        "16/declaration/body/28/argument/3/5/5/expression/right/1/1": {
+          "type": "element",
+          "hash": "31ca702b22879efce478e03ab31056c4",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:Zap></element:Zap> Analyzing Document"
+        },
+        "16/declaration/body/28/argument/3/5/5/expression/right/1/3": {
+          "type": "element",
+          "hash": "88ce5f6ed6162ec004e4cfa52690a256",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Running comprehensive comprehensibility analysis"
+        },
+        "16/declaration/body/28/argument/3/5/5/expression/right/3/1/1/1": {
+          "type": "element",
+          "hash": "4a9dfef75b28d92cdcbda78ff4f83729",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Analysis Progress"
+        },
+        "16/declaration/body/28/argument/3/5/5/expression/right/3/1/1/3": {
+          "type": "element",
+          "hash": "5ffe4a4526d680df3dc6d6e7880cbc9a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<function:Math.round/>%"
+        },
+        "16/declaration/body/28/argument/3/5/5/expression/right/3/3/1/expression/0/body/5/expression/right": {
+          "type": "element",
+          "hash": "ffd408fa29d5bc9039ef8ea1b9b699bb",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Done"
+        },
+        "16/declaration/body/28/argument/3/5/5/expression/right/3/3/1/expression/0/body/7/expression/right": {
+          "type": "element",
+          "hash": "b18b0715d5ed5226537cb0af05a603d2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<function:Math.round/>%"
+        },
+        "16/declaration/body/28/argument/3/5/5/expression/right/3/5/1/3/1": {
+          "type": "element",
+          "hash": "0a342256cc4f0d802d95b8f3bc03cac2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "AI Analysis in Progress"
+        },
+        "16/declaration/body/28/argument/3/5/5/expression/right/3/5/1/3/3": {
+          "type": "element",
+          "hash": "eea17476da37cdacc067a0e31e4df36d",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Our AI is examining your document for readability, compliance, and improvement opportunities. This typically takes 2-5 minutes."
+        },
+        "16/declaration/body/28/argument/3/5/5/expression/right/3/7/expression/right/1/3/1": {
+          "type": "element",
+          "hash": "809aa411addc2f700b3fa05b23f86cdf",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Analysis Error"
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/1/1": {
+          "type": "element",
+          "hash": "18f37f4e9f66a731f497389423b1b6f4",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:CheckCircle></element:CheckCircle> Analysis Complete"
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/1/3": {
+          "type": "element",
+          "hash": "4c676732460a851cb18da3f47d5360f2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Your document has been successfully analyzed"
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/3/1/3/1": {
+          "type": "element",
+          "hash": "f1cb0588852783b9676c6b939eff52d8",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Analysis Complete!"
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/3/1/3/3": {
+          "type": "element",
+          "hash": "70016b025a06542bbe11583d2d223ebf",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Your document has been fully analyzed with comprehensive insights and recommendations."
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/3/3/1/1": {
+          "type": "element",
+          "hash": "c98e649bd9091a5238d8543d65e6c130",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "✓"
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/3/3/1/3": {
+          "type": "element",
+          "hash": "cc04b77fa4bfd479fc80b05a769d49ce",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Uploaded"
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/3/3/3/1": {
+          "type": "element",
+          "hash": "c98e649bd9091a5238d8543d65e6c130",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "✓"
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/3/3/3/3": {
+          "type": "element",
+          "hash": "72b7a117ea2d60eaa4abfaa6048e6208",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Analyzed"
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/3/3/5/1": {
+          "type": "element",
+          "hash": "c98e649bd9091a5238d8543d65e6c130",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "✓"
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/3/3/5/3": {
+          "type": "element",
+          "hash": "437c0eea608e15ad5cdab94bde2f4b48",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Ready"
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/3/5/1": {
+          "type": "element",
+          "hash": "d0996e7dc9efd21995fd1669f2db9486",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "View Analysis Results"
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/3/5/3": {
+          "type": "element",
+          "hash": "a7c8c822534c8b04c02595055bdc0c14",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Return to Dashboard"
         }
       }
     },

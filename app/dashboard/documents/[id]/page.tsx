@@ -45,12 +45,12 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
   // Store polling interval to allow cleanup on unmount
   const pollIntervalRef = useRef<NodeJS.Timeout | null>(null)
   // Calculate counts per severity and filtered issues list
-  const severityCounts: Record<string, number> = analysis?.analysis?.issues.reduce((acc: Record<string, number>, issue: any) => {
+  const severityCounts: Record<string, number> = analysis?.analysis?.issues?.reduce((acc: Record<string, number>, issue: any) => {
     const sev = issue.severity
     acc[sev] = (acc[sev] || 0) + 1
     return acc
   }, {} as Record<string, number>) || {}
-  const filteredIssues = analysis?.analysis?.issues.filter((issue: any) => severityFilter === "All" || issue.severity === severityFilter) || []
+  const filteredIssues = analysis?.analysis?.issues?.filter((issue: any) => severityFilter === "All" || issue.severity === severityFilter) || []
 
   // Small helper to capitalise first letter
   const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
@@ -94,7 +94,7 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
           // Fallback to embedded issues if separate issues not available
           issues = data.analysis.analysis.issues;
         }
-        
+
         if (issues.length > 0) {
           issues = adaptIssues(issues);
           if (data.analysis) {
@@ -102,7 +102,7 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
             data.analysis.analysis.issues = issues;
           }
         }
-        
+
         setDocument(data.document)
         setAnalysis(data.analysis)
       }
@@ -177,11 +177,11 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
       });
-      
+
       if (!response.ok) throw new Error("Failed to update status");
-      
+
       await loadData();
-      
+
       toast({ title: "Status Updated", description: `Status set to ${newStatus}.` });
     } catch (error) {
       console.error("Failed to update issue status:", error);
@@ -287,7 +287,7 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
               <Tabs defaultValue="overview" className="space-y-6">
                 <TabsList className="grid w-full grid-cols-3">
                   <TabsTrigger value="overview">Overview</TabsTrigger>
-                  <TabsTrigger value="issues">Issues ({analysis.analysis.issues.length})</TabsTrigger>
+                  <TabsTrigger value="issues">Issues ({analysis.analysis.issues?.length || 0})</TabsTrigger>
                   <TabsTrigger value="rewrite">Rewrite</TabsTrigger>
                 </TabsList>
 

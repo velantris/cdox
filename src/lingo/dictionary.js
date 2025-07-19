@@ -45,6 +45,917 @@ export default {
         },
       },
     },
+    "../app/auth/signup/page.tsx": {
+      entries: {
+        "5/declaration/body/5/argument/1": {
+          content: {
+            de: "Erstellen Sie Ihr ClearDoc-Konto",
+            en: "Create your ClearDoc account",
+            es: "Crea tu cuenta de ClearDoc",
+            fr: "Créez votre compte ClearDoc",
+            it: "Crea il tuo account ClearDoc",
+          },
+          hash: "6869934866071665c6ef0a395b58567a",
+        },
+        "5/declaration/body/5/argument/3/1/1": {
+          content: {
+            de: "Weiter mit WorkOS",
+            en: "Continue with WorkOS",
+            es: "Continuar con WorkOS",
+            fr: "Continuer avec WorkOS",
+            it: "Continua con WorkOS",
+          },
+          hash: "354fad7f7a19e2af09413e557fd25b5d",
+        },
+        "5/declaration/body/5/argument/3/3/1": {
+          content: {
+            de: "Stattdessen anmelden",
+            en: "Sign in instead",
+            es: "Inicia sesión en su lugar",
+            fr: "Se connecter à la place",
+            it: "Accedi invece",
+          },
+          hash: "5c47c98e0a0f9ae9a74f914f5d34b177",
+        },
+        "5/declaration/body/5/argument/5": {
+          content: {
+            de: "Sie haben bereits ein Konto? <element:Link>Anmelden</element:Link>",
+            en: "Already have an account? <element:Link>Sign in</element:Link>",
+            es: "¿Ya tienes una cuenta? <element:Link>Inicia sesión</element:Link>",
+            fr: "Vous avez déjà un compte ? <element:Link>Se connecter</element:Link>",
+            it: "Hai già un account? <element:Link>Accedi</element:Link>",
+          },
+          hash: "999f26e2993da54d93c33cda92376196",
+        },
+      },
+    },
+    "../app/dashboard/doc-new/page.tsx": {
+      entries: {
+        "16/declaration/body/29/argument/3/1/1": {
+          content: {
+            de: "<element:ArrowLeft></element:ArrowLeft> Zurück zum Dashboard",
+            en: "<element:ArrowLeft></element:ArrowLeft> Back to Dashboard",
+            es: "<element:ArrowLeft></element:ArrowLeft> Volver al Panel de Control",
+            fr: "<element:ArrowLeft></element:ArrowLeft> Retour au Tableau de bord",
+            it: "<element:ArrowLeft></element:ArrowLeft> Torna alla Dashboard",
+          },
+          hash: "f939e4cdfb54e4d38f6ce2e8ceab5030",
+        },
+        "16/declaration/body/29/argument/3/1/3": {
+          content: {
+            de: "Dokument hochladen",
+            en: "Upload Document",
+            es: "Subir Documento",
+            fr: "Télécharger le document",
+            it: "Carica Documento",
+          },
+          hash: "cd031ddd3caa6de9f29e54a3940985a3",
+        },
+        "16/declaration/body/29/argument/3/1/5": {
+          content: {
+            de: "Laden Sie ein rechtliches Dokument für die Verstehbarkeit-Analyse hoch",
+            en: "Upload a legal document for comprehensibility analysis",
+            es: "Sube un documento legal para análisis de comprensibilidad",
+            fr: "Téléchargez un document juridique pour une analyse de compréhensibilité",
+            it: "Carica un documento legale per l'analisi di comprensibilità",
+          },
+          hash: "19e3dd8185c1cc23cfc1e8b761644771",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/1/1": {
+          content: {
+            de: "Dokument hochladen",
+            en: "Document Upload",
+            es: "Subida de Documento",
+            fr: "Téléchargement de document",
+            it: "Caricamento Documento",
+          },
+          hash: "541a4b640961937ca473d3025cc88e79",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/1/3": {
+          content: {
+            de: "Laden Sie Ihr rechtliches Dokument hoch und konfigurieren Sie die Analyseeinstellungen",
+            en: "Upload your legal document and configure analysis settings",
+            es: "Sube tu documento legal y configura los ajustes de análisis",
+            fr: "Téléchargez votre document juridique et configurez les paramètres d'analyse",
+            it: "Carica il tuo documento legale e configura le impostazioni di analisi",
+          },
+          hash: "76cca59f2414cbbc69a73a91c76120fb",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/1/1": {
+          content: {
+            de: "Dokumentdatei",
+            en: "Document File",
+            es: "Archivo del Documento",
+            fr: "Fichier de document",
+            it: "File Documento",
+          },
+          hash: "e8aa24245f4386307065ec1ad3ff51c2",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/1/3/3/1": {
+          content: {
+            de: "Ziehen Sie Ihre Datei hierher oder klicken Sie zum Durchsuchen",
+            en: "Drop your file here, or click to browse",
+            es: "Suelta tu archivo aquí, o haz clic para explorar",
+            fr: "Déposez votre fichier ici, ou cliquez pour parcourir",
+            it: "Trascina il file qui, o clicca per sfogliare",
+          },
+          hash: "42b0bef1e0e86309a78da34f6d9da741",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/1/3/3/3": {
+          content: {
+            de: "Unterstützt DOC, DOCX, PDF und Textdateien bis 10 MB",
+            en: "Supports DOC, DOCX, PDF, and text files up to 10MB",
+            es: "Soporta DOC, DOCX, PDF y archivos de texto hasta 10MB",
+            fr: "Supports les fichiers DOC, DOCX, PDF et texte jusqu'à 10 Mo",
+            it: "Supporta file DOC, DOCX, PDF e testo fino a 10MB",
+          },
+          hash: "848a70e7c3c6a5a7dc3acf4a3b3a4fec",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/1/3/7": {
+          content: {
+            de: "Datei auswählen",
+            en: "Choose File",
+            es: "Seleccionar Archivo",
+            fr: "Choisir un fichier",
+            it: "Scegli File",
+          },
+          hash: "327e09665f63175ad8dc94f10d023265",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/1/5/expression/right/3":
+          {
+            content: {
+              de: "Ausgewählt: {selectedFile.name}",
+              en: "Selected: {selectedFile.name}",
+              es: "Seleccionado: {selectedFile.name}",
+              fr: "Sélectionné : {selectedFile.name}",
+              it: "Selezionato: {selectedFile.name}",
+            },
+            hash: "3c2ebdbd4ce39042eedf739c51afb1e1",
+          },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/11/1": {
+          content: {
+            de: "Team zuweisen",
+            en: "Assign to Team",
+            es: "Asignar al Equipo",
+            fr: "Attribuer à l'équipe",
+            it: "Assegna a Squadra",
+          },
+          hash: "a57e6756d3a16e8edd437e2d5516ae4a",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/11/3/1/1-placeholder":
+          {
+            content: {
+              de: "Team auswählen",
+              en: "Select team",
+              es: "Seleccionar equipo",
+              fr: "Sélectionner une équipe",
+              it: "Seleziona squadra",
+            },
+            hash: "83003e3bfd0d6d9cd49702f4d20bfef5",
+          },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/11/3/3/1": {
+          content: {
+            de: "Rechtsabteilung",
+            en: "Legal Team",
+            es: "Equipo Legal",
+            fr: "Équipe juridique",
+            it: "Squadra Legale",
+          },
+          hash: "2827f91e50ede5b91f9e386376312ed3",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/11/3/3/3": {
+          content: {
+            de: "Compliance-Team",
+            en: "Compliance Team",
+            es: "Equipo de Cumplimiento",
+            fr: "Équipe de conformité",
+            it: "Squadra Compliance",
+          },
+          hash: "b2b62aa125140c762f00c88680b9494a",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/11/3/3/5": {
+          content: {
+            de: "Produktteam",
+            en: "Product Team",
+            es: "Equipo de Producto",
+            fr: "Équipe produit",
+            it: "Squadra Prodotto",
+          },
+          hash: "ec8c8711fce61265a4fe296ce2ba3b6f",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/11/3/3/7": {
+          content: {
+            de: "Operations-Team",
+            en: "Operations Team",
+            es: "Equipo de Operaciones",
+            fr: "Équipe des opérations",
+            it: "Squadra Operativa",
+          },
+          hash: "1b37611c5bcb0bd1ad34ae0b4bdfc19b",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/13/1": {
+          content: {
+            de: "Versionskennzeichnung",
+            en: "Version Tag",
+            es: "Etiqueta de Versión",
+            fr: "Étiquette de version",
+            it: "Tag Versione",
+          },
+          hash: "d043281c156839674ec1cc9fbdeda860",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/13/3-placeholder":
+          {
+            content: {
+              de: "z.B. v5.0, 2025-Q1",
+              en: "e.g., v5.0, 2025-Q1",
+              es: "p. ej., v5.0, 2025-Q1",
+              fr: "ex. v5.0, 2025-T1",
+              it: "es. v5.0, 2025-Q1",
+            },
+            hash: "3d616c88d6c753f5e2ebf8645756350d",
+          },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/15/1": {
+          content: {
+            de: "Zusätzliche Hinweise",
+            en: "Additional Notes",
+            es: "Notas Adicionales",
+            fr: "Notes supplémentaires",
+            it: "Note Aggiuntive",
+          },
+          hash: "3ad6cf2a59d78059060df65047d3367e",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/15/3-placeholder":
+          {
+            content: {
+              de: "Jegliche spezifischen Anforderungen oder Kontext für diese Analyse...",
+              en: "Any specific requirements or context for this analysis...",
+              es: "Cualquier requisito o contexto específico para este análisis...",
+              fr: "Toute exigence ou contexte spécifique pour cette analyse...",
+              it: "Qualsiasi requisito specifico o contesto per questa analisi...",
+            },
+            hash: "c3a47adc7af7566f11eb974eca1a9a7d",
+          },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/17/1": {
+          content: {
+            de: "Analyseoptionen",
+            en: "Analysis Options",
+            es: "Opciones de Análisis",
+            fr: "Options d'analyse",
+            it: "Opzioni di Analisi",
+          },
+          hash: "04011dbc17405b9fe89fb732936fc93d",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/17/3/1/3": {
+          content: {
+            de: "GDPR-Konformitätsprüfung",
+            en: "GDPR Compliance Check",
+            es: "Verificación de Cumplimiento GDPR",
+            fr: "Vérification de conformité RGPD",
+            it: "Controllo Conformità GDPR",
+          },
+          hash: "264ca50c7b52858c0750baba79273553",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/17/3/3/3": {
+          content: {
+            de: "MiFID II-Anforderungen",
+            en: "MiFID II Requirements",
+            es: "Requisitos MiFID II",
+            fr: "Exigences MiFID II",
+            it: "Requisiti MiFID II",
+          },
+          hash: "c416d49a2ccade38a19474fcbab9fc84",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/17/3/5/3": {
+          content: {
+            de: "PSD2-Transparenzstandards",
+            en: "PSD2 Transparency Standards",
+            es: "Estándares de Transparencia PSD2",
+            fr: "Normes de transparence PSD2",
+            it: "Standard di Trasparenza PSD2",
+          },
+          hash: "a73e350d90a9ddc963e3a8d24df23d37",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/17/3/7/3": {
+          content: {
+            de: "Anwendung von benutzerdefinierten Organisationsregeln",
+            en: "Apply Custom Organization Rules",
+            es: "Aplicar Reglas de Organización Personalizadas",
+            fr: "Appliquer des règles d'organisation personnalisées",
+            it: "Applica Regole Organizzative Personalizzate",
+          },
+          hash: "900e2c5a70409d9bbf260adf970dcae8",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/19/expression/right/1/3/1":
+          {
+            content: {
+              de: "Fehler",
+              en: "Error",
+              es: "Error",
+              fr: "Erreur",
+              it: "Errore",
+            },
+            hash: "3c95bcb32c2104b99a46f5b3dd015248",
+          },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/21": {
+          content: {
+            de: "<element:Upload></element:Upload> Analyse starten",
+            en: "<element:Upload></element:Upload> Start Analysis",
+            es: "<element:Upload></element:Upload> Iniciar Análisis",
+            fr: "<element:Upload></element:Upload> Démarrer l'analyse",
+            it: "<element:Upload></element:Upload> Avvia Analisi",
+          },
+          hash: "b97ede2265078302b2e6afef7187900b",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/3/1/1": {
+          content: {
+            de: "Dokumenttitel",
+            en: "Document Title",
+            es: "Título del Documento",
+            fr: "Titre du document",
+            it: "Titolo Documento",
+          },
+          hash: "7dfdd523c9607f8e1735f4ced828fc4e",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/3/1/3-placeholder":
+          {
+            content: {
+              de: "z.B. AGB v5.0",
+              en: "e.g., Terms & Conditions v5.0",
+              es: "p. ej., Términos y Condiciones v5.0",
+              fr: "ex. Conditions générales v5.0",
+              it: "es. Termini e Condizioni v5.0",
+            },
+            hash: "a71cfcca9823768997f1bcb5ceccc99c",
+          },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/3/3/1": {
+          content: {
+            de: "Dokumenttyp",
+            en: "Document Type",
+            es: "Tipo de Documento",
+            fr: "Type de document",
+            it: "Tipo Documento",
+          },
+          hash: "abf0202f127616cf3d3f2e3914b089f3",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/3/3/3/1/1-placeholder":
+          {
+            content: {
+              de: "Dokumenttyp auswählen",
+              en: "Select document type",
+              es: "Seleccionar tipo de documento",
+              fr: "Sélectionner le type de document",
+              it: "Seleziona tipo di documento",
+            },
+            hash: "fb329e90353adf369111b2b3c9f2817e",
+          },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/3/3/3/3/1": {
+          content: {
+            de: "Allgemeine Geschäftsbedingungen",
+            en: "Terms & Conditions",
+            es: "Términos y Condiciones",
+            fr: "Conditions générales",
+            it: "Termini e Condizioni",
+          },
+          hash: "69d0219661f5fa7c1536e6f883925fb2",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/3/3/3/3/11": {
+          content: {
+            de: "Andere",
+            en: "Other",
+            es: "Otro",
+            fr: "Autre",
+            it: "Altro",
+          },
+          hash: "79acaa6cd481262bea4e743a422529d2",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/3/3/3/3/3": {
+          content: {
+            de: "Datenschutzrichtlinie",
+            en: "Privacy Policy",
+            es: "Política de Privacidad",
+            fr: "Politique de confidentialité",
+            it: "Privacy Policy",
+          },
+          hash: "7459744a63ef8af4e517a09024bd7c08",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/3/3/3/3/5": {
+          content: {
+            de: "Kreditvertrag",
+            en: "Loan Agreement",
+            es: "Acuerdo de Préstamo",
+            fr: "Accord de prêt",
+            it: "Accordo di Prestito",
+          },
+          hash: "8b57e9c349cfb05286388fec7247d078",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/3/3/3/3/7": {
+          content: {
+            de: "Gebührenplan",
+            en: "Fee Schedule",
+            es: "Calendario de Tarifas",
+            fr: "Calendrier des frais",
+            it: "Piano Tariffario",
+          },
+          hash: "63ad82cb4ebf3d3f5bd770a322d005ab",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/3/3/3/3/9": {
+          content: {
+            de: "Regulatorische Offenlegung",
+            en: "Regulatory Disclosure",
+            es: "Divulgación Regulatoria",
+            fr: "Divulgation réglementaire",
+            it: "Divulgazione Regolamentare",
+          },
+          hash: "3c856d0c0a9f92180bdfb0a20187e7bc",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/1/1": {
+          content: {
+            de: "Zielgruppe",
+            en: "Target Audience",
+            es: "Audiencia Objetivo",
+            fr: "Public cible",
+            it: "Pubblico di Destinazione",
+          },
+          hash: "ca47151c4f0ddb348e52ec43ce15eb03",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/1/3/1/1-placeholder":
+          {
+            content: {
+              de: "Zielgruppe auswählen",
+              en: "Select audience",
+              es: "Seleccionar audiencia",
+              fr: "Sélectionner le public",
+              it: "Seleziona pubblico",
+            },
+            hash: "47e8fc27db3a8a589c18ea86a53f0958",
+          },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/1/3/3/1": {
+          content: {
+            de: "Einzelkunden",
+            en: "Retail Customers",
+            es: "Clientes Minoristas",
+            fr: "Clients de détail",
+            it: "Clienti Retail",
+          },
+          hash: "27efd72f4529ba693b7a21198545fea5",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/1/3/3/3": {
+          content: {
+            de: "Geschäftskunden",
+            en: "Business Customers",
+            es: "Clientes Empresariales",
+            fr: "Clients professionnels",
+            it: "Clienti Aziendali",
+          },
+          hash: "e6bf71935e8575e84f119b02ad95deb2",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/1/3/3/5": {
+          content: {
+            de: "Institutionelle Kunden",
+            en: "Institutional Clients",
+            es: "Clientes Institucionales",
+            fr: "Clients institutionnels",
+            it: "Clienti Istituzionali",
+          },
+          hash: "66a0b483bafd11b58c2e5caee5bd00d0",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/1/3/3/7": {
+          content: {
+            de: "Öffentlichkeit",
+            en: "General Public",
+            es: "Público General",
+            fr: "Grand public",
+            it: "Pubblico Generale",
+          },
+          hash: "582f9fe94f58925659ebd7beccdbe014",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/3/1": {
+          content: {
+            de: "Gebiet",
+            en: "Jurisdiction",
+            es: "Jurisdicción",
+            fr: "Juridiction",
+            it: "Giurisdizione",
+          },
+          hash: "228117c85b4b668acc77c4fd65e2e78d",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/3/3/1/1-placeholder":
+          {
+            content: {
+              de: "Gebiet auswählen",
+              en: "Select jurisdiction",
+              es: "Seleccionar jurisdicción",
+              fr: "Sélectionner la juridiction",
+              it: "Seleziona giurisdizione",
+            },
+            hash: "fa20df75597a80cd691651ac81400b71",
+          },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/3/3/3/1": {
+          content: {
+            de: "Europäische Union",
+            en: "European Union",
+            es: "Unión Europea",
+            fr: "Union européenne",
+            it: "Unione Europea",
+          },
+          hash: "7fb40e3925c4416935f4984dab3ebfa3",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/3/3/3/11": {
+          content: {
+            de: "Niederlande",
+            en: "Netherlands",
+            es: "Países Bajos",
+            fr: "Pays-Bas",
+            it: "Paesi Bassi",
+          },
+          hash: "7850c2fba664ddcdb8e8e3b24fbed47e",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/3/3/3/3": {
+          content: {
+            de: "Deutschland",
+            en: "Germany",
+            es: "Alemania",
+            fr: "Allemagne",
+            it: "Germania",
+          },
+          hash: "e8ea12e55a5498b6a9ae6ea6803352c1",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/3/3/3/5": {
+          content: {
+            de: "Frankreich",
+            en: "France",
+            es: "Francia",
+            fr: "France",
+            it: "Francia",
+          },
+          hash: "6fe713692ef82e7d7ead4f433b541b04",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/3/3/3/7": {
+          content: {
+            de: "Italien",
+            en: "Italy",
+            es: "Italia",
+            fr: "Italie",
+            it: "Italia",
+          },
+          hash: "9065e7f0c93e893172e8709d20d6c98f",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/5/3/3/3/9": {
+          content: {
+            de: "Spanien",
+            en: "Spain",
+            es: "España",
+            fr: "Espagne",
+            it: "Spagna",
+          },
+          hash: "e3481a44f59493a1dba20f52605e128f",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/9/1/1": {
+          content: {
+            de: "Sprache",
+            en: "Language",
+            es: "Idioma",
+            fr: "Langue",
+            it: "Lingua",
+          },
+          hash: "277fd1a41cc237a437cd1d5e4a80463b",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/9/1/3/1/1-placeholder":
+          {
+            content: {
+              de: "Sprache auswählen",
+              en: "Select language",
+              es: "Seleccionar idioma",
+              fr: "Sélectionner une langue",
+              it: "Seleziona la lingua",
+            },
+            hash: "7fa8806eeb911aa9ba9f013b274a2e47",
+          },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/9/1/3/3/1": {
+          content: {
+            de: "Englisch",
+            en: "English",
+            es: "Inglés",
+            fr: "Anglais",
+            it: "Inglese",
+          },
+          hash: "e1eeeb379f86a015d6e581fcbc4af7f3",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/9/1/3/3/3": {
+          content: {
+            de: "Italienisch",
+            en: "Italian",
+            es: "Italiano",
+            fr: "Italien",
+            it: "Italiano",
+          },
+          hash: "a9fc8de8236d4c1f6bc1eec0942f4457",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/9/1/3/3/5": {
+          content: {
+            de: "Französisch",
+            en: "French",
+            es: "Francés",
+            fr: "Français",
+            it: "Francese",
+          },
+          hash: "b6c77a4e718a978af58895b27731413c",
+        },
+        "16/declaration/body/29/argument/3/3/1/expression/right/3/9/1/3/3/7": {
+          content: {
+            de: "Hindi",
+            en: "Hindi",
+            es: "Hindi",
+            fr: "Hindi",
+            it: "Hindi",
+          },
+          hash: "83ef511fe3291eb3eeb7404470003c4b",
+        },
+        "16/declaration/body/29/argument/3/3/3/expression/right/1/1": {
+          content: {
+            de: "<element:Loader2></element:Loader2> Dokument wird hochgeladen",
+            en: "<element:Loader2></element:Loader2> Uploading Document",
+            es: "<element:Loader2></element:Loader2> Subiendo Documento",
+            fr: "<element:Loader2></element:Loader2> Téléchargement du document",
+            it: "<element:Loader2></element:Loader2> Caricamento Documento",
+          },
+          hash: "a87c6257bdbffb58ea07b0a43c3f9d0d",
+        },
+        "16/declaration/body/29/argument/3/3/3/expression/right/1/3": {
+          content: {
+            de: "Bereiten Sie Ihr Dokument für die Analyse vor",
+            en: "Preparing your document for analysis",
+            es: "Preparando tu documento para el análisis",
+            fr: "Préparation de votre document pour l'analyse",
+            it: "Preparazione del documento per l'analisi",
+          },
+          hash: "58e3a369ff5f180cbce77cfc0f5c0f26",
+        },
+        "16/declaration/body/29/argument/3/3/3/expression/right/3/1/1/1": {
+          content: {
+            de: "Upload Fortschritt",
+            en: "Upload Progress",
+            es: "Progreso de Subida",
+            fr: "Progression du téléchargement",
+            it: "Progresso Caricamento",
+          },
+          hash: "8f59cb61f35ed0a40ff197ca80dabcfe",
+        },
+        "16/declaration/body/29/argument/3/3/3/expression/right/3/1/1/3": {
+          content: {
+            de: "{uploadProgress}%",
+            en: "{uploadProgress}%",
+            es: "{uploadProgress}%",
+            fr: "{uploadProgress}%",
+            it: "{uploadProgress}%",
+          },
+          hash: "5ffe4a4526d680df3dc6d6e7880cbc9a",
+        },
+        "16/declaration/body/29/argument/3/3/3/expression/right/3/3/1/3": {
+          content: {
+            de: "Datei wird in sicheren Speicher hochgeladen",
+            en: "Uploading file to secure storage",
+            es: "Subiendo archivo al almacenamiento seguro",
+            fr: "Téléchargement du fichier dans le stockage sécurisé",
+            it: "Caricamento del file nella memoria sicura",
+          },
+          hash: "b6dcb60a6dde40bf54c4ea01e9d24bf5",
+        },
+        "16/declaration/body/29/argument/3/3/3/expression/right/3/3/3/3": {
+          content: {
+            de: "Dokumentaufzeichnung wird erstellt",
+            en: "Creating document record",
+            es: "Creando registro de documento",
+            fr: "Création de l'enregistrement du document",
+            it: "Creazione del record del documento",
+          },
+          hash: "77aec6d40f1a736ba94dce1cebe2bb75",
+        },
+        "16/declaration/body/29/argument/3/3/3/expression/right/3/3/5/3": {
+          content: {
+            de: "Auf Analyse vorbereiten",
+            en: "Preparing for analysis",
+            es: "Preparando para el análisis",
+            fr: "Préparation pour l'analyse",
+            it: "Preparazione per l'analisi",
+          },
+          hash: "4833a72384a89d4072160919fd85a604",
+        },
+        "16/declaration/body/29/argument/3/3/5/expression/right/1/1": {
+          content: {
+            de: "<element:Zap></element:Zap> Dokument wird analysiert",
+            en: "<element:Zap></element:Zap> Analyzing Document",
+            es: "<element:Zap></element:Zap> Analizando Documento",
+            fr: "<element:Zap></element:Zap> Analyse du document",
+            it: "<element:Zap></element:Zap> Analisi Documento",
+          },
+          hash: "31ca702b22879efce478e03ab31056c4",
+        },
+        "16/declaration/body/29/argument/3/3/5/expression/right/1/3": {
+          content: {
+            de: "Durchführung einer umfassenden Verstehbarkeitsanalyse",
+            en: "Running comprehensive comprehensibility analysis",
+            es: "Ejecutando análisis de comprensibilidad integral",
+            fr: "Exécution d'une analyse de compréhensibilité complète",
+            it: "Esecuzione di un'analisi di comprensibilità completa",
+          },
+          hash: "88ce5f6ed6162ec004e4cfa52690a256",
+        },
+        "16/declaration/body/29/argument/3/3/5/expression/right/3/1/1/1": {
+          content: {
+            de: "Analyse Fortschritt",
+            en: "Analysis Progress",
+            es: "Progreso del Análisis",
+            fr: "Progression de l'analyse",
+            it: "Progresso Analisi",
+          },
+          hash: "4a9dfef75b28d92cdcbda78ff4f83729",
+        },
+        "16/declaration/body/29/argument/3/3/5/expression/right/3/1/1/3": {
+          content: {
+            de: "{uploadProgress}%",
+            en: "<function:Math.round/>%",
+            es: "{uploadProgress}%",
+            fr: "{uploadProgress}%",
+            it: "{uploadProgress}%",
+          },
+          hash: "5ffe4a4526d680df3dc6d6e7880cbc9a",
+        },
+        "16/declaration/body/29/argument/3/3/5/expression/right/3/3/1/expression/0/body/5/expression/right":
+          {
+            content: {
+              de: "Fertig",
+              en: "Done",
+              es: "Hecho",
+              fr: "Terminé",
+              it: "Fatto",
+            },
+            hash: "ffd408fa29d5bc9039ef8ea1b9b699bb",
+          },
+        "16/declaration/body/29/argument/3/3/5/expression/right/3/3/1/expression/0/body/7/expression/right":
+          {
+            content: {
+              de: "<function:Math.round/>%",
+              en: "<function:Math.round/>%",
+              es: "<function:Math.round/>%",
+              fr: "<function:Math.round/>%",
+              it: "<function:Math.round/>%",
+            },
+            hash: "b18b0715d5ed5226537cb0af05a603d2",
+          },
+        "16/declaration/body/29/argument/3/3/5/expression/right/3/5/1/3/1": {
+          content: {
+            de: "KI-Analyse läuft",
+            en: "AI Analysis in Progress",
+            es: "Análisis de IA en Progreso",
+            fr: "Analyse AI en cours",
+            it: "Analisi AI in Corso",
+          },
+          hash: "0a342256cc4f0d802d95b8f3bc03cac2",
+        },
+        "16/declaration/body/29/argument/3/3/5/expression/right/3/5/1/3/3": {
+          content: {
+            de: "Unsere KI untersucht Ihr Dokument auf Lesbarkeit, Konformität und Verbesserungsmöglichkeiten. Dies dauert in der Regel 2-5 Minuten.",
+            en: "Our AI is examining your document for readability, compliance, and improvement opportunities. This typically takes 2-5 minutes.",
+            es: "Nuestra IA está examinando tu documento para legibilidad, cumplimiento y oportunidades de mejora. Esto generalmente toma de 2 a 5 minutos.",
+            fr: "Notre IA examine votre document pour la lisibilité, la conformité et les opportunités d'amélioration. Cela prend généralement 2 à 5 minutes.",
+            it: "Il nostro AI sta esaminando il tuo documento per leggibilità, conformità e opportunità di miglioramento. Questo di solito richiede 2-5 minuti.",
+          },
+          hash: "eea17476da37cdacc067a0e31e4df36d",
+        },
+        "16/declaration/body/29/argument/3/3/5/expression/right/3/7/expression/right/1/3/1":
+          {
+            content: {
+              de: "Analysefehler",
+              en: "Analysis Error",
+              es: "Error de Análisis",
+              fr: "Erreur d'analyse",
+              it: "Errore di Analisi",
+            },
+            hash: "809aa411addc2f700b3fa05b23f86cdf",
+          },
+        "16/declaration/body/29/argument/3/3/7/expression/right/1/1": {
+          content: {
+            de: "<element:CheckCircle></element:CheckCircle> Analyse abgeschlossen",
+            en: "<element:CheckCircle></element:CheckCircle> Analysis Complete",
+            es: "<element:CheckCircle></element:CheckCircle> Análisis Completo",
+            fr: "<element:CheckCircle></element:CheckCircle> Analyse terminée",
+            it: "<element:CheckCircle></element:CheckCircle> Analisi Completata",
+          },
+          hash: "18f37f4e9f66a731f497389423b1b6f4",
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/1/3": {
+          content: {
+            de: "Ihr Dokument wurde erfolgreich analysiert",
+            en: "Your document has been successfully analyzed",
+            es: "Tu documento ha sido analizado con éxito",
+            fr: "Votre document a été analysé avec succès",
+            it: "Il tuo documento è stato analizzato con successo",
+          },
+          hash: "4c676732460a851cb18da3f47d5360f2",
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/3/1/3/1": {
+          content: {
+            de: "Analyse abgeschlossen!",
+            en: "Analysis Complete!",
+            es: "Análisis Completo!",
+            fr: "Analyse terminée !",
+            it: "Analisi Completata!",
+          },
+          hash: "f1cb0588852783b9676c6b939eff52d8",
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/3/1/3/3": {
+          content: {
+            de: "Ihr Dokument wurde vollständig analysiert mit umfassenden Erkenntnissen und Empfehlungen.",
+            en: "Your document has been fully analyzed with comprehensive insights and recommendations.",
+            es: "Tu documento ha sido completamente analizado con información integral e ideas.",
+            fr: "Votre document a été entièrement analysé avec des informations et des recommandations complètes.",
+            it: "Il tuo documento è stato completamente analizzato con approfondimenti e raccomandazioni complete.",
+          },
+          hash: "70016b025a06542bbe11583d2d223ebf",
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/3/3/1/1": {
+          content: {
+            de: "✓",
+            en: "✓",
+            es: "✓",
+            fr: "✓",
+            it: "✓",
+          },
+          hash: "c98e649bd9091a5238d8543d65e6c130",
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/3/3/1/3": {
+          content: {
+            de: "Hochgeladen",
+            en: "Uploaded",
+            es: "Subido",
+            fr: "Téléchargé",
+            it: "Caricato",
+          },
+          hash: "cc04b77fa4bfd479fc80b05a769d49ce",
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/3/3/3/1": {
+          content: {
+            de: "✓",
+            en: "✓",
+            es: "✓",
+            fr: "✓",
+            it: "✓",
+          },
+          hash: "c98e649bd9091a5238d8543d65e6c130",
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/3/3/3/3": {
+          content: {
+            de: "Analysiert",
+            en: "Analyzed",
+            es: "Analizado",
+            fr: "Analysé",
+            it: "Analizzato",
+          },
+          hash: "72b7a117ea2d60eaa4abfaa6048e6208",
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/3/3/5/1": {
+          content: {
+            de: "✓",
+            en: "✓",
+            es: "✓",
+            fr: "✓",
+            it: "✓",
+          },
+          hash: "c98e649bd9091a5238d8543d65e6c130",
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/3/3/5/3": {
+          content: {
+            de: "Bereit",
+            en: "Ready",
+            es: "Listo",
+            fr: "Prêt",
+            it: "Pronto",
+          },
+          hash: "437c0eea608e15ad5cdab94bde2f4b48",
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/3/5/1": {
+          content: {
+            de: "Analyseergebnisse anzeigen",
+            en: "View Analysis Results",
+            es: "Ver Resultados del Análisis",
+            fr: "Voir les résultats de l'analyse",
+            it: "Visualizza Risultati Analisi",
+          },
+          hash: "d0996e7dc9efd21995fd1669f2db9486",
+        },
+        "16/declaration/body/29/argument/3/3/7/expression/right/3/5/3": {
+          content: {
+            de: "Zum Dashboard zurückkehren",
+            en: "Return to Dashboard",
+            es: "Volver al Panel de Control",
+            fr: "Retour au Tableau de bord",
+            it: "Torna alla Dashboard",
+          },
+          hash: "a7c8c822534c8b04c02595055bdc0c14",
+        },
+      },
+    },
     "../app/dashboard/documents/[id]/page.tsx": {
       entries: {
         "12/declaration/body/13/consequent/0/argument/1": {
@@ -878,13 +1789,13 @@ export default {
         },
         "13/declaration/body/18/consequent/0/argument/1": {
           content: {
-            de: "Dokument nicht gefunden.",
-            en: "Document not found.",
-            es: "Documento no encontrado.",
-            fr: "Document non trouvé.",
-            it: "Documento non trovato.",
+            de: "Dokument wird geladen...",
+            en: "Loading document...",
+            es: "Cargando documento...",
+            fr: "Chargement du document...",
+            it: "Caricamento del documento...",
           },
-          hash: "67bebd0b5bd54542a1ba0fc11bb73cd9",
+          hash: "6cd1aa18d9a553461d49c1532ec84609",
         },
         "13/declaration/body/19/argument/3/1/1": {
           content: {
@@ -1207,6 +2118,836 @@ export default {
           },
           hash: "27460d082f450ccbae82893390baf9fd",
         },
+        "13/declaration/body/19/consequent/0/argument/1": {
+          content: {
+            de: "Dokument nicht gefunden.",
+            en: "Document not found.",
+            es: "Documento no encontrado.",
+            fr: "Document non trouvé.",
+            it: "Documento non trovato.",
+          },
+          hash: "67bebd0b5bd54542a1ba0fc11bb73cd9",
+        },
+        "13/declaration/body/20/argument/3/1/1": {
+          content: {
+            de: "<element:ArrowLeft></element:ArrowLeft> Zurück zu Dokumenten",
+            en: "<element:ArrowLeft></element:ArrowLeft> Back to Documents",
+            es: "<element:ArrowLeft></element:ArrowLeft> Volver a Documentos",
+            fr: "<element:ArrowLeft></element:ArrowLeft> Retour aux Documents",
+            it: "<element:ArrowLeft></element:ArrowLeft> Torna ai Documenti",
+          },
+          hash: "d096547035f6bb4a3f8cacd894e166a5",
+        },
+        "13/declaration/body/20/argument/3/1/3/1/3/3": {
+          content: {
+            de: "•",
+            en: "•",
+            es: "•",
+            fr: "•",
+            it: "•",
+          },
+          hash: "5f1c90d0fd46023ba1bfaaa2537f59fb",
+        },
+        "13/declaration/body/20/argument/3/3/expression/right/1/1": {
+          content: {
+            de: "Analyse ausstehend",
+            en: "Analysis Pending",
+            es: "Análisis Pendiente",
+            fr: "Analyse en attente",
+            it: "Analisi in corso",
+          },
+          hash: "4e07f4d5ebda43b15571e92c8ae2cc57",
+        },
+        "13/declaration/body/20/argument/3/3/expression/right/3/1": {
+          content: {
+            de: "Das Dokument wird derzeit analysiert. Diese Seite wird automatisch aktualisiert, sobald die Analyse abgeschlossen ist.",
+            en: "The document is currently being analyzed. This page will update automatically when it's complete.",
+            es: "El documento está siendo analizado. Esta página se actualizará automáticamente cuando esté completo.",
+            fr: "Le document est actuellement en cours d'analyse. Cette page sera mise à jour automatiquement lorsqu'elle sera terminée.",
+            it: "Il documento sta attualmente venendo analizzato. Questa pagina si aggiornerà automaticamente quando sarà completato.",
+          },
+          hash: "7a91eac4b7cfc39182d49a1f1e778510",
+        },
+        "13/declaration/body/20/argument/3/5/expression/right/1/1": {
+          content: {
+            de: "Analyse im Gange",
+            en: "Analysis in Progress",
+            es: "Análisis en Progreso",
+            fr: "Analyse en cours",
+            it: "Analisi in corso",
+          },
+          hash: "6469f83d45f668c92342a138c5bb9f95",
+        },
+        "13/declaration/body/20/argument/3/5/expression/right/3/1": {
+          content: {
+            de: "Das Dokument wird derzeit analysiert. Diese Seite wird automatisch aktualisiert, sobald die Analyse abgeschlossen ist.",
+            en: "The document is currently being analyzed. This page will update automatically when it's complete.",
+            es: "El documento está siendo analizado. Esta página se actualizará automáticamente cuando esté completo.",
+            fr: "Le document est actuellement en cours d'analyse. Cette page sera mise à jour automatiquement lorsqu'elle sera terminée.",
+            it: "Il documento sta attualmente venendo analizzato. Questa pagina si aggiornerà automaticamente quando sarà completato.",
+          },
+          hash: "7a91eac4b7cfc39182d49a1f1e778510",
+        },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/1/1": {
+          content: {
+            de: "Übersicht",
+            en: "Overview",
+            es: "Resumen",
+            fr: "Aperçu",
+            it: "Panoramica",
+          },
+          hash: "30c54e4dc4ce599b87d94be34a8617f5",
+        },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/1/3": {
+          content: {
+            de: "Probleme ({analysis.analysis.issues.length})",
+            en: "Issues ({analysis.analysis.issues.length})",
+            es: "Problemas ({analysis.analysis.issues.length})",
+            fr: "Problèmes ({analysis.analysis.issues.length})",
+            it: "Problemi ({analysis.analysis.issues.length})",
+          },
+          hash: "a1429e3de106995940813541272e8235",
+        },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/1/5": {
+          content: {
+            de: "Umformulieren",
+            en: "Rewrite",
+            es: "Reescribir",
+            fr: "Réécriture",
+            it: "Riscrivi",
+          },
+          hash: "a40df24d40b6ee81bf761f24895eb685",
+        },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/3/1/1/1": {
+          content: {
+            de: "Analysezusammenfassung",
+            en: "Analysis Summary",
+            es: "Resumen del Análisis",
+            fr: "Résumé de l'analyse",
+            it: "Riepilogo dell'analisi",
+          },
+          hash: "4efe3b6be13bffa24bff24d8635357c6",
+        },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/3/3/1/1": {
+          content: {
+            de: "Empfehlungen",
+            en: "Recommendations",
+            es: "Recomendaciones",
+            fr: "Recommandations",
+            it: "Raccomandazioni",
+          },
+          hash: "710bb60c3812fe35b719bbe2305fc3eb",
+        },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/5/1/1/1/1-placeholder":
+          {
+            content: {
+              de: "Nach Schwere filtern",
+              en: "Filter by severity",
+              es: "Filtrar por severidad",
+              fr: "Filtrer par gravité",
+              it: "Filtra per gravità",
+            },
+            hash: "efe5db9bd772f75a4c37dd87da9bb0bb",
+          },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/5/1/1/3/1": {
+          content: {
+            de: "Alle",
+            en: "All",
+            es: "Todos",
+            fr: "Tous",
+            it: "Tutti",
+          },
+          hash: "5e2e93f8e2a5f315b6fecdd0a0e6f55f",
+        },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/5/1/1/3/3": {
+          content: {
+            de: "Kritisch",
+            en: "Critical",
+            es: "Crítico",
+            fr: "Critique",
+            it: "Critico",
+          },
+          hash: "eb327cd411b50aee954f8d1d215d003a",
+        },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/5/1/1/3/5": {
+          content: {
+            de: "Hoch",
+            en: "High",
+            es: "Alto",
+            fr: "Élevé",
+            it: "Alto",
+          },
+          hash: "dabe777f3b670e9407e46c186197d188",
+        },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/5/1/1/3/7": {
+          content: {
+            de: "Mittel",
+            en: "Medium",
+            es: "Medio",
+            fr: "Moyen",
+            it: "Medio",
+          },
+          hash: "43983f2178fb28aacaef6c5f41282c4a",
+        },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/5/1/1/3/9": {
+          content: {
+            de: "Niedrig",
+            en: "Low",
+            es: "Bajo",
+            fr: "Faible",
+            it: "Basso",
+          },
+          hash: "97359f18d6648e0980854c5e68bb0969",
+        },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/5/3/expression/alternate/1/expression/0/body/1/1/3/1/1-placeholder":
+          {
+            content: {
+              de: "Status",
+              en: "Status",
+              es: "Estado",
+              fr: "Statut",
+              it: "Stato",
+            },
+            hash: "4e1fcce15854d824919b4a582c697c90",
+          },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/5/3/expression/alternate/1/expression/0/body/1/1/3/3/1":
+          {
+            content: {
+              de: "Öffnen",
+              en: "Open",
+              es: "Abrir",
+              fr: "Ouvrir",
+              it: "Apri",
+            },
+            hash: "9a8c3b16091ea6cef3f771fc6715ab67",
+          },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/5/3/expression/alternate/1/expression/0/body/1/1/3/3/11":
+          {
+            content: {
+              de: "Falsch Positiv",
+              en: "False Positive",
+              es: "Falso Positivo",
+              fr: "Faux positif",
+              it: "Falso Positivo",
+            },
+            hash: "befb409d54a13b391e8409e2c229b7a5",
+          },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/5/3/expression/alternate/1/expression/0/body/1/1/3/3/3":
+          {
+            content: {
+              de: "Zugewiesen",
+              en: "Assigned",
+              es: "Asignado",
+              fr: "Assigné",
+              it: "Assegnato",
+            },
+            hash: "10888207f8b59909533ba77042d0e281",
+          },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/5/3/expression/alternate/1/expression/0/body/1/1/3/3/5":
+          {
+            content: {
+              de: "In Bearbeitung",
+              en: "In Progress",
+              es: "En Progreso",
+              fr: "En cours",
+              it: "In Corso",
+            },
+            hash: "3de9afebcb9d4ce8ac42e14995f79ffd",
+          },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/5/3/expression/alternate/1/expression/0/body/1/1/3/3/7":
+          {
+            content: {
+              de: "Verifiziert",
+              en: "Verified",
+              es: "Verificado",
+              fr: "Vérifié",
+              it: "Verificato",
+            },
+            hash: "9566bd61c1f754dd5082eea5101f15a8",
+          },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/5/3/expression/alternate/1/expression/0/body/1/1/3/3/9":
+          {
+            content: {
+              de: "Geschlossen",
+              en: "Closed",
+              es: "Cerrado",
+              fr: "Fermé",
+              it: "Chiuso",
+            },
+            hash: "180560eb657a20f3d4edc44d5f7e7c2a",
+          },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/5/3/expression/alternate/1/expression/0/body/3/1/1":
+          {
+            content: {
+              de: "Ursprünglicher Text:",
+              en: "Original Text:",
+              es: "Texto Original:",
+              fr: "Texte original:",
+              it: "Testo originale:",
+            },
+            hash: "bce52baa2d6845ab44e3210bd820ff0b",
+          },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/5/3/expression/alternate/1/expression/0/body/3/3/1":
+          {
+            content: {
+              de: "Erklärung des Problems:",
+              en: "Issue Explanation:",
+              es: "Explicación del Problema:",
+              fr: "Explication du problème:",
+              it: "Spiegazione del problema:",
+            },
+            hash: "ea12c1d7dbf9c0bf0fe1989b600c6714",
+          },
+        "13/declaration/body/20/argument/3/7/expression/right/1/1/5/3/expression/alternate/1/expression/0/body/3/5/1":
+          {
+            content: {
+              de: "Vorgeschlagene Umformulierung:",
+              en: "Suggested Rewrite:",
+              es: "Reescritura Sugerida:",
+              fr: "Réécriture suggérée:",
+              it: "Riscrittura suggerita:",
+            },
+            hash: "6c8fc12c9854f9db7030376bf2963d92",
+          },
+        "13/declaration/body/20/argument/3/7/expression/right/3/1/1/1": {
+          content: {
+            de: "Verständlichkeitspunkte",
+            en: "Comprehensibility Score",
+            es: "Puntuación de Comprensibilidad",
+            fr: "Score de compréhensibilité",
+            it: "Punteggio di comprensibilità",
+          },
+          hash: "624968366b373b25af6f9b2776395b9b",
+        },
+        "13/declaration/body/20/argument/3/7/expression/right/3/3/1/1": {
+          content: {
+            de: "Dokumentdetails",
+            en: "Document Details",
+            es: "Detalles del Documento",
+            fr: "Détails du document",
+            it: "Dettagli del documento",
+          },
+          hash: "1f7274720ebe93b3adbb59647090299a",
+        },
+        "13/declaration/body/20/argument/3/7/expression/right/3/3/3/1/1": {
+          content: {
+            de: "Typ:",
+            en: "Type:",
+            es: "Tipo:",
+            fr: "Type:",
+            it: "Tipo:",
+          },
+          hash: "fce9d6a826b5cddb6f87a11cdc11eb04",
+        },
+        "13/declaration/body/20/argument/3/7/expression/right/3/3/3/3/1": {
+          content: {
+            de: "Erstellt:",
+            en: "Created:",
+            es: "Creado:",
+            fr: "Créé:",
+            it: "Creato:",
+          },
+          hash: "27460d082f450ccbae82893390baf9fd",
+        },
+      },
+    },
+    "../app/dashboard/documents/doc-new/page.tsx": {
+      entries: {
+        "11/declaration/body/0/argument/3/3/1": {
+          content: {
+            de: "<element:ArrowLeft></element:ArrowLeft> Zurück zu Dokumenten",
+            en: "<element:ArrowLeft></element:ArrowLeft> Back to Documents",
+            es: "<element:ArrowLeft></element:ArrowLeft> Volver a Documentos",
+            fr: "<element:ArrowLeft></element:ArrowLeft> Retour aux Documents",
+            it: "<element:ArrowLeft></element:ArrowLeft> Torna ai Documenti",
+          },
+          hash: "d096547035f6bb4a3f8cacd894e166a5",
+        },
+        "11/declaration/body/0/argument/3/3/3/1/3/11": {
+          content: {
+            de: "•",
+            en: "•",
+            es: "•",
+            fr: "•",
+            it: "•",
+          },
+          hash: "5f1c90d0fd46023ba1bfaaa2537f59fb",
+        },
+        "11/declaration/body/0/argument/3/3/3/1/3/13": {
+          content: {
+            de: "Analysiert <function:Date.toLocaleDateString/>",
+            en: "Analyzed <function:Date.toLocaleDateString/>",
+            es: "Analizado <function:Date.toLocaleDateString/>",
+            fr: "Analysé <function:Date.toLocaleDateString/>",
+            it: "Analizzato <function:Date.toLocaleDateString/>",
+          },
+          hash: "1db5e70e89a5fb521566432ffd16d25c",
+        },
+        "11/declaration/body/0/argument/3/3/3/1/3/3": {
+          content: {
+            de: "•",
+            en: "•",
+            es: "•",
+            fr: "•",
+            it: "•",
+          },
+          hash: "5f1c90d0fd46023ba1bfaaa2537f59fb",
+        },
+        "11/declaration/body/0/argument/3/3/3/1/3/7": {
+          content: {
+            de: "•",
+            en: "•",
+            es: "•",
+            fr: "•",
+            it: "•",
+          },
+          hash: "5f1c90d0fd46023ba1bfaaa2537f59fb",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/1/1": {
+          content: {
+            de: "Übersicht",
+            en: "Overview",
+            es: "Resumen",
+            fr: "Aperçu",
+            it: "Panoramica",
+          },
+          hash: "30c54e4dc4ce599b87d94be34a8617f5",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/1/3": {
+          content: {
+            de: "Probleme ({analysis.analysis.issues.length})",
+            en: "Issues ({newDocumentData.issues.length})",
+            es: "Problemas ({analysis.analysis.issues.length})",
+            fr: "Problèmes ({analysis.analysis.issues.length})",
+            it: "Problemi ({analysis.analysis.issues.length})",
+          },
+          hash: "a1429e3de106995940813541272e8235",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/1/5": {
+          content: {
+            de: "Heatmap",
+            en: "Heatmap",
+            es: "Mapa de Calor",
+            fr: "Carte de chaleur",
+            it: "Mappa di Calore",
+          },
+          hash: "4365354c7f482ac8e6cdfa642da98bbd",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/1/7": {
+          content: {
+            de: "Umformulieren",
+            en: "Rewrite",
+            es: "Reescribir",
+            fr: "Réécriture",
+            it: "Riscrivi",
+          },
+          hash: "a40df24d40b6ee81bf761f24895eb685",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/3/11/1/1": {
+          content: {
+            de: "Empfehlungen",
+            en: "Recommendations",
+            es: "Recomendaciones",
+            fr: "Recommandations",
+            it: "Raccomandazioni",
+          },
+          hash: "710bb60c3812fe35b719bbe2305fc3eb",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/3/11/1/3": {
+          content: {
+            de: "Wichtige Verbesserungen zur Erhöhung der Dokumentverstehbarkeit",
+            en: "Key improvements to enhance document comprehensibility",
+            es: "Mejora clave para aumentar la comprensibilidad del documento",
+            fr: "Améliorations clés pour améliorer la compréhensibilité du document",
+            it: "Miglioramenti chiave per migliorare la comprensibilità del documento",
+          },
+          hash: "43bba557d06a1d9cbbd658a34d4e69ec",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/3/3/1/1/3/1": {
+          content: {
+            de: "Analyse abgeschlossen!",
+            en: "Analysis Complete!",
+            es: "Análisis Completo!",
+            fr: "Analyse terminée !",
+            it: "Analisi Completata!",
+          },
+          hash: "f1cb0588852783b9676c6b939eff52d8",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/3/3/1/1/3/3": {
+          content: {
+            de: "Ihr Dokument wurde erfolgreich analysiert und ist zur Überprüfung bereit.",
+            en: "Your document has been successfully analyzed and is ready for review.",
+            es: "Tu documento ha sido analizado con éxito y está listo para revisión.",
+            fr: "Votre document a été analysé avec succès et est prêt pour la révision.",
+            it: "Il tuo documento è stato analizzato con successo e pronto per la revisione.",
+          },
+          hash: "01c8e14f6abaf7dfe25b24eea5aa1928",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/3/7/1/1": {
+          content: {
+            de: "Analysezusammenfassung",
+            en: "Analysis Summary",
+            es: "Resumen del Análisis",
+            fr: "Résumé de l'analyse",
+            it: "Riepilogo dell'analisi",
+          },
+          hash: "4efe3b6be13bffa24bff24d8635357c6",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/5/1/expression/0/body/3/1/1": {
+          content: {
+            de: "Ursprünglicher Text:",
+            en: "Original Text:",
+            es: "Texto Original:",
+            fr: "Texte original:",
+            it: "Testo originale:",
+          },
+          hash: "bce52baa2d6845ab44e3210bd820ff0b",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/5/1/expression/0/body/3/3/1": {
+          content: {
+            de: "Erklärung des Problems:",
+            en: "Issue Explanation:",
+            es: "Explicación del Problema:",
+            fr: "Explication du problème:",
+            it: "Spiegazione del problema:",
+          },
+          hash: "ea12c1d7dbf9c0bf0fe1989b600c6714",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/5/1/expression/0/body/3/5/1": {
+          content: {
+            de: "Vorgeschlagene Umformulierung:",
+            en: "Suggested Rewrite:",
+            es: "Reescritura Sugerida:",
+            fr: "Réécriture suggérée:",
+            it: "Riscrittura suggerita:",
+          },
+          hash: "6c8fc12c9854f9db7030376bf2963d92",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/5/1/expression/0/body/3/5/5/expression/right/3":
+          {
+            content: {
+              de: "Rechtliche Überprüfung erforderlich - Bedeutung kann sich ändern",
+              en: "Legal review required - meaning may change",
+              es: "Revisión legal requerida - el significado puede cambiar",
+              fr: "Revue juridique requise - le sens peut changer",
+              it: "Revisione legale richiesta - il significato potrebbe cambiare",
+            },
+            hash: "648bc0ce9779d911ef85e69fdc56df32",
+          },
+        "11/declaration/body/0/argument/3/5/3/1/5/1/expression/0/body/3/7/1/3":
+          {
+            content: {
+              de: "Zugewiesen an {issue.assignedTo}",
+              en: "Assigned to {issue.assignedTo}",
+              es: "Asignado a {issue.assignedTo}",
+              fr: "Assigné à {issue.assignedTo}",
+              it: "Assegnato a {issue.assignedTo}",
+            },
+            hash: "3c0f5b71eae53ec1c7485ca22ae50541",
+          },
+        "11/declaration/body/0/argument/3/5/3/1/5/1/expression/0/body/3/7/3/1":
+          {
+            content: {
+              de: "<element:Edit></element:Edit> Bearbeiten",
+              en: "<element:Edit></element:Edit> Edit",
+              es: "<element:Edit></element:Edit> Editar",
+              fr: "<element:Edit></element:Edit> Modifier",
+              it: "<element:Edit></element:Edit> Modifica",
+            },
+            hash: "2efed62eed56639f827c7f17b7821c5d",
+          },
+        "11/declaration/body/0/argument/3/5/3/1/5/1/expression/0/body/3/7/3/3":
+          {
+            content: {
+              de: "Überarbeitung akzeptieren",
+              en: "Accept Rewrite",
+              es: "Aceptar Reescritura",
+              fr: "Accepter la réécriture",
+              it: "Accetta Riscrittura",
+            },
+            hash: "24b6c19892911f2310302b6a01360650",
+          },
+        "11/declaration/body/0/argument/3/5/3/1/7/1/1/1": {
+          content: {
+            de: "Abschnitt Heatmap",
+            en: "Section Heatmap",
+            es: "Mapa de Sección de Calor",
+            fr: "Carte de chaleur de la section",
+            it: "Mappa di Calore Sezione",
+          },
+          hash: "5e43e4ded0eb56f85b1fb47360f7012e",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/7/1/1/3": {
+          content: {
+            de: "Verstehbarkeitsbewertungen nach Dokumentabschnitt",
+            en: "Comprehensibility scores by document section",
+            es: "Puntuaciones de comprensibilidad por sección del documento",
+            fr: "Scores de compréhensibilité par section de document",
+            it: "Punteggi di comprensibilità per sezione del documento",
+          },
+          hash: "a9ff5dd39914d5c4d6bdbe6541924a8a",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/7/1/3/1/1/expression/0/body/1/3/1":
+          {
+            content: {
+              de: "{section.issues} Probleme",
+              en: "{section.issues} issues",
+              es: "{section.issues} problemas",
+              fr: "{section.issues} problèmes",
+              it: "{section.issues} problemi",
+            },
+            hash: "f548ea870214bb8b501943583788a889",
+          },
+        "11/declaration/body/0/argument/3/5/3/1/9/1/1/1": {
+          content: {
+            de: "Dokumentenüberarbeitung",
+            en: "Document Rewrite",
+            es: "Reescritura de Documento",
+            fr: "Réécriture de document",
+            it: "Riscrittura del Documento",
+          },
+          hash: "fa751807d8b354138521ec3f6441bc5f",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/9/1/1/3": {
+          content: {
+            de: "KI-generierte verbesserte Version mit besserer Verständlichkeit",
+            en: "AI-generated improved version with better comprehensibility",
+            es: "Versión mejorada generada por IA con mejor comprensibilidad",
+            fr: "Version améliorée générée par l'IA avec une meilleure compréhensibilité",
+            it: "Versione migliorata generata dall'IA con una migliore comprensibilità",
+          },
+          hash: "434fbcf648a328fd5b36e9ec20c05c21",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/9/1/3/1/1/1": {
+          content: {
+            de: "Original",
+            en: "Original",
+            es: "Original",
+            fr: "Original",
+            it: "Originale",
+          },
+          hash: "7e55782bdf7cb49f5616b326c003c278",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/9/1/3/1/1/3/1": {
+          content: {
+            de: "Falls der Kunde die hier festgelegten Mindestguthabenanforderungen nicht einhält, behält sich die Bank das Recht vor, die im Gebührenplan aufgeführten Gebühren und Kosten zu erheben, unabhängig von anderen Bestimmungen in diesem Vertrag...",
+            en: "In the event that the customer fails to maintain the minimum balance requirements as specified herein, the bank reserves the right to impose applicable fees and charges as outlined in the fee schedule, notwithstanding any other provisions contained within this agreement...",
+            es: "En caso de que el cliente no cumpla con los requisitos mínimos de saldo especificados aquí, el banco se reserva el derecho de imponer tarifas y cargos aplicables según lo estipulado en el calendario de tarifas, sin perjuicio de cualquier otra disposición contenida en este acuerdo...",
+            fr: "En cas de non-respect des exigences de solde minimum spécifiées ici, la banque se réserve le droit de facturer des frais et des charges applicables tels que décrits dans le barème des frais, indépendamment de toute autre disposition contenue dans le présent accord...",
+            it: "Nel caso in cui il cliente non mantenga il saldo minimo richiesto come specificato in questo documento, la banca si riserva il diritto di applicare le spese e le commissioni applicabili come riportato nel calendario delle spese, indipendentemente da qualsiasi altra disposizione contenuta in questo accordo...",
+          },
+          hash: "6e3d16794d19ea62122ff30c66a101f6",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/9/1/3/1/3/1": {
+          content: {
+            de: "Verbesserte Version",
+            en: "Improved Version",
+            es: "Versión Mejorada",
+            fr: "Version améliorée",
+            it: "Versione Migliorata",
+          },
+          hash: "b6bcb9afc004f78a17e3101ea1ab45da",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/9/1/3/1/3/3/1": {
+          content: {
+            de: "Wenn Ihr Kontostand unter den Mindestanforderungen liegt, können wir Gebühren erheben, wie in unserem Gebührenplan angegeben. Ihr Konto verarbeitet Transaktionen sofort und verwendet fortschrittliche Sicherheitsmaßnahmen, um Ihre Informationen zu schützen...",
+            en: "If your account balance falls below the minimum requirement, we may charge fees as shown in our fee schedule. Your account processes transactions instantly and uses advanced security measures to protect your information...",
+            es: "Si su saldo de cuenta cae por debajo del requisito mínimo, podemos cobrar tarifas según lo mostrado en nuestro calendario de tarifas. Su cuenta procesa transacciones de inmediato y utiliza medidas de seguridad avanzadas para proteger su información...",
+            fr: "Si votre solde tombe en dessous du minimum requis, nous pouvons facturer des frais comme indiqué dans notre barème des frais. Votre compte traite les transactions instantanément et utilise des mesures de sécurité avancées pour protéger vos informations...",
+            it: "Se il saldo del tuo conto scende al di sotto del requisito minimo, potremmo addebitare le spese come mostrato nel nostro calendario delle spese. Il tuo conto elabora le transazioni istantaneamente e utilizza misure di sicurezza avanzate per proteggere le tue informazioni...",
+          },
+          hash: "47d55b3e63ba296c2bb5a8970e347b1e",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/9/1/3/3/1": {
+          content: {
+            de: "Verständlichkeit verbessert von 72 auf 86 (+14 Punkte)",
+            en: "Comprehensibility improved from 72 to 86 (+14 points)",
+            es: "Comprensibilidad mejorada de 72 a 86 (+14 puntos)",
+            fr: "Compréhensibilité améliorée de 72 à 86 (+14 points)",
+            it: "Comprensibilità migliorata da 72 a 86 (+14 punti)",
+          },
+          hash: "1651c6aace7aefa0c9186b040a9f3458",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/9/1/3/3/3/1": {
+          content: {
+            de: "<element:Download></element:Download> Dokumentenüberarbeitung herunterladen",
+            en: "<element:Download></element:Download> Download Rewrite",
+            es: "<element:Download></element:Download> Descargar Reescritura",
+            fr: "<element:Download></element:Download> Télécharger la réécriture",
+            it: "<element:Download></element:Download> Riscrittura del Documento",
+          },
+          hash: "24dbb00c160aaf63e94e5c126da3234f",
+        },
+        "11/declaration/body/0/argument/3/5/3/1/9/1/3/3/3/3": {
+          content: {
+            de: "Änderungen anwenden",
+            en: "Apply Changes",
+            es: "Aplicar Cambios",
+            fr: "Appliquer les modifications",
+            it: "Applica Modifiche",
+          },
+          hash: "ed3da8072dbd27dc0c959777cdcbebf3",
+        },
+        "11/declaration/body/0/argument/3/5/7/11/1/1": {
+          content: {
+            de: "Zusammenfassung der Probleme",
+            en: "Issues Summary",
+            es: "Resumen de Problemas",
+            fr: "Résumé des problèmes",
+            it: "Riepilogo dei Problemi",
+          },
+          hash: "fe0ec208df1e8b48d0bb4efcbb9153ff",
+        },
+        "11/declaration/body/0/argument/3/5/7/11/3/1/1/3": {
+          content: {
+            de: "Kritisch",
+            en: "Critical",
+            es: "Crítico",
+            fr: "Critique",
+            it: "Critico",
+          },
+          hash: "eb327cd411b50aee954f8d1d215d003a",
+        },
+        "11/declaration/body/0/argument/3/5/7/11/3/3/1/3": {
+          content: {
+            de: "Hoch",
+            en: "High",
+            es: "Alto",
+            fr: "Élevé",
+            it: "Alto",
+          },
+          hash: "dabe777f3b670e9407e46c186197d188",
+        },
+        "11/declaration/body/0/argument/3/5/7/11/3/5/1/3": {
+          content: {
+            de: "Mittel",
+            en: "Medium",
+            es: "Medio",
+            fr: "Moyen",
+            it: "Medio",
+          },
+          hash: "43983f2178fb28aacaef6c5f41282c4a",
+        },
+        "11/declaration/body/0/argument/3/5/7/11/3/7/1/3": {
+          content: {
+            de: "Niedrig",
+            en: "Low",
+            es: "Bajo",
+            fr: "Faible",
+            it: "Basso",
+          },
+          hash: "97359f18d6648e0980854c5e68bb0969",
+        },
+        "11/declaration/body/0/argument/3/5/7/15/1/1": {
+          content: {
+            de: "Aktionen",
+            en: "Actions",
+            es: "Acciones",
+            fr: "Actions",
+            it: "Azioni",
+          },
+          hash: "c46571856723b03262fd33f511116298",
+        },
+        "11/declaration/body/0/argument/3/5/7/15/3/1": {
+          content: {
+            de: "<element:Edit></element:Edit> Dokument bearbeiten",
+            en: "<element:Edit></element:Edit> Edit Document",
+            es: "<element:Edit></element:Edit> Editar Documento",
+            fr: "<element:Edit></element:Edit> Modifier le document",
+            it: "<element:Edit></element:Edit> Modifica Documento",
+          },
+          hash: "5e255e6d94d48b38f67f471671f84cc5",
+        },
+        "11/declaration/body/0/argument/3/5/7/15/3/3": {
+          content: {
+            de: "<element:MessageSquare></element:MessageSquare> Kommentar hinzufügen",
+            en: "<element:MessageSquare></element:MessageSquare> Add Comment",
+            es: "<element:MessageSquare></element:MessageSquare> Añadir Comentario",
+            fr: "<element:MessageSquare></element:MessageSquare> Ajouter un commentaire",
+            it: "<element:MessageSquare></element:MessageSquare> Aggiungi Commento",
+          },
+          hash: "7f9be716f38f351221033c86414f5da7",
+        },
+        "11/declaration/body/0/argument/3/5/7/15/3/5": {
+          content: {
+            de: "<element:Clock></element:Clock> Verlauf anzeigen",
+            en: "<element:Clock></element:Clock> View History",
+            es: "<element:Clock></element:Clock> Ver Historial",
+            fr: "<element:Clock></element:Clock> Voir l'historique",
+            it: "<element:Clock></element:Clock> Visualizza Storia",
+          },
+          hash: "01d573be8f08b910266a598d0f03c08a",
+        },
+        "11/declaration/body/0/argument/3/5/7/3/1/1": {
+          content: {
+            de: "Verständlichkeitspunkte",
+            en: "Comprehensibility Score",
+            es: "Puntuación de Comprensibilidad",
+            fr: "Score de compréhensibilité",
+            it: "Punteggio di comprensibilità",
+          },
+          hash: "624968366b373b25af6f9b2776395b9b",
+        },
+        "11/declaration/body/0/argument/3/5/7/7/1/1": {
+          content: {
+            de: "Dokumentdetails",
+            en: "Document Details",
+            es: "Detalles del Documento",
+            fr: "Détails du document",
+            it: "Dettagli del documento",
+          },
+          hash: "1f7274720ebe93b3adbb59647090299a",
+        },
+        "11/declaration/body/0/argument/3/5/7/7/3/1/1": {
+          content: {
+            de: "Typ:",
+            en: "Type:",
+            es: "Tipo:",
+            fr: "Type:",
+            it: "Tipo:",
+          },
+          hash: "fce9d6a826b5cddb6f87a11cdc11eb04",
+        },
+        "11/declaration/body/0/argument/3/5/7/7/3/3/1": {
+          content: {
+            de: "Version:",
+            en: "Version:",
+            es: "Versión:",
+            fr: "Version:",
+            it: "Versione:",
+          },
+          hash: "6fdb8111b3c56e39244409fd784f3b83",
+        },
+        "11/declaration/body/0/argument/3/5/7/7/3/5/1": {
+          content: {
+            de: "Größe:",
+            en: "Size:",
+            es: "Tamaño:",
+            fr: "Taille:",
+            it: "Dimensione:",
+          },
+          hash: "abcaf8be932a31415016105dab2773b3",
+        },
+        "11/declaration/body/0/argument/3/5/7/7/3/7/1": {
+          content: {
+            de: "Zugewiesen an:",
+            en: "Assigned to:",
+            es: "Asignado a:",
+            fr: "Assigné à:",
+            it: "Assegnato a:",
+          },
+          hash: "3380cd896e4fe15178253305ec7260dd",
+        },
+        "11/declaration/body/0/argument/3/5/7/7/3/9/1": {
+          content: {
+            de: "Analysiert:",
+            en: "Analyzed:",
+            es: "Analizado:",
+            fr: "Analysé:",
+            it: "Analizzato:",
+          },
+          hash: "0f1d08ee101de1b47fe05789b646a982",
+        },
       },
     },
     "../app/dashboard/documents/page.tsx": {
@@ -1384,11 +3125,11 @@ export default {
         },
         "13/declaration/body/1/argument/5/7/1/1/3/1/1/1-placeholder": {
           content: {
-            de: "Dokumententyp",
+            de: "Dokumenttyp",
             en: "Document Type",
-            es: "Tipo de documento",
+            es: "Tipo de Documento",
             fr: "Type de document",
-            it: "Tipo di Documento",
+            it: "Tipo Documento",
           },
           hash: "abf0202f127616cf3d3f2e3914b089f3",
         },
@@ -1406,7 +3147,7 @@ export default {
           content: {
             de: "Allgemeine Geschäftsbedingungen",
             en: "Terms & Conditions",
-            es: "Términos y condiciones",
+            es: "Términos y Condiciones",
             fr: "Conditions générales",
             it: "Termini e Condizioni",
           },
@@ -1416,7 +3157,7 @@ export default {
           content: {
             de: "Datenschutzrichtlinie",
             en: "Privacy Policy",
-            es: "Política de privacidad",
+            es: "Política de Privacidad",
             fr: "Politique de confidentialité",
             it: "Privacy Policy",
           },
@@ -1426,8 +3167,8 @@ export default {
           content: {
             de: "Kreditvertrag",
             en: "Loan Agreement",
-            es: "Contrato de préstamo",
-            fr: "Contrat de prêt",
+            es: "Acuerdo de Préstamo",
+            fr: "Accord de prêt",
             it: "Accordo di Prestito",
           },
           hash: "8b57e9c349cfb05286388fec7247d078",
@@ -1436,7 +3177,7 @@ export default {
           content: {
             de: "Gebührenplan",
             en: "Fee Schedule",
-            es: "Calendario de tarifas",
+            es: "Calendario de Tarifas",
             fr: "Calendrier des frais",
             it: "Piano Tariffario",
           },
@@ -1796,6 +3537,1015 @@ export default {
           },
           hash: "61333c4a765e10b2ad46774951725233",
         },
+        "13/declaration/body/24/argument/3/11/3/3/1/1": {
+          content: {
+            de: "Aktuelle Dokumentanalyse",
+            en: "Recent Document Analysis",
+            es: "Análisis de Documentos Recientes",
+            fr: "Analyse des documents récents",
+            it: "Analisi Documenti Recenti",
+          },
+          hash: "0535e8aee30a1a5515ab63a7d9064b1f",
+        },
+        "13/declaration/body/24/argument/3/11/3/3/1/3": {
+          content: {
+            de: "Aktuelle Verständlichkeitsbewertungen und Status-Updates",
+            en: "Latest comprehensibility scores and status updates",
+            es: "Últimas puntuaciones de comprensibilidad y actualizaciones de estado",
+            fr: "Derniers scores de compréhensibilité et mises à jour de statut",
+            it: "Punteggi di comprensibilità più recenti e aggiornamenti sullo stato",
+          },
+          hash: "0555d466a0bf4347efdc65fbb8523da4",
+        },
+        "13/declaration/body/24/argument/3/11/3/7/1/1": {
+          content: {
+            de: "Übersicht der Probleme",
+            en: "Issues Overview",
+            es: "Resumen de Problemas",
+            fr: "Aperçu des problèmes",
+            it: "Panoramica dei Problemi",
+          },
+          hash: "a4fb161a0e0696f75c5987fa7ff049de",
+        },
+        "13/declaration/body/24/argument/3/11/3/7/1/3": {
+          content: {
+            de: "Aktuelle Probleme nach Schweregrad und Typ",
+            en: "Current issues by severity and type",
+            es: "Problemas actuales por gravedad y tipo",
+            fr: "Problèmes actuels par gravité et type",
+            it: "Problemi attuali per gravità e tipo",
+          },
+          hash: "5925c1b609df1a08e07b33856a6755c3",
+        },
+        "13/declaration/body/24/argument/3/11/7/11/1/1": {
+          content: {
+            de: "Schnelle Aktionen",
+            en: "Quick Actions",
+            es: "Acciones Rápidas",
+            fr: "Actions rapides",
+            it: "Azioni Rapide",
+          },
+          hash: "157a51ac3ffbc527a52379a547499fe2",
+        },
+        "13/declaration/body/24/argument/3/11/7/11/3/1/1": {
+          content: {
+            de: "<element:Upload></element:Upload> Neues Dokument hochladen",
+            en: "<element:Upload></element:Upload> Upload New Document",
+            es: "<element:Upload></element:Upload> Subir Nuevo Documento",
+            fr: "<element:Upload></element:Upload> Télécharger un nouveau document",
+            it: "<element:Upload></element:Upload> Carica Nuovo Documento",
+          },
+          hash: "dacc47715b968c56cd09c4b4ba5333e7",
+        },
+        "13/declaration/body/24/argument/3/11/7/11/3/3/1": {
+          content: {
+            de: "<element:FileText></element:FileText> Alle Dokumente anzeigen",
+            en: "<element:FileText></element:FileText> View All Documents",
+            es: "<element:FileText></element:FileText> Ver Todos los Documentos",
+            fr: "<element:FileText></element:FileText> Voir tous les documents",
+            it: "<element:FileText></element:FileText> Visualizza Tutti i Documenti",
+          },
+          hash: "4c6f4c2875f915ce328e1fd4acd3883d",
+        },
+        "13/declaration/body/24/argument/3/11/7/11/3/5/1": {
+          content: {
+            de: "<element:BarChart3></element:BarChart3> Regeln konfigurieren",
+            en: "<element:BarChart3></element:BarChart3> Configure Rules",
+            es: "<element:BarChart3></element:BarChart3> Configurar Reglas",
+            fr: "<element:BarChart3></element:BarChart3> Configurer les règles",
+            it: "<element:BarChart3></element:BarChart3> Configura Regole",
+          },
+          hash: "6eab552e79943511ac3779618ad848ff",
+        },
+        "13/declaration/body/24/argument/3/11/7/3/1/1": {
+          content: {
+            de: "Gesamtpunktzahl",
+            en: "Overall Score",
+            es: "Puntuación General",
+            fr: "Score global",
+            it: "Punteggio Totale",
+          },
+          hash: "b4dd1c3493590c5b20147fb5b98f5883",
+        },
+        "13/declaration/body/24/argument/3/11/7/3/1/3": {
+          content: {
+            de: "Durchschnittliche Verständlichkeit aller Dokumente",
+            en: "Average comprehensibility across all documents",
+            es: "Puntuación promedio de comprensibilidad en todos los documentos",
+            fr: "Compréhensibilité moyenne de tous les documents",
+            it: "Comprensibilità media su tutti i documenti",
+          },
+          hash: "cc1f33394bb93594ae1d144d1791b174",
+        },
+        "13/declaration/body/24/argument/3/11/7/3/3/3/1/1": {
+          content: {
+            de: "Ausgezeichnet (80-100)",
+            en: "Excellent (80-100)",
+            es: "Excelente (80-100)",
+            fr: "Excellent (80-100)",
+            it: "Eccellente (80-100)",
+          },
+          hash: "b13a47fd7e42431b578fe272fb1cb18e",
+        },
+        "13/declaration/body/24/argument/3/11/7/3/3/3/1/3": {
+          content: {
+            de: "{excellentDocs} Dokumente",
+            en: "{excellentDocs} docs",
+            es: "{excellentDocs} docs",
+            fr: "{excellentDocs} docs",
+            it: "{excellentDocs} documenti",
+          },
+          hash: "c2d25d07c24d18eb2da7605777ccebaf",
+        },
+        "13/declaration/body/24/argument/3/11/7/3/3/3/3/1": {
+          content: {
+            de: "Gut (60-79)",
+            en: "Good (60-79)",
+            es: "Bueno (60-79)",
+            fr: "Bon (60-79)",
+            it: "Buono (60-79)",
+          },
+          hash: "ec4d107f068357c77d05e321032830f1",
+        },
+        "13/declaration/body/24/argument/3/11/7/3/3/3/3/3": {
+          content: {
+            de: "{excellentDocs} Dokumente",
+            en: "{goodDocs} docs",
+            es: "{excellentDocs} docs",
+            fr: "{excellentDocs} docs",
+            it: "{excellentDocs} documenti",
+          },
+          hash: "c2d25d07c24d18eb2da7605777ccebaf",
+        },
+        "13/declaration/body/24/argument/3/11/7/3/3/3/5/1": {
+          content: {
+            de: "Bedarf Arbeit (<60)",
+            en: "Needs Work (<60)",
+            es: "Necesita Trabajo (<60)",
+            fr: "Nécessite du travail (<60)",
+            it: "Richiede Lavoro (<60)",
+          },
+          hash: "113674189d5399fea9ae16648e33b1d8",
+        },
+        "13/declaration/body/24/argument/3/11/7/3/3/3/5/3": {
+          content: {
+            de: "{excellentDocs} Dokumente",
+            en: "{needsWorkDocs} docs",
+            es: "{excellentDocs} docs",
+            fr: "{excellentDocs} docs",
+            it: "{excellentDocs} documenti",
+          },
+          hash: "c2d25d07c24d18eb2da7605777ccebaf",
+        },
+        "13/declaration/body/24/argument/3/11/7/7/1/1": {
+          content: {
+            de: "Team-Aktivität",
+            en: "Team Activity",
+            es: "Actividad del Equipo",
+            fr: "Activité de l'équipe",
+            it: "Attività del Team",
+          },
+          hash: "d4e9042d7b98dffcc28f8464eb39c882",
+        },
+        "13/declaration/body/24/argument/3/11/7/7/1/3": {
+          content: {
+            de: "Aktuelle Aktionen und Aufgaben",
+            en: "Recent actions and assignments",
+            es: "Acciones recientes y asignaciones",
+            fr: "Actions et affectations récentes",
+            it: "Azioni e assegnazioni recenti",
+          },
+          hash: "a5d0d3c174bc0cf40e74948f802f22a7",
+        },
+        "13/declaration/body/24/argument/3/3/1": {
+          content: {
+            de: "Willkommen zurück, Legal Team",
+            en: "Welcome back, Legal Team",
+            es: "Bienvenido de nuevo, Equipo Legal",
+            fr: "Bienvenue de retour, Équipe Juridique",
+            it: "Ben tornato, Team Legale",
+          },
+          hash: "d00fc53a3e7b8d149ba28b72958fcd7e",
+        },
+        "13/declaration/body/24/argument/3/3/3": {
+          content: {
+            de: "Hier ist eine Übersicht Ihrer Dokumentverständlichkeitsanalyse",
+            en: "Here's an overview of your document comprehensibility analysis",
+            es: "Aquí tienes un resumen de tu análisis de comprensibilidad de documentos",
+            fr: "Voici un aperçu de votre analyse de compréhensibilité des documents",
+            it: "Ecco una panoramica della tua analisi di comprensibilità dei documenti",
+          },
+          hash: "56e0754423ce8acf69f5cee43fd717ea",
+        },
+        "13/declaration/body/24/argument/3/7/1/1/1": {
+          content: {
+            de: "Gesamtanzahl der Dokumente",
+            en: "Total Documents",
+            es: "Documentos Totales",
+            fr: "Documents totaux",
+            it: "Documenti Totali",
+          },
+          hash: "6084740eece881715f26d54c1d3d33fa",
+        },
+        "13/declaration/body/24/argument/3/7/3/1/1": {
+          content: {
+            de: "Durchschnittliche Punktzahl",
+            en: "Avg. Score",
+            es: "Puntuación Promedio",
+            fr: "Score moyen",
+            it: "Punteggio Medio",
+          },
+          hash: "1fa41665292e95d84b731e1f58bdac28",
+        },
+        "13/declaration/body/24/argument/3/7/5/1/1": {
+          content: {
+            de: "Kritische Probleme",
+            en: "Critical Issues",
+            es: "Problemas Críticos",
+            fr: "Problèmes critiques",
+            it: "Problemi Critici",
+          },
+          hash: "7036645f7f03fa15f5e90a3089600d03",
+        },
+        "13/declaration/body/24/argument/3/7/7/1/1": {
+          content: {
+            de: "Teammitglieder",
+            en: "Team Members",
+            es: "Miembros del Equipo",
+            fr: "Membres de l'équipe",
+            it: "Membri del Team",
+          },
+          hash: "61333c4a765e10b2ad46774951725233",
+        },
+      },
+    },
+    "../app/dashboard/settings/page.tsx": {
+      entries: {
+        "13/declaration/body/6/argument/3/3/1": {
+          content: {
+            de: "Einstellungen",
+            en: "Settings",
+            es: "Configuración",
+            fr: "Paramètres",
+            it: "Impostazioni",
+          },
+          hash: "8df6777277469c1fd88cc18dde2f1cc3",
+        },
+        "13/declaration/body/6/argument/3/3/3": {
+          content: {
+            de: "Analyse-Regeln und Systemeinstellungen konfigurieren",
+            en: "Configure analysis rules and system preferences",
+            es: "Configurar reglas de análisis y preferencias del sistema",
+            fr: "Configurer les règles d'analyse et les préférences système",
+            it: "Configura le regole di analisi e le preferenze di sistema",
+          },
+          hash: "4db602c2ab38e82657941367509d7fa7",
+        },
+        "13/declaration/body/6/argument/3/5/1/1": {
+          content: {
+            de: "Benutzerdefinierte Regeln",
+            en: "Custom Rules",
+            es: "Reglas Personalizadas",
+            fr: "Règles personnalisées",
+            it: "Regole Personalizzate",
+          },
+          hash: "16d14d17ba58d179b2b7adb0ae023719",
+        },
+        "13/declaration/body/6/argument/3/5/1/3": {
+          content: {
+            de: "Compliance",
+            en: "Compliance",
+            es: "Cumplimiento",
+            fr: "Conformité",
+            it: "Conformità",
+          },
+          hash: "8c769b66f33999ac37075e110344bf70",
+        },
+        "13/declaration/body/6/argument/3/5/1/5": {
+          content: {
+            de: "Benachrichtigungen",
+            en: "Notifications",
+            es: "Notificaciones",
+            fr: "Notifications",
+            it: "Notifiche",
+          },
+          hash: "c52df856139b50dbb1cae7bfb1cf73bb",
+        },
+        "13/declaration/body/6/argument/3/5/1/7": {
+          content: {
+            de: "Allgemein",
+            en: "General",
+            es: "General",
+            fr: "Général",
+            it: "Generale",
+          },
+          hash: "b891e8f15579fc5d97bcaf3637f5ae59",
+        },
+        "13/declaration/body/6/argument/3/5/3/11/1/expression/0/body/1/1/1/7/1":
+          {
+            content: {
+              de: "Erstellt: {rule.created}",
+              en: "Created: {rule.created}",
+              es: "Creado: {rule.created}",
+              fr: "Créé: {rule.created}",
+              it: "Creato: {rule.created}",
+            },
+            hash: "646d864aab5966792b627be467287682",
+          },
+        "13/declaration/body/6/argument/3/5/3/11/1/expression/0/body/1/1/1/7/3":
+          {
+            content: {
+              de: "•",
+              en: "•",
+              es: "•",
+              fr: "•",
+              it: "•",
+            },
+            hash: "5f1c90d0fd46023ba1bfaaa2537f59fb",
+          },
+        "13/declaration/body/6/argument/3/5/3/11/1/expression/0/body/1/1/1/7/5":
+          {
+            content: {
+              de: "Geändert: {rule.lastModified}",
+              en: "Modified: {rule.lastModified}",
+              es: "Modificado: {rule.lastModified}",
+              fr: "Modifié: {rule.lastModified}",
+              it: "Modificato: {rule.lastModified}",
+            },
+            hash: "920654a6d9e105af54fe5340e30c4668",
+          },
+        "13/declaration/body/6/argument/3/5/3/3/1/1": {
+          content: {
+            de: "Benutzerdefinierte Analyse-Regeln",
+            en: "Custom Analysis Rules",
+            es: "Reglas de Análisis Personalizadas",
+            fr: "Règles d'analyse personnalisées",
+            it: "Regole di Analisi Personalizzate",
+          },
+          hash: "b1835c2de658732412b2591b00fb317f",
+        },
+        "13/declaration/body/6/argument/3/5/3/3/1/3": {
+          content: {
+            de: "Organisationsspezifische Muster und Anforderungen definieren",
+            en: "Define organization-specific patterns and requirements",
+            es: "Definir patrones y requisitos específicos de la organización",
+            fr: "Définir des modèles et exigences spécifiques à l'organisation",
+            it: "Definisci schemi e requisiti specifici dell'organizzazione",
+          },
+          hash: "ea1d7777a024a32c61395b93e754bf90",
+        },
+        "13/declaration/body/6/argument/3/5/3/3/3": {
+          content: {
+            de: "<element:Plus></element:Plus> Regel hinzufügen",
+            en: "<element:Plus></element:Plus> Add Rule",
+            es: "<element:Plus></element:Plus> Añadir Regla",
+            fr: "<element:Plus></element:Plus> Ajouter une règle",
+            it: "<element:Plus></element:Plus> Aggiungi Regola",
+          },
+          hash: "cef45c8412226b50e3497e7571837b6e",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/1/1": {
+          content: {
+            de: "Neue Regel hinzufügen",
+            en: "Add New Rule",
+            es: "Añadir Nueva Regla",
+            fr: "Ajouter une nouvelle règle",
+            it: "Aggiungi Nuova Regola",
+          },
+          hash: "702b74894c2549c74d39323478d99b97",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/1/3": {
+          content: {
+            de: "Erstellen Sie eine benutzerdefinierte Regel, um spezifische Muster in Dokumenten zu kennzeichnen",
+            en: "Create a custom rule to flag specific patterns in documents",
+            es: "Crear una regla personalizada para marcar patrones específicos en documentos",
+            fr: "Créer une règle personnalisée pour signaler des modèles spécifiques dans les documents",
+            it: "Crea una regola personalizzata per segnalare schemi specifici nei documenti",
+          },
+          hash: "6a0cee4b9cafc1d99c5b03ae7398209e",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/1/1/1": {
+          content: {
+            de: "Regelname",
+            en: "Rule Name",
+            es: "Nombre de la Regla",
+            fr: "Nom de la règle",
+            it: "Nome della Regola",
+          },
+          hash: "0fc51a00377ee8a70303c2eb1772b33b",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/1/1/3-placeholder":
+          {
+            content: {
+              de: "z.B. Vermeiden Sie komplexe Begriffe",
+              en: "e.g., Avoid Complex Terms",
+              es: "p. ej., Evitar Términos Complejos",
+              fr: "p. ex., Éviter les termes complexes",
+              it: "es. Evita Termini Complessi",
+            },
+            hash: "a981e0cee1d14fec9f86186d41ce40b3",
+          },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/1/3/1": {
+          content: {
+            de: "Mustertyp",
+            en: "Pattern Type",
+            es: "Tipo de Patrón",
+            fr: "Type de modèle",
+            it: "Tipo di Schema",
+          },
+          hash: "32cd3b774bf5883e750ab26e9558b6b3",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/1/3/3/3/1": {
+          content: {
+            de: "Schlüsselwort",
+            en: "Keyword",
+            es: "Palabra Clave",
+            fr: "Mot-clé",
+            it: "Parola Chiave",
+          },
+          hash: "c85a01aa86d4b45d821978d2159e0f1b",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/1/3/3/3/3": {
+          content: {
+            de: "Regulärer Ausdruck",
+            en: "Regular Expression",
+            es: "Expresión Regular",
+            fr: "Expression régulière",
+            it: "Espressione Regolare",
+          },
+          hash: "8bf1080ca1086b638fa308aca2595384",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/1/3/3/3/5": {
+          content: {
+            de: "Genaues Zitat",
+            en: "Exact Phrase",
+            es: "Frase Exacta",
+            fr: "Phrase exacte",
+            it: "Frase Esatta",
+          },
+          hash: "85b1f1733d4622d2c0f7651032fbf74c",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/3/1": {
+          content: {
+            de: "Muster",
+            en: "Pattern",
+            es: "Patrón",
+            fr: "Modèle",
+            it: "Schema",
+          },
+          hash: "6ba542b08cb28ded70c7b812b6ad4b14",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/1/1": {
+          content: {
+            de: "Problembezeichnung",
+            en: "Issue Label",
+            es: "Etiqueta del Problema",
+            fr: "Étiquette de problème",
+            it: "Etichetta del Problema",
+          },
+          hash: "e00483f1a5caf82f5a04b1cbb3204319",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/1/3/3/1": {
+          content: {
+            de: "Rechtsjargon",
+            en: "Legal Jargon",
+            es: "Jerga Legal",
+            fr: "Jargon juridique",
+            it: "Gergo Legale",
+          },
+          hash: "253ccd54a22be268420d7ab5914f6fc0",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/1/3/3/3": {
+          content: {
+            de: "Zweideutigkeit",
+            en: "Ambiguity",
+            es: "Ambiguedad",
+            fr: "Ambiguïté",
+            it: "Ambiguity",
+          },
+          hash: "cbc881f5502898fd034c04d103f1b967",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/1/3/3/5": {
+          content: {
+            de: "Lesbarkeit",
+            en: "Readability",
+            es: "Lectura",
+            fr: "Lisibilité",
+            it: "Lettura",
+          },
+          hash: "65ca7f3ba75c2f8dbeff8b380e2304b6",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/1/3/3/7": {
+          content: {
+            de: "Compliance",
+            en: "Compliance",
+            es: "Cumplimiento",
+            fr: "Conformité",
+            it: "Conformità",
+          },
+          hash: "8c769b66f33999ac37075e110344bf70",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/1/3/3/9": {
+          content: {
+            de: "Benutzerdefiniert",
+            en: "Custom",
+            es: "Personalizado",
+            fr: "Personnalisé",
+            it: "Personalizzato",
+          },
+          hash: "b7b89901f46267f532600a23cfc54ae2",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/3/1": {
+          content: {
+            de: "Schweregrad",
+            en: "Severity",
+            es: "Severidad",
+            fr: "Sévérité",
+            it: "Gravità",
+          },
+          hash: "a97b76f683d8a2732ecc75f2892dac71",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/3/3/3/1": {
+          content: {
+            de: "Kritisch",
+            en: "Critical",
+            es: "Crítico",
+            fr: "Critique",
+            it: "Critico",
+          },
+          hash: "eb327cd411b50aee954f8d1d215d003a",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/3/3/3/3": {
+          content: {
+            de: "Hoch",
+            en: "High",
+            es: "Alto",
+            fr: "Élevé",
+            it: "Alto",
+          },
+          hash: "dabe777f3b670e9407e46c186197d188",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/3/3/3/5": {
+          content: {
+            de: "Mittel",
+            en: "Medium",
+            es: "Medio",
+            fr: "Moyen",
+            it: "Medio",
+          },
+          hash: "43983f2178fb28aacaef6c5f41282c4a",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/5/3/3/3/7": {
+          content: {
+            de: "Niedrig",
+            en: "Low",
+            es: "Bajo",
+            fr: "Faible",
+            it: "Basso",
+          },
+          hash: "97359f18d6648e0980854c5e68bb0969",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/7/1": {
+          content: {
+            de: "Beschreibung",
+            en: "Description",
+            es: "Descripción",
+            fr: "Description",
+            it: "Descrizione",
+          },
+          hash: "e17686a22ffad04cc7bb70524ed4478b",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/7/3-placeholder":
+          {
+            content: {
+              de: "Beschreiben Sie, was diese Regel überprüft und warum sie wichtig ist",
+              en: "Describe what this rule checks for and why it's important",
+              es: "Describir qué verifica esta regla y por qué es importante",
+              fr: "Décrivez ce que cette règle vérifie et pourquoi c'est important",
+              it: "Descrivi cosa controlla questa regola e perché è importante",
+            },
+            hash: "4e5a6f3f52b2bed028c773e088706b49",
+          },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/9/1": {
+          content: {
+            de: "<element:Save></element:Save> Regel speichern",
+            en: "<element:Save></element:Save> Save Rule",
+            es: "<element:Save></element:Save> Guardar Regla",
+            fr: "<element:Save></element:Save> Enregistrer la règle",
+            it: "<element:Save></element:Save> Salva Regola",
+          },
+          hash: "432f3883ff89be326dc740c250fdf85b",
+        },
+        "13/declaration/body/6/argument/3/5/3/7/expression/right/3/9/3": {
+          content: {
+            de: "Abbrechen",
+            en: "Cancel",
+            es: "Cancelar",
+            fr: "Annuler",
+            it: "Annulla",
+          },
+          hash: "7afaa05272026382c83d9f963f45e3e2",
+        },
+        "13/declaration/body/6/argument/3/5/5/1/1/1": {
+          content: {
+            de: "Compliance-Einstellungen",
+            en: "Compliance Settings",
+            es: "Configuración de Cumplimiento",
+            fr: "Paramètres de conformité",
+            it: "Impostazioni di Conformità",
+          },
+          hash: "0624ddcd02eca0a3210299ce3579e1d2",
+        },
+        "13/declaration/body/6/argument/3/5/5/1/1/3": {
+          content: {
+            de: "Regulatorische Compliance-Prüfungen und Standards konfigurieren",
+            en: "Configure regulatory compliance checks and standards",
+            es: "Configurar verificaciones de cumplimiento normativo y estándares",
+            fr: "Configurer les vérifications de conformité réglementaire et les normes",
+            it: "Configura i controlli di conformità normativa e gli standard",
+          },
+          hash: "801b4c6bbf7e807272a76360754c7831",
+        },
+        "13/declaration/body/6/argument/3/5/5/1/3/1/1/1/1": {
+          content: {
+            de: "GDPR-Compliance",
+            en: "GDPR Compliance",
+            es: "Cumplimiento GDPR",
+            fr: "Conformité au RGPD",
+            it: "Conformità GDPR",
+          },
+          hash: "739b106e2a9876d5022cf7f5f5d432fd",
+        },
+        "13/declaration/body/6/argument/3/5/5/1/3/1/1/1/3": {
+          content: {
+            de: "Überprüfen Sie die Datenschutzrichtlinien auf die Anforderungen der DSGVO",
+            en: "Check privacy policies for GDPR requirements",
+            es: "Verificar políticas de privacidad para requisitos GDPR",
+            fr: "Vérifier les politiques de confidentialité pour les exigences du RGPD",
+            it: "Controlla le politiche sulla privacy per i requisiti GDPR",
+          },
+          hash: "e5a569a39125f96cebc990f9965f8f9c",
+        },
+        "13/declaration/body/6/argument/3/5/5/1/3/1/3/1/1": {
+          content: {
+            de: "MiFID II-Anforderungen",
+            en: "MiFID II Requirements",
+            es: "Requisitos MiFID II",
+            fr: "Exigences MiFID II",
+            it: "Requisiti MiFID II",
+          },
+          hash: "81808d788297efacba7364f4edf63121",
+        },
+        "13/declaration/body/6/argument/3/5/5/1/3/1/3/1/3": {
+          content: {
+            de: "Validieren Sie die Offenlegungen von Investmentdienstleistungen",
+            en: "Validate investment service disclosures",
+            es: "Validar divulgaciones de servicios de inversión",
+            fr: "Valider les divulgations de services d'investissement",
+            it: "Valida le divulgazioni dei servizi di investimento",
+          },
+          hash: "689891738936ee7a3bf999c84fa11fe7",
+        },
+        "13/declaration/body/6/argument/3/5/5/1/3/1/5/1/1": {
+          content: {
+            de: "PSD2-Transparenz",
+            en: "PSD2 Transparency",
+            es: "Transparencia PSD2",
+            fr: "Transparence PSD2",
+            it: "Trasparenza PSD2",
+          },
+          hash: "b7f9b21f80c6e0ef358950188854e681",
+        },
+        "13/declaration/body/6/argument/3/5/5/1/3/1/5/1/3": {
+          content: {
+            de: "Stellen Sie sicher, dass die Klarheitsstandards für Zahlungsdienste eingehalten werden",
+            en: "Ensure payment service clarity standards",
+            es: "Asegurar estándares de claridad de servicios de pago",
+            fr: "Assurer la clarté des normes de service de paiement",
+            it: "Assicurare la chiarezza degli standard dei servizi di pagamento",
+          },
+          hash: "3e026950b18ea351361f880dc2aa085b",
+        },
+        "13/declaration/body/6/argument/3/5/5/1/3/1/7/1/1": {
+          content: {
+            de: "Leichte-Sprache-Richtlinien",
+            en: "Plain Language Guidelines",
+            es: "Directrices de Lenguaje Plano",
+            fr: "Lignes directrices en langage clair",
+            it: "Linee Guida sul Linguaggio Puro",
+          },
+          hash: "a794e7344700cc5f17af2a81074225c4",
+        },
+        "13/declaration/body/6/argument/3/5/5/1/3/1/7/1/3": {
+          content: {
+            de: "Anwenden der Richtlinien der EU-Kommission für Leichte Sprache",
+            en: "Apply EU Commission plain language standards",
+            es: "Aplicar estándares de lenguaje claro de la Comisión Europea",
+            fr: "Appliquer les normes de langage clair de la Commission européenne",
+            it: "Applica gli standard di linguaggio semplice della Commissione Europea",
+          },
+          hash: "9e33d590dcb0311502ad6d03b7e9608e",
+        },
+        "13/declaration/body/6/argument/3/5/7/1/1/1": {
+          content: {
+            de: "Benachrichtigungseinstellungen",
+            en: "Notification Preferences",
+            es: "Preferencias de Notificación",
+            fr: "Préférences de notification",
+            it: "Preferenze di Notifica",
+          },
+          hash: "d530d68bff011161294d6e84799164c8",
+        },
+        "13/declaration/body/6/argument/3/5/7/1/1/3": {
+          content: {
+            de: "Konfigurieren Sie, wie und wann Sie Benachrichtigungen erhalten",
+            en: "Configure how and when you receive alerts",
+            es: "Configurar cómo y cuándo recibir alertas",
+            fr: "Configurer quand et comment vous recevez des alertes",
+            it: "Configura come e quando ricevi gli avvisi",
+          },
+          hash: "4ac24b679988c864c78455f6bc8bbb4f",
+        },
+        "13/declaration/body/6/argument/3/5/7/1/3/1/1/1/1": {
+          content: {
+            de: "E-Mail-Benachrichtigungen",
+            en: "Email Notifications",
+            es: "Notificaciones por Correo Electrónico",
+            fr: "Notifications par e-mail",
+            it: "Notifiche Email",
+          },
+          hash: "732b7ca23498e2956f674fa32a320192",
+        },
+        "13/declaration/body/6/argument/3/5/7/1/3/1/1/1/3": {
+          content: {
+            de: "Erhalten Sie E-Mail-Benachrichtigungen zur Abschluss der Dokumentenanalyse",
+            en: "Receive email alerts for document analysis completion",
+            es: "Recibir alertas por correo electrónico para la finalización del análisis de documentos",
+            fr: "Recevoir des alertes par e-mail pour la fin de l'analyse des documents",
+            it: "Ricevi avvisi email per il completamento dell'analisi del documento",
+          },
+          hash: "b9e4c6801a5976cdb3eeb07c27c11ab4",
+        },
+        "13/declaration/body/6/argument/3/5/7/1/3/1/3/1/1": {
+          content: {
+            de: "Kritische Problembenachrichtigungen",
+            en: "Critical Issue Alerts",
+            es: "Alertas de Problemas Críticos",
+            fr: "Alertes de problèmes critiques",
+            it: "Allarmi per Problemi Critici",
+          },
+          hash: "97746a52259491833f7b11f16790a55c",
+        },
+        "13/declaration/body/6/argument/3/5/7/1/3/1/3/1/3": {
+          content: {
+            de: "Sofortige Benachrichtigungen bei kritischen Compliance-Problemen",
+            en: "Immediate notifications for critical compliance issues",
+            es: "Notificaciones inmediatas para problemas críticos de cumplimiento",
+            fr: "Notifications immédiates pour les problèmes de conformité critiques",
+            it: "Notifiche immediate per problemi critici di conformità",
+          },
+          hash: "40370be74a677b607fd05a646bf01e00",
+        },
+        "13/declaration/body/6/argument/3/5/7/1/3/1/5/1/1": {
+          content: {
+            de: "Wöchentliche Zusammenfassung",
+            en: "Weekly Summary",
+            es: "Resumen Semanal",
+            fr: "Résumé hebdomadaire",
+            it: "Riepilogo Settimanale",
+          },
+          hash: "4b625fb22bd034f62cff2d66d39eb3d4",
+        },
+        "13/declaration/body/6/argument/3/5/7/1/3/1/5/1/3": {
+          content: {
+            de: "Wöchentlicher Überblick über die Teamaktivität und den Fortschritt",
+            en: "Weekly digest of team activity and progress",
+            es: "Resumen semanal de la actividad y progreso del equipo",
+            fr: "Digest hebdomadaire de l'activité et des progrès de l'équipe",
+            it: "Digest settimanale dell'attività e dei progressi del team",
+          },
+          hash: "1d3f5f8232de1cdcc6b7e56d83e43f5c",
+        },
+        "13/declaration/body/6/argument/3/5/7/1/3/1/7/1/1": {
+          content: {
+            de: "Slack-Integration",
+            en: "Slack Integration",
+            es: "Integración con Slack",
+            fr: "Intégration Slack",
+            it: "Integrazione Slack",
+          },
+          hash: "354f293c6fb818345ef49f8a0ba11f23",
+        },
+        "13/declaration/body/6/argument/3/5/7/1/3/1/7/1/3": {
+          content: {
+            de: "Senden Sie Benachrichtigungen an Slack-Kanäle",
+            en: "Send notifications to Slack channels",
+            es: "Enviar notificaciones a canales de Slack",
+            fr: "Envoyer des notifications aux canaux Slack",
+            it: "Invia notifiche ai canali Slack",
+          },
+          hash: "a65bb490a396b5a8f43e38eaf636f483",
+        },
+        "13/declaration/body/6/argument/3/5/9/1/1/1": {
+          content: {
+            de: "Allgemeine Einstellungen",
+            en: "General Settings",
+            es: "Configuración General",
+            fr: "Paramètres généraux",
+            it: "Impostazioni Generali",
+          },
+          hash: "651afaa0d070ecc9a98b70581e25872f",
+        },
+        "13/declaration/body/6/argument/3/5/9/1/1/3": {
+          content: {
+            de: "Systemeinstellungen und Standardkonfigurationen",
+            en: "System preferences and default configurations",
+            es: "Preferencias del sistema y configuraciones predeterminadas",
+            fr: "Préférences système et configurations par défaut",
+            it: "Preferenze di sistema e configurazioni predefinite",
+          },
+          hash: "b8aa6d2c2a226018a056901e0f2059dc",
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/1/1": {
+          content: {
+            de: "Standardsprache",
+            en: "Default Language",
+            es: "Idioma Predeterminado",
+            fr: "Langue par défaut",
+            it: "Lingua Predefinita",
+          },
+          hash: "e5e0cb907db1d73621a5124ebf94adb4",
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/1/3/3/1": {
+          content: {
+            de: "Englisch",
+            en: "English",
+            es: "Inglés",
+            fr: "Anglais",
+            it: "Inglese",
+          },
+          hash: "e1eeeb379f86a015d6e581fcbc4af7f3",
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/1/3/3/3": {
+          content: {
+            de: "Deutsch",
+            en: "German",
+            es: "Alemán",
+            fr: "Allemand",
+            it: "Tedesco",
+          },
+          hash: "1e23c97d063f7235e94e00517f1786c2",
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/1/3/3/5": {
+          content: {
+            de: "Französisch",
+            en: "French",
+            es: "Francés",
+            fr: "Français",
+            it: "Francese",
+          },
+          hash: "b6c77a4e718a978af58895b27731413c",
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/1/3/3/7": {
+          content: {
+            de: "Spanisch",
+            en: "Spanish",
+            es: "Español",
+            fr: "Espagnol",
+            it: "Spagnolo",
+          },
+          hash: "881640609abd94ca50cbafb21f085042",
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/1/3/3/9": {
+          content: {
+            de: "Italienisch",
+            en: "Italian",
+            es: "Italiano",
+            fr: "Italien",
+            it: "Italiano",
+          },
+          hash: "a9fc8de8236d4c1f6bc1eec0942f4457",
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/3/1": {
+          content: {
+            de: "Standardjurisdiktion",
+            en: "Default Jurisdiction",
+            es: "Jurisdicción Predeterminada",
+            fr: "Juridiction par défaut",
+            it: "Giurisdizione Predefinita",
+          },
+          hash: "71a83598fcfd7d4884a0b4ae6f1810ac",
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/3/3/3/1": {
+          content: {
+            de: "Europäische Union",
+            en: "European Union",
+            es: "Unión Europea",
+            fr: "Union européenne",
+            it: "Unione Europea",
+          },
+          hash: "7fb40e3925c4416935f4984dab3ebfa3",
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/3/3/3/3": {
+          content: {
+            de: "Deutschland",
+            en: "Germany",
+            es: "Alemania",
+            fr: "Allemagne",
+            it: "Germania",
+          },
+          hash: "e8ea12e55a5498b6a9ae6ea6803352c1",
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/3/3/3/5": {
+          content: {
+            de: "Frankreich",
+            en: "France",
+            es: "Francia",
+            fr: "France",
+            it: "Francia",
+          },
+          hash: "6fe713692ef82e7d7ead4f433b541b04",
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/3/3/3/7": {
+          content: {
+            de: "Italien",
+            en: "Italy",
+            es: "Italia",
+            fr: "Italie",
+            it: "Italia",
+          },
+          hash: "9065e7f0c93e893172e8709d20d6c98f",
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/1/3/3/3/9": {
+          content: {
+            de: "Spanien",
+            en: "Spain",
+            es: "España",
+            fr: "Espagne",
+            it: "Spagna",
+          },
+          hash: "e3481a44f59493a1dba20f52605e128f",
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/3/1": {
+          content: {
+            de: "Minimal akzeptabler Punktestand",
+            en: "Minimum Acceptable Score",
+            es: "Puntuación Mínima Aceptable",
+            fr: "Score acceptable minimum",
+            it: "Punteggio Minimo Accettabile",
+          },
+          hash: "95afcc38588e88f97773f4ba8961eb88",
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/3/5": {
+          content: {
+            de: "Dokumente unter diesem Punktestand werden zur Überprüfung markiert",
+            en: "Documents below this score will be flagged for review",
+            es: "Los documentos con una puntuación inferior a esta se marcarán para revisión",
+            fr: "Les documents en dessous de ce score seront signalés pour révision",
+            it: "I documenti con un punteggio inferiore a questo verranno segnalati per la revisione",
+          },
+          hash: "68321d686be571236de6caf69cf56d20",
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/5/1/1": {
+          content: {
+            de: "Dokumente automatisch zuweisen",
+            en: "Auto-assign Documents",
+            es: "Asignar Documentos Automáticamente",
+            fr: "Affectation automatique des documents",
+            it: "Assegna Automaticamente i Documenti",
+          },
+          hash: "0313fdf44130e12cadbf41179ec1cc9f",
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/5/1/3": {
+          content: {
+            de: "Dokumente automatisch Teams basierend auf dem Typ zuweisen",
+            en: "Automatically assign documents to teams based on type",
+            es: "Asignar documentos automáticamente a equipos según el tipo",
+            fr: "Affecter automatiquement les documents aux équipes en fonction du type",
+            it: "Assegna automaticamente i documenti ai team in base al tipo",
+          },
+          hash: "3e5aee07c413042f71ef53d4f822fd2c",
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/7/1/1": {
+          content: {
+            de: "Versionskontrolle",
+            en: "Version Control",
+            es: "Control de Versiones",
+            fr: "Contrôle de version",
+            it: "Controllo delle Versioni",
+          },
+          hash: "b0a842329515317f031405bd42af9c99",
+        },
+        "13/declaration/body/6/argument/3/5/9/1/3/7/1/3": {
+          content: {
+            de: "Dokumentversionen und Änderungen verfolgen",
+            en: "Track document versions and changes",
+            es: "Rastrear versiones y cambios de documentos",
+            fr: "Suivre les versions et les modifications des documents",
+            it: "Traccia le versioni e le modifiche dei documenti",
+          },
+          hash: "52ea823bfea5861a8965d2cb7eeb429e",
+        },
       },
     },
     "../app/dashboard/teams/page.tsx": {
@@ -2085,6 +4835,812 @@ export default {
             },
             hash: "c43622c2acb91bbe87a3484b161be5d6",
           },
+      },
+    },
+    "../app/dashboard/upload/page.tsx": {
+      entries: {
+        "16/declaration/body/28/argument/3/3/1": {
+          content: {
+            de: "<element:ArrowLeft></element:ArrowLeft> Zurück zum Dashboard",
+            en: "<element:ArrowLeft></element:ArrowLeft> Back to Dashboard",
+            es: "<element:ArrowLeft></element:ArrowLeft> Volver al Panel de Control",
+            fr: "<element:ArrowLeft></element:ArrowLeft> Retour au Tableau de bord",
+            it: "<element:ArrowLeft></element:ArrowLeft> Torna alla Dashboard",
+          },
+          hash: "f939e4cdfb54e4d38f6ce2e8ceab5030",
+        },
+        "16/declaration/body/28/argument/3/3/3": {
+          content: {
+            de: "Dokument hochladen",
+            en: "Upload Document",
+            es: "Subir Documento",
+            fr: "Télécharger le document",
+            it: "Carica Documento",
+          },
+          hash: "cd031ddd3caa6de9f29e54a3940985a3",
+        },
+        "16/declaration/body/28/argument/3/3/5": {
+          content: {
+            de: "Laden Sie ein rechtliches Dokument für die Verstehbarkeit-Analyse hoch",
+            en: "Upload a legal document for comprehensibility analysis",
+            es: "Sube un documento legal para análisis de comprensibilidad",
+            fr: "Téléchargez un document juridique pour une analyse de compréhensibilité",
+            it: "Carica un documento legale per l'analisi di comprensibilità",
+          },
+          hash: "19e3dd8185c1cc23cfc1e8b761644771",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/1/1": {
+          content: {
+            de: "Dokument hochladen",
+            en: "Document Upload",
+            es: "Subida de Documento",
+            fr: "Téléchargement de document",
+            it: "Caricamento Documento",
+          },
+          hash: "541a4b640961937ca473d3025cc88e79",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/1/3": {
+          content: {
+            de: "Laden Sie Ihr rechtliches Dokument hoch und konfigurieren Sie die Analyseeinstellungen",
+            en: "Upload your legal document and configure analysis settings",
+            es: "Sube tu documento legal y configura los ajustes de análisis",
+            fr: "Téléchargez votre document juridique et configurez les paramètres d'analyse",
+            it: "Carica il tuo documento legale e configura le impostazioni di analisi",
+          },
+          hash: "76cca59f2414cbbc69a73a91c76120fb",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/11/1": {
+          content: {
+            de: "Team zuweisen",
+            en: "Assign to Team",
+            es: "Asignar al Equipo",
+            fr: "Attribuer à l'équipe",
+            it: "Assegna a Squadra",
+          },
+          hash: "a57e6756d3a16e8edd437e2d5516ae4a",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/11/3/1/1-placeholder":
+          {
+            content: {
+              de: "Team auswählen",
+              en: "Select team",
+              es: "Seleccionar equipo",
+              fr: "Sélectionner une équipe",
+              it: "Seleziona squadra",
+            },
+            hash: "83003e3bfd0d6d9cd49702f4d20bfef5",
+          },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/11/3/3/1": {
+          content: {
+            de: "Rechtsabteilung",
+            en: "Legal Team",
+            es: "Equipo Legal",
+            fr: "Équipe juridique",
+            it: "Squadra Legale",
+          },
+          hash: "2827f91e50ede5b91f9e386376312ed3",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/11/3/3/3": {
+          content: {
+            de: "Compliance-Team",
+            en: "Compliance Team",
+            es: "Equipo de Cumplimiento",
+            fr: "Équipe de conformité",
+            it: "Squadra Compliance",
+          },
+          hash: "b2b62aa125140c762f00c88680b9494a",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/11/3/3/5": {
+          content: {
+            de: "Produktteam",
+            en: "Product Team",
+            es: "Equipo de Producto",
+            fr: "Équipe produit",
+            it: "Squadra Prodotto",
+          },
+          hash: "ec8c8711fce61265a4fe296ce2ba3b6f",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/11/3/3/7": {
+          content: {
+            de: "Operations-Team",
+            en: "Operations Team",
+            es: "Equipo de Operaciones",
+            fr: "Équipe des opérations",
+            it: "Squadra Operativa",
+          },
+          hash: "1b37611c5bcb0bd1ad34ae0b4bdfc19b",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/13/1": {
+          content: {
+            de: "Versionskennzeichnung",
+            en: "Version Tag",
+            es: "Etiqueta de Versión",
+            fr: "Étiquette de version",
+            it: "Tag Versione",
+          },
+          hash: "d043281c156839674ec1cc9fbdeda860",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/13/3-placeholder":
+          {
+            content: {
+              de: "z.B. v5.0, 2025-Q1",
+              en: "e.g., v5.0, 2025-Q1",
+              es: "p. ej., v5.0, 2025-Q1",
+              fr: "ex. v5.0, 2025-T1",
+              it: "es. v5.0, 2025-Q1",
+            },
+            hash: "3d616c88d6c753f5e2ebf8645756350d",
+          },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/15/1": {
+          content: {
+            de: "Zusätzliche Hinweise",
+            en: "Additional Notes",
+            es: "Notas Adicionales",
+            fr: "Notes supplémentaires",
+            it: "Note Aggiuntive",
+          },
+          hash: "3ad6cf2a59d78059060df65047d3367e",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/15/3-placeholder":
+          {
+            content: {
+              de: "Jegliche spezifischen Anforderungen oder Kontext für diese Analyse...",
+              en: "Any specific requirements or context for this analysis...",
+              es: "Cualquier requisito o contexto específico para este análisis...",
+              fr: "Toute exigence ou contexte spécifique pour cette analyse...",
+              it: "Qualsiasi requisito specifico o contesto per questa analisi...",
+            },
+            hash: "c3a47adc7af7566f11eb974eca1a9a7d",
+          },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/19/1": {
+          content: {
+            de: "Analyseoptionen",
+            en: "Analysis Options",
+            es: "Opciones de Análisis",
+            fr: "Options d'analyse",
+            it: "Opzioni di Analisi",
+          },
+          hash: "04011dbc17405b9fe89fb732936fc93d",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/19/3/1/3": {
+          content: {
+            de: "GDPR-Konformitätsprüfung",
+            en: "GDPR Compliance Check",
+            es: "Verificación de Cumplimiento GDPR",
+            fr: "Vérification de conformité RGPD",
+            it: "Controllo Conformità GDPR",
+          },
+          hash: "264ca50c7b52858c0750baba79273553",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/19/3/3/3": {
+          content: {
+            de: "MiFID II-Anforderungen",
+            en: "MiFID II Requirements",
+            es: "Requisitos MiFID II",
+            fr: "Exigences MiFID II",
+            it: "Requisiti MiFID II",
+          },
+          hash: "c416d49a2ccade38a19474fcbab9fc84",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/19/3/5/3": {
+          content: {
+            de: "PSD2-Transparenzstandards",
+            en: "PSD2 Transparency Standards",
+            es: "Estándares de Transparencia PSD2",
+            fr: "Normes de transparence PSD2",
+            it: "Standard di Trasparenza PSD2",
+          },
+          hash: "a73e350d90a9ddc963e3a8d24df23d37",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/19/3/7/3": {
+          content: {
+            de: "Anwendung von benutzerdefinierten Organisationsregeln",
+            en: "Apply Custom Organization Rules",
+            es: "Aplicar Reglas de Organización Personalizadas",
+            fr: "Appliquer des règles d'organisation personnalisées",
+            it: "Applica Regole Organizzative Personalizzate",
+          },
+          hash: "900e2c5a70409d9bbf260adf970dcae8",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/21/expression/right/1/3/1":
+          {
+            content: {
+              de: "Fehler",
+              en: "Error",
+              es: "Error",
+              fr: "Erreur",
+              it: "Errore",
+            },
+            hash: "3c95bcb32c2104b99a46f5b3dd015248",
+          },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/23": {
+          content: {
+            de: "<element:Upload></element:Upload> Analyse starten",
+            en: "<element:Upload></element:Upload> Start Analysis",
+            es: "<element:Upload></element:Upload> Iniciar Análisis",
+            fr: "<element:Upload></element:Upload> Démarrer l'analyse",
+            it: "<element:Upload></element:Upload> Avvia Analisi",
+          },
+          hash: "b97ede2265078302b2e6afef7187900b",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/3/1": {
+          content: {
+            de: "Dokumentdatei",
+            en: "Document File",
+            es: "Archivo del Documento",
+            fr: "Fichier de document",
+            it: "File Documento",
+          },
+          hash: "e8aa24245f4386307065ec1ad3ff51c2",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/3/3/3/1": {
+          content: {
+            de: "Ziehen Sie Ihre Datei hierher oder klicken Sie zum Durchsuchen",
+            en: "Drop your file here, or click to browse",
+            es: "Suelta tu archivo aquí, o haz clic para explorar",
+            fr: "Déposez votre fichier ici, ou cliquez pour parcourir",
+            it: "Trascina il file qui, o clicca per sfogliare",
+          },
+          hash: "42b0bef1e0e86309a78da34f6d9da741",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/3/3/3/3": {
+          content: {
+            de: "Unterstützt DOC, DOCX, PDF und Textdateien bis 10 MB",
+            en: "Supports DOC, DOCX, PDF, and text files up to 10MB",
+            es: "Soporta DOC, DOCX, PDF y archivos de texto hasta 10MB",
+            fr: "Supports les fichiers DOC, DOCX, PDF et texte jusqu'à 10 Mo",
+            it: "Supporta file DOC, DOCX, PDF e testo fino a 10MB",
+          },
+          hash: "848a70e7c3c6a5a7dc3acf4a3b3a4fec",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/3/3/7": {
+          content: {
+            de: "Datei auswählen",
+            en: "Choose File",
+            es: "Seleccionar Archivo",
+            fr: "Choisir un fichier",
+            it: "Scegli File",
+          },
+          hash: "327e09665f63175ad8dc94f10d023265",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/3/5/expression/right/3":
+          {
+            content: {
+              de: "Ausgewählt: {selectedFile.name}",
+              en: "Selected: {selectedFile.name}",
+              es: "Seleccionado: {selectedFile.name}",
+              fr: "Sélectionné : {selectedFile.name}",
+              it: "Selezionato: {selectedFile.name}",
+            },
+            hash: "3c2ebdbd4ce39042eedf739c51afb1e1",
+          },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/7/1/1": {
+          content: {
+            de: "Dokumenttitel",
+            en: "Document Title",
+            es: "Título del Documento",
+            fr: "Titre du document",
+            it: "Titolo Documento",
+          },
+          hash: "7dfdd523c9607f8e1735f4ced828fc4e",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/7/1/3-placeholder":
+          {
+            content: {
+              de: "z.B. AGB v5.0",
+              en: "e.g., Terms & Conditions v5.0",
+              es: "p. ej., Términos y Condiciones v5.0",
+              fr: "ex. Conditions générales v5.0",
+              it: "es. Termini e Condizioni v5.0",
+            },
+            hash: "a71cfcca9823768997f1bcb5ceccc99c",
+          },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/7/3/1": {
+          content: {
+            de: "Dokumenttyp",
+            en: "Document Type",
+            es: "Tipo de Documento",
+            fr: "Type de document",
+            it: "Tipo Documento",
+          },
+          hash: "abf0202f127616cf3d3f2e3914b089f3",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/7/3/3/1/1-placeholder":
+          {
+            content: {
+              de: "Dokumenttyp auswählen",
+              en: "Select document type",
+              es: "Seleccionar tipo de documento",
+              fr: "Sélectionner le type de document",
+              it: "Seleziona tipo di documento",
+            },
+            hash: "fb329e90353adf369111b2b3c9f2817e",
+          },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/7/3/3/3/1": {
+          content: {
+            de: "Allgemeine Geschäftsbedingungen",
+            en: "Terms & Conditions",
+            es: "Términos y Condiciones",
+            fr: "Conditions générales",
+            it: "Termini e Condizioni",
+          },
+          hash: "69d0219661f5fa7c1536e6f883925fb2",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/7/3/3/3/11": {
+          content: {
+            de: "Andere",
+            en: "Other",
+            es: "Otro",
+            fr: "Autre",
+            it: "Altro",
+          },
+          hash: "79acaa6cd481262bea4e743a422529d2",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/7/3/3/3/3": {
+          content: {
+            de: "Datenschutzrichtlinie",
+            en: "Privacy Policy",
+            es: "Política de Privacidad",
+            fr: "Politique de confidentialité",
+            it: "Privacy Policy",
+          },
+          hash: "7459744a63ef8af4e517a09024bd7c08",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/7/3/3/3/5": {
+          content: {
+            de: "Kreditvertrag",
+            en: "Loan Agreement",
+            es: "Acuerdo de Préstamo",
+            fr: "Accord de prêt",
+            it: "Accordo di Prestito",
+          },
+          hash: "8b57e9c349cfb05286388fec7247d078",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/7/3/3/3/7": {
+          content: {
+            de: "Gebührenplan",
+            en: "Fee Schedule",
+            es: "Calendario de Tarifas",
+            fr: "Calendrier des frais",
+            it: "Piano Tariffario",
+          },
+          hash: "63ad82cb4ebf3d3f5bd770a322d005ab",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/7/3/3/3/9": {
+          content: {
+            de: "Regulatorische Offenlegung",
+            en: "Regulatory Disclosure",
+            es: "Divulgación Regulatoria",
+            fr: "Divulgation réglementaire",
+            it: "Divulgazione Regolamentare",
+          },
+          hash: "3c856d0c0a9f92180bdfb0a20187e7bc",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/1/1": {
+          content: {
+            de: "Zielgruppe",
+            en: "Target Audience",
+            es: "Audiencia Objetivo",
+            fr: "Public cible",
+            it: "Pubblico di Destinazione",
+          },
+          hash: "ca47151c4f0ddb348e52ec43ce15eb03",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/1/3/1/1-placeholder":
+          {
+            content: {
+              de: "Zielgruppe auswählen",
+              en: "Select audience",
+              es: "Seleccionar audiencia",
+              fr: "Sélectionner le public",
+              it: "Seleziona pubblico",
+            },
+            hash: "47e8fc27db3a8a589c18ea86a53f0958",
+          },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/1/3/3/1": {
+          content: {
+            de: "Einzelkunden",
+            en: "Retail Customers",
+            es: "Clientes Minoristas",
+            fr: "Clients de détail",
+            it: "Clienti Retail",
+          },
+          hash: "27efd72f4529ba693b7a21198545fea5",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/1/3/3/3": {
+          content: {
+            de: "Geschäftskunden",
+            en: "Business Customers",
+            es: "Clientes Empresariales",
+            fr: "Clients professionnels",
+            it: "Clienti Aziendali",
+          },
+          hash: "e6bf71935e8575e84f119b02ad95deb2",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/1/3/3/5": {
+          content: {
+            de: "Institutionelle Kunden",
+            en: "Institutional Clients",
+            es: "Clientes Institucionales",
+            fr: "Clients institutionnels",
+            it: "Clienti Istituzionali",
+          },
+          hash: "66a0b483bafd11b58c2e5caee5bd00d0",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/1/3/3/7": {
+          content: {
+            de: "Öffentlichkeit",
+            en: "General Public",
+            es: "Público General",
+            fr: "Grand public",
+            it: "Pubblico Generale",
+          },
+          hash: "582f9fe94f58925659ebd7beccdbe014",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/3/1": {
+          content: {
+            de: "Gebiet",
+            en: "Jurisdiction",
+            es: "Jurisdicción",
+            fr: "Juridiction",
+            it: "Giurisdizione",
+          },
+          hash: "228117c85b4b668acc77c4fd65e2e78d",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/3/3/1/1-placeholder":
+          {
+            content: {
+              de: "Gebiet auswählen",
+              en: "Select jurisdiction",
+              es: "Seleccionar jurisdicción",
+              fr: "Sélectionner la juridiction",
+              it: "Seleziona giurisdizione",
+            },
+            hash: "fa20df75597a80cd691651ac81400b71",
+          },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/3/3/3/1": {
+          content: {
+            de: "Europäische Union",
+            en: "European Union",
+            es: "Unión Europea",
+            fr: "Union européenne",
+            it: "Unione Europea",
+          },
+          hash: "7fb40e3925c4416935f4984dab3ebfa3",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/3/3/3/11": {
+          content: {
+            de: "Niederlande",
+            en: "Netherlands",
+            es: "Países Bajos",
+            fr: "Pays-Bas",
+            it: "Paesi Bassi",
+          },
+          hash: "7850c2fba664ddcdb8e8e3b24fbed47e",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/3/3/3/3": {
+          content: {
+            de: "Deutschland",
+            en: "Germany",
+            es: "Alemania",
+            fr: "Allemagne",
+            it: "Germania",
+          },
+          hash: "e8ea12e55a5498b6a9ae6ea6803352c1",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/3/3/3/5": {
+          content: {
+            de: "Frankreich",
+            en: "France",
+            es: "Francia",
+            fr: "France",
+            it: "Francia",
+          },
+          hash: "6fe713692ef82e7d7ead4f433b541b04",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/3/3/3/7": {
+          content: {
+            de: "Italien",
+            en: "Italy",
+            es: "Italia",
+            fr: "Italie",
+            it: "Italia",
+          },
+          hash: "9065e7f0c93e893172e8709d20d6c98f",
+        },
+        "16/declaration/body/28/argument/3/5/1/expression/right/3/9/3/3/3/9": {
+          content: {
+            de: "Spanien",
+            en: "Spain",
+            es: "España",
+            fr: "Espagne",
+            it: "Spagna",
+          },
+          hash: "e3481a44f59493a1dba20f52605e128f",
+        },
+        "16/declaration/body/28/argument/3/5/3/expression/right/1/1": {
+          content: {
+            de: "<element:Loader2></element:Loader2> Dokument wird hochgeladen",
+            en: "<element:Loader2></element:Loader2> Uploading Document",
+            es: "<element:Loader2></element:Loader2> Subiendo Documento",
+            fr: "<element:Loader2></element:Loader2> Téléchargement du document",
+            it: "<element:Loader2></element:Loader2> Caricamento Documento",
+          },
+          hash: "a87c6257bdbffb58ea07b0a43c3f9d0d",
+        },
+        "16/declaration/body/28/argument/3/5/3/expression/right/1/3": {
+          content: {
+            de: "Bereiten Sie Ihr Dokument für die Analyse vor",
+            en: "Preparing your document for analysis",
+            es: "Preparando tu documento para el análisis",
+            fr: "Préparation de votre document pour l'analyse",
+            it: "Preparazione del documento per l'analisi",
+          },
+          hash: "58e3a369ff5f180cbce77cfc0f5c0f26",
+        },
+        "16/declaration/body/28/argument/3/5/3/expression/right/3/1/1/1": {
+          content: {
+            de: "Upload Fortschritt",
+            en: "Upload Progress",
+            es: "Progreso de Subida",
+            fr: "Progression du téléchargement",
+            it: "Progresso Caricamento",
+          },
+          hash: "8f59cb61f35ed0a40ff197ca80dabcfe",
+        },
+        "16/declaration/body/28/argument/3/5/3/expression/right/3/1/1/3": {
+          content: {
+            de: "{uploadProgress}%",
+            en: "{uploadProgress}%",
+            es: "{uploadProgress}%",
+            fr: "{uploadProgress}%",
+            it: "{uploadProgress}%",
+          },
+          hash: "5ffe4a4526d680df3dc6d6e7880cbc9a",
+        },
+        "16/declaration/body/28/argument/3/5/3/expression/right/3/3/1/3": {
+          content: {
+            de: "Datei wird in sicheren Speicher hochgeladen",
+            en: "Uploading file to secure storage",
+            es: "Subiendo archivo al almacenamiento seguro",
+            fr: "Téléchargement du fichier dans le stockage sécurisé",
+            it: "Caricamento del file nella memoria sicura",
+          },
+          hash: "b6dcb60a6dde40bf54c4ea01e9d24bf5",
+        },
+        "16/declaration/body/28/argument/3/5/3/expression/right/3/3/3/3": {
+          content: {
+            de: "Dokumentaufzeichnung wird erstellt",
+            en: "Creating document record",
+            es: "Creando registro de documento",
+            fr: "Création de l'enregistrement du document",
+            it: "Creazione del record del documento",
+          },
+          hash: "77aec6d40f1a736ba94dce1cebe2bb75",
+        },
+        "16/declaration/body/28/argument/3/5/3/expression/right/3/3/5/3": {
+          content: {
+            de: "Auf Analyse vorbereiten",
+            en: "Preparing for analysis",
+            es: "Preparando para el análisis",
+            fr: "Préparation pour l'analyse",
+            it: "Preparazione per l'analisi",
+          },
+          hash: "4833a72384a89d4072160919fd85a604",
+        },
+        "16/declaration/body/28/argument/3/5/5/expression/right/1/1": {
+          content: {
+            de: "<element:Zap></element:Zap> Dokument wird analysiert",
+            en: "<element:Zap></element:Zap> Analyzing Document",
+            es: "<element:Zap></element:Zap> Analizando Documento",
+            fr: "<element:Zap></element:Zap> Analyse du document",
+            it: "<element:Zap></element:Zap> Analisi Documento",
+          },
+          hash: "31ca702b22879efce478e03ab31056c4",
+        },
+        "16/declaration/body/28/argument/3/5/5/expression/right/1/3": {
+          content: {
+            de: "Durchführung einer umfassenden Verstehbarkeitsanalyse",
+            en: "Running comprehensive comprehensibility analysis",
+            es: "Ejecutando análisis de comprensibilidad integral",
+            fr: "Exécution d'une analyse de compréhensibilité complète",
+            it: "Esecuzione di un'analisi di comprensibilità completa",
+          },
+          hash: "88ce5f6ed6162ec004e4cfa52690a256",
+        },
+        "16/declaration/body/28/argument/3/5/5/expression/right/3/1/1/1": {
+          content: {
+            de: "Analyse Fortschritt",
+            en: "Analysis Progress",
+            es: "Progreso del Análisis",
+            fr: "Progression de l'analyse",
+            it: "Progresso Analisi",
+          },
+          hash: "4a9dfef75b28d92cdcbda78ff4f83729",
+        },
+        "16/declaration/body/28/argument/3/5/5/expression/right/3/1/1/3": {
+          content: {
+            de: "{uploadProgress}%",
+            en: "<function:Math.round/>%",
+            es: "{uploadProgress}%",
+            fr: "{uploadProgress}%",
+            it: "{uploadProgress}%",
+          },
+          hash: "5ffe4a4526d680df3dc6d6e7880cbc9a",
+        },
+        "16/declaration/body/28/argument/3/5/5/expression/right/3/3/1/expression/0/body/5/expression/right":
+          {
+            content: {
+              de: "Fertig",
+              en: "Done",
+              es: "Hecho",
+              fr: "Terminé",
+              it: "Fatto",
+            },
+            hash: "ffd408fa29d5bc9039ef8ea1b9b699bb",
+          },
+        "16/declaration/body/28/argument/3/5/5/expression/right/3/3/1/expression/0/body/7/expression/right":
+          {
+            content: {
+              de: "<function:Math.round/>%",
+              en: "<function:Math.round/>%",
+              es: "<function:Math.round/>%",
+              fr: "<function:Math.round/>%",
+              it: "<function:Math.round/>%",
+            },
+            hash: "b18b0715d5ed5226537cb0af05a603d2",
+          },
+        "16/declaration/body/28/argument/3/5/5/expression/right/3/5/1/3/1": {
+          content: {
+            de: "KI-Analyse läuft",
+            en: "AI Analysis in Progress",
+            es: "Análisis de IA en Progreso",
+            fr: "Analyse AI en cours",
+            it: "Analisi AI in Corso",
+          },
+          hash: "0a342256cc4f0d802d95b8f3bc03cac2",
+        },
+        "16/declaration/body/28/argument/3/5/5/expression/right/3/5/1/3/3": {
+          content: {
+            de: "Unsere KI untersucht Ihr Dokument auf Lesbarkeit, Konformität und Verbesserungsmöglichkeiten. Dies dauert in der Regel 2-5 Minuten.",
+            en: "Our AI is examining your document for readability, compliance, and improvement opportunities. This typically takes 2-5 minutes.",
+            es: "Nuestra IA está examinando tu documento para legibilidad, cumplimiento y oportunidades de mejora. Esto generalmente toma de 2 a 5 minutos.",
+            fr: "Notre IA examine votre document pour la lisibilité, la conformité et les opportunités d'amélioration. Cela prend généralement 2 à 5 minutes.",
+            it: "Il nostro AI sta esaminando il tuo documento per leggibilità, conformità e opportunità di miglioramento. Questo di solito richiede 2-5 minuti.",
+          },
+          hash: "eea17476da37cdacc067a0e31e4df36d",
+        },
+        "16/declaration/body/28/argument/3/5/5/expression/right/3/7/expression/right/1/3/1":
+          {
+            content: {
+              de: "Analysefehler",
+              en: "Analysis Error",
+              es: "Error de Análisis",
+              fr: "Erreur d'analyse",
+              it: "Errore di Analisi",
+            },
+            hash: "809aa411addc2f700b3fa05b23f86cdf",
+          },
+        "16/declaration/body/28/argument/3/5/7/expression/right/1/1": {
+          content: {
+            de: "<element:CheckCircle></element:CheckCircle> Analyse abgeschlossen",
+            en: "<element:CheckCircle></element:CheckCircle> Analysis Complete",
+            es: "<element:CheckCircle></element:CheckCircle> Análisis Completo",
+            fr: "<element:CheckCircle></element:CheckCircle> Analyse terminée",
+            it: "<element:CheckCircle></element:CheckCircle> Analisi Completata",
+          },
+          hash: "18f37f4e9f66a731f497389423b1b6f4",
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/1/3": {
+          content: {
+            de: "Ihr Dokument wurde erfolgreich analysiert",
+            en: "Your document has been successfully analyzed",
+            es: "Tu documento ha sido analizado con éxito",
+            fr: "Votre document a été analysé avec succès",
+            it: "Il tuo documento è stato analizzato con successo",
+          },
+          hash: "4c676732460a851cb18da3f47d5360f2",
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/3/1/3/1": {
+          content: {
+            de: "Analyse abgeschlossen!",
+            en: "Analysis Complete!",
+            es: "Análisis Completo!",
+            fr: "Analyse terminée !",
+            it: "Analisi Completata!",
+          },
+          hash: "f1cb0588852783b9676c6b939eff52d8",
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/3/1/3/3": {
+          content: {
+            de: "Ihr Dokument wurde vollständig analysiert mit umfassenden Erkenntnissen und Empfehlungen.",
+            en: "Your document has been fully analyzed with comprehensive insights and recommendations.",
+            es: "Tu documento ha sido completamente analizado con información integral e ideas.",
+            fr: "Votre document a été entièrement analysé avec des informations et des recommandations complètes.",
+            it: "Il tuo documento è stato completamente analizzato con approfondimenti e raccomandazioni complete.",
+          },
+          hash: "70016b025a06542bbe11583d2d223ebf",
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/3/3/1/1": {
+          content: {
+            de: "✓",
+            en: "✓",
+            es: "✓",
+            fr: "✓",
+            it: "✓",
+          },
+          hash: "c98e649bd9091a5238d8543d65e6c130",
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/3/3/1/3": {
+          content: {
+            de: "Hochgeladen",
+            en: "Uploaded",
+            es: "Subido",
+            fr: "Téléchargé",
+            it: "Caricato",
+          },
+          hash: "cc04b77fa4bfd479fc80b05a769d49ce",
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/3/3/3/1": {
+          content: {
+            de: "✓",
+            en: "✓",
+            es: "✓",
+            fr: "✓",
+            it: "✓",
+          },
+          hash: "c98e649bd9091a5238d8543d65e6c130",
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/3/3/3/3": {
+          content: {
+            de: "Analysiert",
+            en: "Analyzed",
+            es: "Analizado",
+            fr: "Analysé",
+            it: "Analizzato",
+          },
+          hash: "72b7a117ea2d60eaa4abfaa6048e6208",
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/3/3/5/1": {
+          content: {
+            de: "✓",
+            en: "✓",
+            es: "✓",
+            fr: "✓",
+            it: "✓",
+          },
+          hash: "c98e649bd9091a5238d8543d65e6c130",
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/3/3/5/3": {
+          content: {
+            de: "Bereit",
+            en: "Ready",
+            es: "Listo",
+            fr: "Prêt",
+            it: "Pronto",
+          },
+          hash: "437c0eea608e15ad5cdab94bde2f4b48",
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/3/5/1": {
+          content: {
+            de: "Analyseergebnisse anzeigen",
+            en: "View Analysis Results",
+            es: "Ver Resultados del Análisis",
+            fr: "Voir les résultats de l'analyse",
+            it: "Visualizza Risultati Analisi",
+          },
+          hash: "d0996e7dc9efd21995fd1669f2db9486",
+        },
+        "16/declaration/body/28/argument/3/5/7/expression/right/3/5/3": {
+          content: {
+            de: "Zum Dashboard zurückkehren",
+            en: "Return to Dashboard",
+            es: "Volver al Panel de Control",
+            fr: "Retour au Tableau de bord",
+            it: "Torna alla Dashboard",
+          },
+          hash: "a7c8c822534c8b04c02595055bdc0c14",
+        },
       },
     },
     "../app/page.tsx": {
@@ -2744,11 +6300,11 @@ export default {
           },
         "5/declaration/body/2/argument/1/expression/0/body/2/argument/1/3/3": {
           content: {
-            de: "<function:percentage.toFixed/>%",
+            de: "{uploadProgress}%",
             en: "<function:percentage.toFixed/>%",
-            es: "<function:percentage.toFixed/>%",
-            fr: "<function:percentage.toFixed/>%",
-            it: "<function:percentage.toFixed/>%",
+            es: "{uploadProgress}%",
+            fr: "{uploadProgress}%",
+            it: "{uploadProgress}%",
           },
           hash: "5ffe4a4526d680df3dc6d6e7880cbc9a",
         },
