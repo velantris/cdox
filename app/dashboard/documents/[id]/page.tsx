@@ -5,6 +5,7 @@ import { DashboardHeader } from "@/components/dashboard-header"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useToast } from "@/components/ui/use-toast"
 import {
@@ -19,7 +20,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useEffect, useRef, useState } from "react"
+import { use, useEffect, useRef, useState } from "react"
 
 async function getDocumentAndAnalysis(id: string) {
   const response = await fetch(`/api/documents/${id}`)
@@ -32,21 +33,30 @@ async function getDocumentAndAnalysis(id: string) {
   return response.json()
 }
 
-export default function DocumentAnalysisPage({ params }: { params: { id: string } }) {
+export default function DocumentAnalysisPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   const [document, setDocument] = useState<any>(null)
   const [analysis, setAnalysis] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [severityFilter, setSeverityFilter] = useState<string>("All")
   const router = useRouter()
   const { toast } = useToast()
   // Store polling interval to allow cleanup on unmount
   const pollIntervalRef = useRef<NodeJS.Timeout | null>(null)
+  // Calculate counts per severity and filtered issues list
+  const severityCounts: Record<string, number> = analysis?.analysis?.issues.reduce((acc: Record<string, number>, issue: any) => {
+    const sev = issue.severity
+    acc[sev] = (acc[sev] || 0) + 1
+    return acc
+  }, {} as Record<string, number>) || {}
+  const filteredIssues = analysis?.analysis?.issues.filter((issue: any) => severityFilter === "All" || issue.severity === severityFilter) || []
 
   // Small helper to capitalise first letter
   const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 
   const adaptIssues = (rawIssues: any[] = []) => {
-    return rawIssues.map((issue) => {
+    return rawIssues.map((issue, index) => {
       // Normalise severity – map grading/score to Critical/High/Medium/Low buckets
       let severity = issue.severity || issue.grading || "Low"
       if (typeof severity === "string") {
@@ -61,6 +71,7 @@ export default function DocumentAnalysisPage({ params }: { params: { id: string 
       }
 
       return {
+        status: issue.status || "Open",
         // Fallback chain for each expected property
         severity,
         type: issue.type || issue.issue_type || issue.label || "General",
@@ -69,13 +80,14 @@ export default function DocumentAnalysisPage({ params }: { params: { id: string 
         issue_explanation: issue.issue_explanation || issue.explanation || "",
         suggested_rewrite: issue.suggested_rewrite || issue.suggestedRewrite || "",
         ...issue, // keep any additional fields for future use
+        id: issue.id ?? index.toString(),
       }
     })
   }
 
   const loadData = async () => {
     try {
-      const data = await getDocumentAndAnalysis(params.id)
+      const data = await getDocumentAndAnalysis(id)
       if (data) {
         if (data.analysis?.analysis?.issues) {
           data.analysis.analysis.issues = adaptIssues(data.analysis.analysis.issues)
@@ -97,7 +109,7 @@ export default function DocumentAnalysisPage({ params }: { params: { id: string 
 
   useEffect(() => {
     loadData()
-  }, [params.id])
+  }, [id])
 
   const handleReanalysis = async () => {
     setIsAnalyzing(true)
@@ -111,7 +123,7 @@ export default function DocumentAnalysisPage({ params }: { params: { id: string 
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ doc_id: params.id }),
+        body: JSON.stringify({ doc_id: id }),
       })
 
       if (!response.ok) {
@@ -120,7 +132,7 @@ export default function DocumentAnalysisPage({ params }: { params: { id: string 
 
       // Poll for results
       pollIntervalRef.current = setInterval(async () => {
-        const newData = await getDocumentAndAnalysis(params.id)
+        const newData = await getDocumentAndAnalysis(id)
         if (newData?.analysis?._id !== analysis?._id) {
           setAnalysis(newData.analysis)
           if (pollIntervalRef.current) {
@@ -145,6 +157,27 @@ export default function DocumentAnalysisPage({ params }: { params: { id: string 
       setIsAnalyzing(false)
     }
   }
+
+  // Define handler for issue status change
+  const handleStatusChange = async (issueId: string, newStatus: string) => {
+    try {
+      const response = await fetch(`/api/documents/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ issueId, status: newStatus }),
+      });
+      if (!response.ok) throw new Error("Failed to update status");
+      const data = await response.json();
+      if (data.analysis && Array.isArray(data.analysis.analysis.issues)) {
+        data.analysis.analysis.issues = adaptIssues(data.analysis.analysis.issues);
+      }
+      setAnalysis(data.analysis);
+      toast({ title: "Status Updated", description: `Status set to ${newStatus}.` });
+    } catch (error) {
+      console.error("Failed to update issue status:", error);
+      toast({ title: "Error", description: "Could not update issue status.", variant: "destructive" });
+    }
+  };
 
   // Clear polling interval on component unmount to avoid memory leaks
   useEffect(() => {
@@ -183,12 +216,10 @@ export default function DocumentAnalysisPage({ params }: { params: { id: string 
             </Button>
             <Button variant="outline">
               <Share className="w-4 h-4 mr-2" />
-              Share
             </Button>
             <Button variant="outline" asChild>
               <a href={document.url} download>
                 <Download className="w-4 h-4 mr-2" />
-                Download
               </a>
             </Button>
           </>
@@ -278,73 +309,116 @@ export default function DocumentAnalysisPage({ params }: { params: { id: string 
                 </TabsContent>
 
                 <TabsContent value="issues" className="space-y-6">
-                  {analysis.analysis.issues.map((issue: any) => (
-                    <Card key={issue.id}>
-                      <CardHeader>
-                        <div className="flex items-start justify-between">
-                          <div className="flex items-start space-x-3">
-                            <div
-                              className={`w-8 h-8 rounded-lg flex items-center justify-center ${issue.severity === "Critical"
-                                ? "bg-red-100"
-                                : issue.severity === "High"
-                                  ? "bg-orange-100"
-                                  : issue.severity === "Medium"
-                                    ? "bg-yellow-100"
-                                    : "bg-green-100"
-                                }`}
-                            >
-                              {issue.severity === "Critical" ? (
-                                <AlertTriangle className="w-4 h-4 text-red-500" />
-                              ) : issue.severity === "High" ? (
-                                <AlertCircle className="w-4 h-4 text-orange-500" />
-                              ) : issue.severity === "Medium" ? (
-                                <Info className="w-4 h-4 text-yellow-500" />
-                              ) : (
-                                <CheckCircle className="w-4 h-4 text-green-500" />
-                              )}
-                            </div>
-                            <div>
-                              <div className="flex items-center space-x-2">
-                                <Badge
-                                  variant={
-                                    issue.severity === "Critical"
-                                      ? "destructive"
-                                      : issue.severity === "High"
-                                        ? "destructive"
-                                        : issue.severity === "Medium"
-                                          ? "secondary"
-                                          : "default"
-                                  }
+                  <div className="flex justify-between items-center mb-4">
+                    <Select value={severityFilter} onValueChange={setSeverityFilter}>
+                      <SelectTrigger className="w-[150px]">
+                        <SelectValue placeholder="Filter by severity" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="All">All</SelectItem>
+                        <SelectItem value="Critical">Critical</SelectItem>
+                        <SelectItem value="High">High</SelectItem>
+                        <SelectItem value="Medium">Medium</SelectItem>
+                        <SelectItem value="Low">Low</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <div className="flex space-x-2">
+                      <Badge variant="destructive">{severityCounts['Critical'] ?? 0}</Badge>
+                      <Badge variant="destructive">{severityCounts['High'] ?? 0}</Badge>
+                      <Badge variant="secondary">{severityCounts['Medium'] ?? 0}</Badge>
+                      <Badge>{severityCounts['Low'] ?? 0}</Badge>
+                    </div>
+                  </div>
+                  {filteredIssues.length === 0 ? (
+                    <p className="text-center text-gray-500">
+                      {severityFilter === 'All'
+                        ? 'No issues found.'
+                        : `No ${severityFilter.toLowerCase()} issues found.`}
+                    </p>
+                  ) : (
+                    <>
+                      {filteredIssues.map((issue: any) => (
+                        <Card key={issue.id}>
+                          <CardHeader>
+                            <div className="flex items-start justify-between">
+                              <div className="flex items-start space-x-3">
+                                <div
+                                  className={`w-8 h-8 rounded-lg flex items-center justify-center ${issue.severity === "Critical"
+                                    ? "bg-red-100"
+                                    : issue.severity === "High"
+                                      ? "bg-orange-100"
+                                      : issue.severity === "Medium"
+                                        ? "bg-yellow-100"
+                                        : "bg-green-100"
+                                    }`}
                                 >
-                                  {issue.severity}
-                                </Badge>
-                                <Badge variant="outline">{issue.type}</Badge>
-                                <span className="text-sm text-gray-500">{issue.section}</span>
+                                  {issue.severity === "Critical" ? (
+                                    <AlertTriangle className="w-4 h-4 text-red-500" />
+                                  ) : issue.severity === "High" ? (
+                                    <AlertCircle className="w-4 h-4 text-orange-500" />
+                                  ) : issue.severity === "Medium" ? (
+                                    <Info className="w-4 h-4 text-yellow-500" />
+                                  ) : (
+                                    <CheckCircle className="w-4 h-4 text-green-500" />
+                                  )}
+                                </div>
+                                <div>
+                                  <div className="flex items-center space-x-2">
+                                    <Badge
+                                      variant={
+                                        issue.severity === "Critical"
+                                          ? "destructive"
+                                          : issue.severity === "High"
+                                            ? "destructive"
+                                            : issue.severity === "Medium"
+                                              ? "secondary"
+                                              : "default"
+                                      }
+                                    >
+                                      {issue.severity}
+                                    </Badge>
+                                    <Badge variant="outline">{issue.type}</Badge>
+                                    <span className="text-sm text-gray-500">{issue.section}</span>
+                                  </div>
+                                </div>
+                              </div>
+                              <Select value={issue.status} onValueChange={(val) => handleStatusChange(issue.id, val)}>
+                                <SelectTrigger className="w-[150px]">
+                                  <SelectValue placeholder="Status" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="Open">Open</SelectItem>
+                                  <SelectItem value="Assigned">Assigned</SelectItem>
+                                  <SelectItem value="In Progress">In Progress</SelectItem>
+                                  <SelectItem value="Verified">Verified</SelectItem>
+                                  <SelectItem value="Closed">Closed</SelectItem>
+                                  <SelectItem value="False Positive">False Positive</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </CardHeader>
+                          <CardContent className="space-y-4">
+                            <div>
+                              <h4 className="font-medium mb-2">Original Text:</h4>
+                              <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                                <p className="text-gray-800">{issue.original_text}</p>
                               </div>
                             </div>
-                          </div>
-                        </div>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div>
-                          <h4 className="font-medium mb-2">Original Text:</h4>
-                          <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                            <p className="text-gray-800">{issue.original_text}</p>
-                          </div>
-                        </div>
-                        <div>
-                          <h4 className="font-medium mb-2">Issue Explanation:</h4>
-                          <p className="text-gray-600">{issue.issue_explanation}</p>
-                        </div>
-                        <div>
-                          <h4 className="font-medium mb-2">Suggested Rewrite:</h4>
-                          <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                            <p className="text-gray-800">{issue.suggested_rewrite}</p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                            <div>
+                              <h4 className="font-medium mb-2">Issue Explanation:</h4>
+                              <p className="text-gray-600">{issue.issue_explanation}</p>
+                            </div>
+                            <div>
+                              <h4 className="font-medium mb-2">Suggested Rewrite:</h4>
+                              <div className="bg-green-50 border border-green-200 rounded-lg p-3">
+                                <p className="text-gray-800">{issue.suggested_rewrite}</p>
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </>
+                  )}
                 </TabsContent>
               </Tabs>
             </div>

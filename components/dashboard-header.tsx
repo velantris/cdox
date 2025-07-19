@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation"
 import { SignOutButton } from "@/components/sign-out-button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
-
+import { LocaleSwitcher } from "lingo.dev/react-client"
 import { FileText, Upload } from "lucide-react"
 
 interface DashboardHeaderProps {
@@ -49,6 +49,8 @@ export function DashboardHeader({ actions }: DashboardHeaderProps) {
                         </nav>
                     </div>
                     <div className="flex items-center space-x-4">
+                        <LocaleSwitcher locales={["en", "es", "fr", "de", "it"]} />
+
                         <ThemeToggle />
                         <SignOutButton />
                         <Link href="/dashboard/doc-new">

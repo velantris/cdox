@@ -1,4 +1,5 @@
 import { makePrompt } from "@/app/api/analyze/prompt-maker";
+import { v4 as uuidv4 } from 'uuid';
 import connectDB from "./db/client";
 import { Analysis, Document as DocModel } from "./db/models";
 
@@ -218,6 +219,11 @@ export async function runAnalysis(
     }
 
     // 5. Combine results intelligently
+    const combinedIssues = [
+        ...(openaiParsed?.issues || []),
+        ...(geminiParsed?.issues || []),
+    ].map((issue: any) => ({ ...issue, status: "Open" }));
+
     return {
         summary: openaiParsed?.summary || geminiParsed?.summary || "",
         recommendations: Array.from(new Set([
@@ -228,10 +234,7 @@ export async function runAnalysis(
             ([openaiParsed?.score, geminiParsed?.score].filter((n) => typeof n === "number") as number[]).reduce((a, b) => a + b, 0) /
             ([openaiParsed?.score, geminiParsed?.score].filter((n) => typeof n === "number").length || 1)
         ),
-        issues: [
-            ...(openaiParsed?.issues || []),
-            ...(geminiParsed?.issues || []),
-        ],
+        issues: combinedIssues,
         providerRaw: {
             openai: openaiParsed,
             gemini: geminiParsed,
@@ -250,12 +253,16 @@ export async function saveAnalysis(
 ) {
     await connectDB();
 
+    // Assign unique IDs to each issue for future status updates
+    const issuesWithIds = (analysis.issues || []).map((issue: any) => ({ ...issue, id: uuidv4() }));
+    const analysisToSave = { ...analysis, issues: issuesWithIds };
+
     const analysisData: any = {
         documentType,
         targetAudience,
         jurisdiction,
         regulations,
-        analysis,
+        analysis: analysisToSave,
     };
 
     if (doc_id) {
