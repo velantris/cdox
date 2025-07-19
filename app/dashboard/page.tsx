@@ -73,7 +73,9 @@ export default async function DashboardPage() {
   let lowIssues = 0
 
   // Fetch all issues for the analyses we have
-  const analysisIds = Array.from(latestAnalysisMap.values()).map(a => a.analysis_id);
+  const analysisIds = Array.from(latestAnalysisMap.values())
+    .map(a => a.analysis_id)
+    .filter(id => id !== undefined && id !== null);
   let allIssues: any[] = [];
 
   if (analysisIds.length > 0) {
@@ -125,7 +127,7 @@ export default async function DashboardPage() {
     const a = latestAnalysisMap.get(doc.doc_id);
     const score: number | undefined = a?.analysis?.score;
     
-    const docIssues = allIssues.filter(issue => issue.analysis_id === a?.analysis_id);
+    const docIssues = a?.analysis_id ? allIssues.filter(issue => issue.analysis_id === a.analysis_id) : [];
     
     return {
       id: doc.doc_id,
