@@ -70,5 +70,35 @@ const analysisSchema = new Schema<IAnalysis>({
 
 const Analysis = mongoose.models.Analysis || mongoose.model("Analysis", analysisSchema);
 
-export { Analysis, Document };
+interface IIssue extends MongooseDocument {
+    issue_id: string;
+    analysis_id: string;
+    status: string;
+    severity: string;
+    type: string;
+    section: string;
+    original_text: string;
+    issue_explanation: string;
+    suggested_rewrite: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+const issuesSchema = new Schema<IIssue>({
+    issue_id: { type: String, required: true, unique: true, default: uuidv4, index: true },
+    analysis_id: { type: String, required: true, index: true },
+    status: { type: String, required: true, default: "Open" },
+    severity: { type: String, required: true },
+    type: { type: String, required: true },
+    section: { type: String, required: true },
+    original_text: { type: String, required: true },
+    issue_explanation: { type: String, required: true },
+    suggested_rewrite: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now },
+});
+
+const Issue = mongoose.models.Issue || mongoose.model("Issue", issuesSchema);
+
+export { Analysis, Document, Issue };
 
