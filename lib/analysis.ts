@@ -1,7 +1,7 @@
 import { makePrompt } from "@/app/api/analyze/prompt-maker";
 import { v4 as uuidv4 } from 'uuid';
 import connectDB from "./db/client";
-import { Analysis, Document as DocModel } from "./db/models";
+import { Analysis, Document as DocModel, Issue } from "./db/models";
 
 // AI SDK imports
 import { google } from "@ai-sdk/google";
@@ -253,16 +253,17 @@ export async function saveAnalysis(
 ) {
     await connectDB();
 
-    // Assign unique IDs to each issue for future status updates
-    const issuesWithIds = (analysis.issues || []).map((issue: any) => ({ ...issue, id: uuidv4() }));
-    const analysisToSave = { ...analysis, issues: issuesWithIds };
-
     const analysisData: any = {
         documentType,
         targetAudience,
         jurisdiction,
         regulations,
-        analysis: analysisToSave,
+        analysis: {
+            summary: analysis.summary,
+            recommendations: analysis.recommendations,
+            score: analysis.score,
+            providerRaw: analysis.providerRaw,
+        },
     };
 
     if (doc_id) {
@@ -272,6 +273,23 @@ export async function saveAnalysis(
     console.log("Saving analysis data:", JSON.stringify(analysisData, null, 2));
 
     const analysisRecord = await Analysis.create(analysisData);
+
+    if (analysis.issues && analysis.issues.length > 0) {
+        const issuesWithIds = analysis.issues.map((issue: any) => ({
+            issue_id: uuidv4(),
+            analysis_id: analysisRecord.analysis_id,
+            status: issue.status || "Open",
+            severity: issue.grading || issue.severity || "medium",
+            type: issue.issue_type || issue.type || "general",
+            section: issue.section_category || issue.section || "general",
+            original_text: issue.original_text || "",
+            issue_explanation: issue.issue_explanation || "",
+            suggested_rewrite: issue.suggested_rewrite || "",
+        }));
+
+        await Issue.insertMany(issuesWithIds);
+        console.log(`Saved ${issuesWithIds.length} issues to separate collection`);
+    }
 
     return analysisRecord._id;
 }

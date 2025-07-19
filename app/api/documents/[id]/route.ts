@@ -1,5 +1,5 @@
 import connectDB from "@/lib/db/client";
-import { Analysis, Document } from "@/lib/db/models";
+import { Analysis, Document, Issue } from "@/lib/db/models";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
@@ -20,8 +20,13 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         }
 
         const analysis = await Analysis.findOne({ doc_id: doc_id }).sort({ createdAt: -1 });
+        
+        let issues = [];
+        if (analysis) {
+            issues = await Issue.find({ analysis_id: analysis.analysis_id }).sort({ createdAt: 1 });
+        }
 
-        return NextResponse.json({ document, analysis });
+        return NextResponse.json({ document, analysis, issues });
 
     } catch (error) {
         console.error(`Failed to fetch document ${params.id}:`, error);
@@ -38,15 +43,17 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     if (!issueId || !status) {
         return NextResponse.json({ error: "issueId and status are required" }, { status: 400 });
     }
-    const analysisRecord = await Analysis.findOne({ doc_id }).sort({ createdAt: -1 });
-    if (!analysisRecord) {
-        return NextResponse.json({ error: "Analysis not found" }, { status: 404 });
-    }
-    // Update issue status in the analysis document
-    const updatedIssues = (analysisRecord.analysis as any).issues.map((iss: any) =>
-        iss.id === issueId ? { ...iss, status } : iss
+    
+    // Update issue status in the separate Issues collection
+    const updatedIssue = await Issue.findOneAndUpdate(
+        { issue_id: issueId },
+        { status, updatedAt: new Date() },
+        { new: true }
     );
-    (analysisRecord.analysis as any).issues = updatedIssues;
-    await analysisRecord.save();
-    return NextResponse.json({ analysis: analysisRecord });
+    
+    if (!updatedIssue) {
+        return NextResponse.json({ error: "Issue not found" }, { status: 404 });
+    }
+    
+    return NextResponse.json({ issue: updatedIssue });
 }

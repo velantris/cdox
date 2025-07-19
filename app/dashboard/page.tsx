@@ -72,21 +72,43 @@ export default async function DashboardPage() {
   let mediumIssues = 0
   let lowIssues = 0
 
+  // Fetch all issues for the analyses we have
+  const analysisIds = Array.from(latestAnalysisMap.values())
+    .map(a => a.analysis_id)
+    .filter(id => id !== undefined && id !== null);
+  let allIssues: any[] = [];
+
+  if (analysisIds.length > 0) {
+    try {
+      const issuesPromises = analysisIds.map(async (analysisId) => {
+        const response = await fetch(`/api/issues?analysis_id=${analysisId}`);
+        if (response.ok) {
+          const data = await response.json();
+          return data.issues || [];
+        }
+        return [];
+      });
+      
+      const issuesArrays = await Promise.all(issuesPromises);
+      allIssues = issuesArrays.flat();
+    } catch (error) {
+      console.error("Failed to fetch issues for dashboard:", error);
+    }
+  }
+
   for (const analysis of latestAnalysisMap.values()) {
     const score = analysis.analysis?.score
     if (typeof score === "number") {
       scores.push(score)
     }
+  }
 
-    const issues: any[] = analysis.analysis?.issues || []
-    for (const issue of issues) {
-      let severity: string =
-        (issue.severity || issue.grading || "Low").toString().toLowerCase()
-      if (severity === "critical") criticalIssues += 1
-      else if (severity === "high" || severity === "severe") highIssues += 1
-      else if (severity === "medium") mediumIssues += 1
-      else lowIssues += 1
-    }
+  for (const issue of allIssues) {
+    let severity: string = (issue.severity || "Low").toString().toLowerCase();
+    if (severity === "critical") criticalIssues += 1;
+    else if (severity === "high" || severity === "severe") highIssues += 1;
+    else if (severity === "medium") mediumIssues += 1;
+    else lowIssues += 1;
   }
 
   const averageScore = scores.length
@@ -102,8 +124,11 @@ export default async function DashboardPage() {
 
   // Prepare recent documents (up to 4)
   const recentDocs: RecentDoc[] = documents.slice(0, 4).map((doc) => {
-    const a = latestAnalysisMap.get(doc.doc_id)
-    const score: number | undefined = a?.analysis?.score
+    const a = latestAnalysisMap.get(doc.doc_id);
+    const score: number | undefined = a?.analysis?.score;
+    
+    const docIssues = a?.analysis_id ? allIssues.filter(issue => issue.analysis_id === a.analysis_id) : [];
+    
     return {
       id: doc.doc_id,
       title: doc.title,
@@ -113,8 +138,8 @@ export default async function DashboardPage() {
       status: a ? "Analyzed" : "Pending",
       lastUpdated: getRelativeTime(doc.updatedAt || doc.createdAt),
       assignedTo: "Legal Team", // placeholder until assignment feature exists
-      issues: a?.analysis?.issues?.length || 0,
-    }
+      issues: docIssues.length,
+    };
   })
 
   // Build issues summary array for component
