@@ -1,5 +1,5 @@
 "use client"
-// upload the file get the url pass on with other data to the api/document/new route
+// upload the file using Convex action and create scan record
 import type React from "react"
 
 import { DashboardHeader } from "@/components/dashboard-header"
@@ -11,11 +11,13 @@ import { Label } from "@/components/ui/label"
 import { Progress } from "@/components/ui/progress"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { useUser } from "@/lib/auth/hooks"
+
 import { AlertCircle, ArrowLeft, CheckCircle, Clock, Loader2, Upload, Zap } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
+import { useAction } from "convex/react"
+import { api } from "@/convex/_generated/api"
 
 interface AnalysisStep {
   id: string
@@ -40,8 +42,11 @@ export default function UploadPage() {
   const [currentDocId, setCurrentDocId] = useState<string | null>(null)
   const [analysisError, setAnalysisError] = useState<string | null>(null)
   const router = useRouter()
-  const { user } = useUser()
   const pollIntervalRef = useRef<NodeJS.Timeout | null>(null)
+  
+  // Convex actions for uploading documents and analysis
+  const uploadDocument = useAction(api.upload.uploadDocument)
+  const performAnalysis = useAction(api.analysis_action.performDocumentAnalysis)
 
   const [analysisSteps, setAnalysisSteps] = useState<AnalysisStep[]>([
     { id: "extraction", label: "Extracting text content", status: "pending" },
@@ -61,45 +66,7 @@ export default function UploadPage() {
     }
   }, [])
 
-  const pollAnalysisStatus = async (docId: string) => {
-    try {
-      const response = await fetch(`/api/documents/${docId}/status`)
-      if (response.ok) {
-        const status = await response.json()
 
-        if (status.analysisComplete) {
-          // Analysis is complete
-          setAnalysisSteps(prev => prev.map(step => ({ ...step, status: "completed" })))
-          setAnalysisProgress(100)
-          if (pollIntervalRef.current) {
-            clearInterval(pollIntervalRef.current)
-          }
-
-          setTimeout(() => {
-            setUploadStep("complete")
-          }, 1000)
-
-          return
-        }
-
-        if (status.analysisError) {
-          setAnalysisError(status.analysisError)
-          if (pollIntervalRef.current) {
-            clearInterval(pollIntervalRef.current)
-          }
-          return
-        }
-
-        // Update steps based on current progress
-        if (status.currentStep) {
-          updateAnalysisSteps(status.currentStep, status.progress || 0)
-        }
-
-      }
-    } catch (error) {
-      console.error("Error polling analysis status:", error)
-    }
-  }
 
   const updateAnalysisSteps = (currentStepId: string, progress: number) => {
     setAnalysisSteps(prev => {
@@ -226,82 +193,59 @@ export default function UploadPage() {
       // initial progress indicator
       setUploadProgress(20)
 
-      // 1. upload file to blob storage and grab URL
-      const uploadRes = await fetch(`/api/upload?filename=${encodeURIComponent(selectedFile.name)}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": selectedFile.type || "application/octet-stream"
-        },
-        body: selectedFile
+      // Convert file to bytes for Convex action
+      const fileBuffer = await selectedFile.arrayBuffer()
+
+      setUploadProgress(40)
+
+      // Use Convex action to upload file and create scan record
+      const result = await uploadDocument({
+        filename: selectedFile.name,
+        fileData: fileBuffer,
+        contentType: selectedFile.type || "application/octet-stream",
+        scanMetadata: {
+          name: title || selectedFile.name,
+          language: "english", // Default to english for now
+          documentType: docType || "other",
+          targetAudience: audience || "general",
+          jurisdiction: jurisdiction || "eu",
+          regulations: "GDPR"
+        }
       })
 
-      if (!uploadRes.ok) throw new Error("Upload failed")
-
-      const { url } = await uploadRes.json()
-
-      setUploadProgress(60)
-
-      // 2. create document record with metadata
-      const docRes = await fetch("/api/document/new", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title,
-          url,
-          userId: user?.id,
-          options: {
-            type: docType,
-            target_audience: audience,
-            jurisdiction,
-            team_id: team,
-            version: versionTag,
-            additional_instructions: notes,
-            compliance: []
-          }
-        })
-      })
-
-      if (!docRes.ok) throw new Error("Failed to create document record")
-
-      const newDoc = await docRes.json()
-      setCurrentDocId(newDoc.doc_id)
-
+      setCurrentDocId(result.scanId)
       setUploadProgress(100)
 
       // Wait a moment then start analysis step
-      setTimeout(() => {
+      setTimeout(async () => {
         setUploadStep("analyzing")
 
-        // Start analysis
-        fetch("/api/analyze", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            doc_id: newDoc.doc_id,
-            documentType: docType,
-            targetAudience: audience,
-            jurisdiction,
-            regulations: "GDPR"
-          })
-        }).catch((error) => {
-          console.error("Analysis failed:", error)
-          setAnalysisError("Analysis failed to start. Please try again.")
-        })
-
-        // Start progress simulation (replace with real polling when status endpoint is available)
-        simulateAnalysisProgress()
-
-        // Uncomment this when you have a status endpoint:
-        // pollIntervalRef.current = setInterval(() => {
-        //   pollAnalysisStatus(newDoc.doc_id)
-        // }, 2000)
+        try {
+          // Start the analysis process
+          await performAnalysis({ scanId: result.scanId })
+          
+          // Analysis completed successfully
+          setAnalysisSteps(prev => prev.map(step => ({ ...step, status: "completed" })))
+          setAnalysisProgress(100)
+          
+          setTimeout(() => {
+            setUploadStep("complete")
+          }, 1000)
+          
+        } catch (error) {
+          console.error("Analysis error:", error)
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
+          setAnalysisError(`Analysis failed: ${errorMessage}`)
+          setAnalysisSteps(prev => prev.map(step => ({ ...step, status: "error" })))
+        }
 
       }, 1000)
 
     } catch (error) {
       console.error("Upload error:", error)
       setUploadStep("upload")
-      setAnalysisError("Upload failed. Please try again.")
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred'
+      setAnalysisError(`Upload failed: ${errorMessage}`)
     }
   }
 

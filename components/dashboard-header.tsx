@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-import { SignOutButton } from "@/components/sign-out-button"
+
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
 import { LocaleSwitcher } from "lingo.dev/react-client"
@@ -52,7 +52,6 @@ export function DashboardHeader({ actions }: DashboardHeaderProps) {
                         <LocaleSwitcher locales={["en", "es", "fr", "de", "it"]} />
 
                         <ThemeToggle />
-                        <SignOutButton />
                         <Link href="/dashboard/doc-new">
                             <Button>
                                 <Upload className="w-4 h-4 mr-2" />

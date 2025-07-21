@@ -1,4 +1,4 @@
-import { makePrompt } from "@/app/api/analyze/prompt-maker";
+import { makePrompt } from "@/lib/prompts/prompt-maker";
 import { v4 as uuidv4 } from 'uuid';
 import connectDB from "./db/client";
 import { Analysis, Document as DocModel, Issue } from "./db/models";

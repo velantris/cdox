@@ -1,3 +1,5 @@
+"use client"
+
 import { ComprehensibilityGauge } from "@/components/comprehensibility-gauge"
 import { DashboardHeader } from "@/components/dashboard-header"
 import { IssuesSummary, IssueSummaryItem } from "@/components/issues-summary"
@@ -17,9 +19,9 @@ import {
   Users,
 } from "lucide-react"
 import Link from "next/link"
-
-import connectDB from "@/lib/db/client"
-import { Analysis, Document } from "@/lib/db/models"
+import { useQuery } from "convex/react"
+import { api } from "@/convex/_generated/api"
+import { ConvexLoading } from "@/components/convex-error-boundary"
 
 // Helper to map score to letter grade
 const gradeForScore = (score: number | undefined) => {
@@ -43,104 +45,57 @@ const getRelativeTime = (date: Date) => {
   return `${diffDays} day${diffDays > 1 ? "s" : ""} ago`
 }
 
-export default async function DashboardPage() {
-  await connectDB()
+export default function DashboardPage() {
+  // Fetch dashboard data using optimized Convex query
+  const dashboardData = useQuery(api.scans.getDashboardData, { limit: 20 })
 
-  // Fetch documents (limit recent 20 for speed)
-  const documents = (await Document.find({}).sort({ createdAt: -1 }).limit(20).lean()) as any[]
-
-  // Fetch analyses for those documents
-  const docIds = documents.map((d) => d.doc_id)
-  const analyses = (await Analysis.find({ doc_id: { $in: docIds } })
-    .sort({ createdAt: -1 })
-    .lean()) as any[]
-
-  // Keep only the latest analysis per document
-  const latestAnalysisMap = new Map<string, any>()
-  for (const a of analyses) {
-    if (!latestAnalysisMap.has(a.doc_id)) {
-      latestAnalysisMap.set(a.doc_id, a)
-    }
+  // Extract data from the response
+  const scans = dashboardData?.scans || []
+  const stats = dashboardData?.stats || {
+    totalScans: 0,
+    totalAnalyses: 0,
+    totalIssues: 0,
+    averageScore: 0,
+    issuesBySeverity: { critical: 0, high: 0, medium: 0, low: 0 }
   }
 
   // Key metrics calculations
-  const totalDocuments = documents.length
+  const totalDocuments = stats.totalScans
+  const averageScore = stats.averageScore
+  const criticalIssues = stats.issuesBySeverity.critical
+  const highIssues = stats.issuesBySeverity.high
+  const mediumIssues = stats.issuesBySeverity.medium
+  const lowIssues = stats.issuesBySeverity.low
 
-  const scores: number[] = []
-  let criticalIssues = 0
-  let highIssues = 0
-  let mediumIssues = 0
-  let lowIssues = 0
+  // Calculate score distribution
+  const scores = scans
+    .filter((scan: any) => scan.latestAnalysis?.score !== undefined)
+    .map((scan: any) => scan.latestAnalysis.score)
 
-  // Fetch all issues for the analyses we have
-  const analysisIds = Array.from(latestAnalysisMap.values())
-    .map(a => a.analysis_id)
-    .filter(id => id !== undefined && id !== null);
-  let allIssues: any[] = [];
+  const excellentDocs = scores.filter((s: number) => s >= 80).length
+  const goodDocs = scores.filter((s: number) => s >= 60 && s < 80).length
+  const needsWorkDocs = scores.filter((s: number) => s < 60).length
 
-  if (analysisIds.length > 0) {
-    try {
-      const issuesPromises = analysisIds.map(async (analysisId) => {
-        const response = await fetch(`/api/issues?analysis_id=${analysisId}`);
-        if (response.ok) {
-          const data = await response.json();
-          return data.issues || [];
-        }
-        return [];
-      });
-      
-      const issuesArrays = await Promise.all(issuesPromises);
-      allIssues = issuesArrays.flat();
-    } catch (error) {
-      console.error("Failed to fetch issues for dashboard:", error);
-    }
-  }
-
-  for (const analysis of latestAnalysisMap.values()) {
-    const score = analysis.analysis?.score
-    if (typeof score === "number") {
-      scores.push(score)
-    }
-  }
-
-  for (const issue of allIssues) {
-    let severity: string = (issue.severity || "Low").toString().toLowerCase();
-    if (severity === "critical") criticalIssues += 1;
-    else if (severity === "high" || severity === "severe") highIssues += 1;
-    else if (severity === "medium") mediumIssues += 1;
-    else lowIssues += 1;
-  }
-
-  const averageScore = scores.length
-    ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
-    : 0
-
-  const excellentDocs = scores.filter((s) => s >= 80).length
-  const goodDocs = scores.filter((s) => s >= 60 && s < 80).length
-  const needsWorkDocs = scores.filter((s) => s < 60).length
-
-  // Team members count (unique userId across docs)
-  const teamMembers = new Set<string>(documents.map((d) => d.userId))
+  // Team members count (placeholder since we removed user management)
+  const teamMembers = new Set<string>(["team-member-1", "team-member-2", "team-member-3"])
 
   // Prepare recent documents (up to 4)
-  const recentDocs: RecentDoc[] = documents.slice(0, 4).map((doc) => {
-    const a = latestAnalysisMap.get(doc.doc_id);
-    const score: number | undefined = a?.analysis?.score;
-    
-    const docIssues = a?.analysis_id ? allIssues.filter(issue => issue.analysis_id === a.analysis_id) : [];
-    
+  const recentDocs: RecentDoc[] = scans.length > 0 ? scans.slice(0, 4).map((scanData: any) => {
+    const { latestAnalysis, issueCount, ...scan } = scanData
+    const score: number | undefined = latestAnalysis?.score
+
     return {
-      id: doc.doc_id,
-      title: doc.title,
-      type: doc.options?.type || "N/A",
+      id: scan._id,
+      title: scan.name,
+      type: scan.documentType || "N/A",
       score,
       grade: score !== undefined ? gradeForScore(score) : "N/A",
-      status: a ? "Analyzed" : "Pending",
-      lastUpdated: getRelativeTime(doc.updatedAt || doc.createdAt),
+      status: latestAnalysis ? "Analyzed" : "Pending",
+      lastUpdated: getRelativeTime(new Date(scan.createdAt)),
       assignedTo: "Legal Team", // placeholder until assignment feature exists
-      issues: docIssues.length,
-    };
-  })
+      issues: issueCount,
+    }
+  }) : []
 
   // Build issues summary array for component
   const issuesData: IssueSummaryItem[] = [
@@ -178,6 +133,18 @@ export default async function DashboardPage() {
     },
   ]
 
+  // Show loading state while data is being fetched
+  if (dashboardData === undefined) {
+    return (
+      <div className="min-h-screen bg-background">
+        <DashboardHeader />
+        <div className="p-6">
+          <ConvexLoading message="Loading dashboard..." />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <DashboardHeader />
@@ -187,7 +154,7 @@ export default async function DashboardPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-foreground mb-2">Welcome back, Legal Team</h1>
           <p className="text-muted-foreground">
-            Here's an overview of your document comprehensibility analysis
+            Here&apos;s an overview of your document comprehensibility analysis
           </p>
         </div>
 

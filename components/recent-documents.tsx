@@ -66,7 +66,17 @@ const recentDocs: RecentDoc[] = [
 ]
 
 export function RecentDocuments({ docs }: { docs?: RecentDoc[] }) {
-  const data = docs ?? recentDocs
+  const data = docs && docs.length > 0 ? docs : []
+
+  if (data.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+        <p className="text-gray-500 mb-2">No documents yet</p>
+        <p className="text-sm text-gray-400">Upload your first document to get started</p>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-4">
@@ -91,7 +101,15 @@ export function RecentDocuments({ docs }: { docs?: RecentDoc[] }) {
             <div className="text-center">
               <div className="text-lg font-bold">{doc.score}</div>
               <Badge
-                variant={doc.score >= 80 ? "default" : doc.score >= 60 ? "secondary" : "destructive"}
+                variant={
+                  typeof doc.score === "number"
+                    ? doc.score >= 80
+                      ? "default"
+                      : doc.score >= 60
+                        ? "secondary"
+                        : "destructive"
+                    : "outline"
+                }
                 className="text-xs"
               >
                 {doc.grade}

@@ -2,13 +2,12 @@ import { ThemeToggle } from "@/components/theme-toggle"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { withAuth } from '@workos-inc/authkit-nextjs'
+
 import { ArrowRight, BarChart3, CheckCircle, FileText, Shield, Users, Zap } from "lucide-react"
 import Link from "next/link"
 
-export default async function HomePage() {
-  const { user } = await withAuth()
-  const dashboardHref = user ? '/dashboard' : '/auth/signin'
+export default function HomePage() {
+  const dashboardHref = '/dashboard'
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-800">

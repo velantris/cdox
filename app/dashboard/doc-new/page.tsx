@@ -10,7 +10,9 @@ import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { useUser } from "@/lib/auth/hooks";
+
+import { api } from "@/convex/_generated/api";
+import { useAction } from "convex/react";
 import { AlertCircle, ArrowLeft, CheckCircle, Clock, Loader2, Upload, Zap } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -38,12 +40,14 @@ export default function UploadPage() {
   const [language, setLanguage] = useState("");
   const [compliance, setCompliance] = useState<string[]>(["GDPR", "MiFID"]);
   const [isDragOver, setIsDragOver] = useState(false);
-  const [currentDocId, setCurrentDocId] = useState<string | null>(null);
+  const [currentScanId, setCurrentScanId] = useState<string | null>(null);
   const [analysisError, setAnalysisError] = useState<string | null>(null);
   const router = useRouter();
-  const { user } = useUser();
   const { toast } = useToast();
   const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Convex actions
+  const uploadDocument = useAction(api.upload.uploadDocument);
 
   const [analysisSteps, setAnalysisSteps] = useState<AnalysisStep[]>([
     { id: "extraction", label: "Extracting text content", status: "pending" },
@@ -172,57 +176,34 @@ export default function UploadPage() {
     try {
       setUploadProgress(20);
 
-      // 1. Upload file to Vercel Blob
-      const uploadRes = await fetch(`/api/upload?filename=${selectedFile.name}`, {
-        method: "POST",
-        body: selectedFile,
+      // Convert file to bytes for Convex
+      const fileBuffer = await selectedFile.arrayBuffer();
+
+      setUploadProgress(40);
+
+      // Upload document using Convex action
+      const result = await uploadDocument({
+        filename: selectedFile.name,
+        fileData: fileBuffer,
+        contentType: selectedFile.type,
+        scanMetadata: {
+          name: title || selectedFile.name,
+          language: language || "english",
+          documentType: docType || "other",
+          targetAudience: audience || "general",
+          jurisdiction: jurisdiction || "eu",
+          regulations: compliance.join(", ") || "GDPR",
+        },
       });
 
-      if (!uploadRes.ok) throw new Error("Upload to Vercel Blob failed");
-      const { url } = await uploadRes.json();
-
-      setUploadProgress(60);
-
-      // 2. Create document record with the new URL
-      const docRes = await fetch("/api/document/new", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title,
-          url,
-          userId: user?.id,
-          options: {
-            type: docType,
-            target_audience: audience,
-            jurisdiction,
-            language,
-            team_id: team,
-            version: versionTag,
-            additional_instructions: notes,
-            compliance: compliance
-          }
-        })
-      });
-
-      if (!docRes.ok) throw new Error("Failed to create document record");
-
-      const newDoc = await docRes.json();
-      setCurrentDocId(newDoc.doc_id);
-
+      setCurrentScanId(result.scanId);
       setUploadProgress(100);
 
       setTimeout(() => {
         setUploadStep("analyzing");
 
-        fetch("/api/analyze", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ doc_id: newDoc.doc_id })
-        }).catch((error) => {
-          console.error("Analysis failed:", error);
-          setAnalysisError("Analysis failed to start. Please try again.");
-        });
-
+        // TODO: Replace with Convex analysis action when implemented
+        // For now, just simulate the analysis
         simulateAnalysisProgress();
 
       }, 1000);
@@ -664,7 +645,7 @@ export default function UploadPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Button className="w-full" onClick={() => router.push(`/dashboard/documents/${currentDocId || "doc-new"}`)}>
+                  <Button className="w-full" onClick={() => router.push(`/dashboard/documents/${currentScanId || "doc-new"}`)}>
                     View Analysis Results
                   </Button>
                   <Button variant="outline" className="w-full bg-transparent" onClick={() => router.push("/dashboard")}>

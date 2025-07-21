@@ -1,0 +1,8 @@
+{
+  "node": {
+    "externalPackages": [
+      "mammoth",
+      "pdf-parse"
+    ]
+  }
+}
