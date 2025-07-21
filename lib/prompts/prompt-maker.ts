@@ -6,6 +6,7 @@ export const makePrompt = (
     targetAudience: string,
     jurisdiction: string,
     regulations: string,
+    language: string = "english",
     customRules: any[] = []
 ) => {
     // Map UI option values (used in /new and /upload pages) to their corresponding prompt templates
@@ -76,6 +77,17 @@ export const makePrompt = (
         `;
     }
 
+    // Language-specific instructions
+    const languageInstructions = language === "english" ? "" : `
+    CRITICAL LANGUAGE REQUIREMENT:
+    - Generate ALL output (summary, recommendations, issue explanations, and suggested rewrites) in ${language.toUpperCase()}
+    - The summary must be written in ${language}
+    - The recommendations must be written in ${language}
+    - All issue explanations must be written in ${language}
+    - All suggested rewrites must be written in ${language}
+    - Only the JSON structure and field names should remain in English
+    `;
+
     const final_prompt = `
     You are an expert document comprehensibility analyst specializing in legal and regulatory documents.
     
@@ -104,20 +116,23 @@ export const makePrompt = (
         
         ${customRulesPrompt}
 
+        ${languageInstructions}
+
         RESPONSE FORMAT:
         Return your analysis in valid JSON format with the following structure:
         {
-            "summary": "Concise document summary highlighting key purpose and main comprehensibility concerns (max 100 words)",
+            "summary": "Comprehensive summary of the document content including its main purpose, key sections, and primary comprehensibility concerns. Focus on what the document actually contains and covers (max 150 words)",
             "recommendations": [
-                "Specific, actionable recommendations for improving document clarity and compliance",
-                "Focus on high-impact changes that address multiple issues"
+                "Specific, actionable recommendations based on the actual document content and issues found",
+                "Recommendations should address real problems identified in this specific document",
+                "Focus on high-impact changes that improve clarity for the target audience"
             ],
             "score": 75,
             "issues": [
                 {
                     "original_text": "Exact text excerpt from the document that demonstrates the issue",
-                    "issue_explanation": "Clear explanation of why this text is problematic for the target audience",
-                    "suggested_rewrite": "Concrete example of how to improve this text while maintaining legal accuracy",
+                    "issue_explanation": "Clear explanation of why this specific text is problematic for the target audience",
+                    "suggested_rewrite": "Concrete example of how to improve this specific text while maintaining legal accuracy",
                     "grading": "medium",
                     "issue_type": "Legal jargon",
                     "section_category": "Terms and Conditions",
@@ -129,8 +144,10 @@ export const makePrompt = (
         IMPORTANT: 
         - Ensure all JSON is properly formatted and escaped
         - Include actual text excerpts in "original_text" 
-        - Provide specific, implementable rewrites
+        - Provide specific, implementable rewrites based on the actual document content
         - Score should reflect overall document comprehensibility (0-100)
+        - Summary should describe what the document actually contains, not just generic analysis
+        - Recommendations should be specific to problems found in this document
     `
 
     return final_prompt;

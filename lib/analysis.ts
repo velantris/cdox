@@ -98,6 +98,7 @@ export interface AnalysisInput {
     targetAudience?: string;
     jurisdiction?: string;
     regulations?: string;
+    language?: string;
 }
 
 export interface AnalysisResult {
@@ -192,10 +193,11 @@ export async function runAnalysis(
     documentType: string,
     targetAudience: string,
     jurisdiction: string,
-    regulations: string
+    regulations: string,
+    language: string = "english"
 ): Promise<AnalysisResult> {
     // 1. Build prompt via prompt-maker
-    const prompt = makePrompt(document, documentType, targetAudience, jurisdiction, regulations);
+    const prompt = makePrompt(document, documentType, targetAudience, jurisdiction, regulations, language);
 
     // 2. Call both OpenAI and Gemini models in parallel
     const openaiModel = openai(process.env.OPENAI_MODEL || "gpt-4.1-nano");
@@ -305,7 +307,8 @@ export async function performAnalysis(input: AnalysisInput) {
         documentData.documentType,
         documentData.targetAudience,
         documentData.jurisdiction,
-        documentData.regulations
+        documentData.regulations,
+        input.language || "english"
     );
 
     // 3. Save to database

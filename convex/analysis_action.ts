@@ -1,8 +1,8 @@
 "use node";
 
 import { v } from "convex/values";
-import { action } from "./_generated/server";
 import { api } from "./_generated/api";
+import { action } from "./_generated/server";
 
 // AI SDK imports
 import { google } from "@ai-sdk/google";
@@ -93,6 +93,7 @@ Document Metadata:
 - Target Audience: ${scan.targetAudience}
 - Jurisdiction: ${scan.jurisdiction}
 - Regulations: ${scan.regulations || 'Not specified'}
+- Language: ${scan.language || 'Not specified'}
 - File Size: ${sizeInKB} KB
 - Format: PDF
 
@@ -108,6 +109,8 @@ For ${scan.documentType} documents targeting ${scan.targetAudience} users:
 4. Plain language principles application
 5. User rights and obligations clarity
 6. Dispute resolution and contact information accessibility
+7. The select language is in which you have to give the issue explanations and fixes strictly in that language.
+
 
 Provide analysis as if you had access to the full document content, focusing on typical issues found in ${scan.documentType} documents of this size (${sizeInKB} KB) for ${scan.targetAudience} audience.
 
@@ -247,6 +250,7 @@ export const performDocumentAnalysis = action({
                     scan.targetAudience,
                     scan.jurisdiction,
                     scan.regulations,
+                    scan.language || "english",
                     customRules
                 );
 

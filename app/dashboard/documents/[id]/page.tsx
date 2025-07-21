@@ -1,15 +1,19 @@
 "use client"
 
 import { ComprehensibilityGauge } from "@/components/comprehensibility-gauge"
-import { DashboardHeader } from "@/components/dashboard-header"
+import { ConvexLoading } from "@/components/convex-error-boundary"
 import { CustomRulesSelector } from "@/components/custom-rules-selector"
+import { DashboardHeader } from "@/components/dashboard-header"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { useToast } from "@/components/ui/use-toast"
 import { Textarea } from "@/components/ui/textarea"
+import { useToast } from "@/components/ui/use-toast"
+import { api } from "@/convex/_generated/api"
+import type { Id } from "@/convex/_generated/dataModel"
+import { useAction, useMutation, useQuery } from "convex/react"
 import {
   AlertCircle,
   AlertTriangle,
@@ -24,10 +28,6 @@ import {
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { use, useState } from "react"
-import { useQuery, useMutation, useAction } from "convex/react"
-import { api } from "@/convex/_generated/api"
-import type { Id } from "@/convex/_generated/dataModel"
-import { ConvexLoading } from "@/components/convex-error-boundary"
 
 export default function DocumentAnalysisPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -412,17 +412,17 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                             <div>
                               <h4 className="font-medium mb-2">Original Text:</h4>
                               <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                                <p className="text-gray-800">{issue.originalText}</p>
+                                <p className="text-black">{issue.originalText}</p>
                               </div>
                             </div>
                             <div>
                               <h4 className="font-medium mb-2">Issue Explanation:</h4>
-                              <p className="text-gray-600">{issue.issueExplanation}</p>
+                              <p className="text-gray-600 dark:text-white">{issue.issueExplanation}</p>
                             </div>
                             <div>
                               <h4 className="font-medium mb-2">Suggested Rewrite:</h4>
                               <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                                <p className="text-gray-800">{issue.suggestedRewrite}</p>
+                                <p className="text-black">{issue.suggestedRewrite}</p>
                               </div>
                             </div>
                           </CardContent>
@@ -490,8 +490,8 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                               <div className="flex items-center justify-between mb-3">
                                 <h3 className="font-medium text-lg">{sectionName}</h3>
                                 <div className="flex items-center space-x-3">
-                                  <span className="text-sm text-gray-500">{data.totalIssues} issues</span>
-                                  <Badge
+                                  <span className="text-sm text-gray-500">{data.totalIssues > 0 ? data.totalIssues : 0} issue{data.totalIssues > 1 ? 's' : ''}</span>
+                                  {/* <Badge
                                     className={`text-sm px-3 py-1 ${data.score >= 85 ? 'bg-green-100 text-green-800' :
                                       data.score >= 72 ? 'bg-yellow-100 text-yellow-800' :
                                         data.score >= 58 ? 'bg-orange-100 text-orange-800' :
@@ -499,7 +499,7 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                                       }`}
                                   >
                                     {data.score}
-                                  </Badge>
+                                  </Badge> */}
                                 </div>
                               </div>
 
