@@ -85,9 +85,11 @@ export default function UploadPage() {
     function runStep() {
       if (paused) return;
       if (currentStepIndex >= analysisSteps.length - 1) {
-        // Pause at last step (simulate 95%)
-        setStepSimState(s => s && { ...s, paused: true, currentStep: currentStepIndex, stepProgress: 95 });
-        setAnalysisProgress(95);
+        // Pause at last step (simulate random number between 82 to 97 %)
+        const pauseProgress = Math.floor(Math.random() * 13) + 82;
+        setStepSimState(s => s && { ...s, paused: true, currentStep: currentStepIndex, stepProgress: pauseProgress });
+
+        setAnalysisProgress(pauseProgress);
         return;
       }
       setAnalysisSteps(prev => prev.map((step, idx) => {
@@ -105,6 +107,7 @@ export default function UploadPage() {
         // Update overall progress
         const completed = currentStepIndex;
         const overall = ((completed + stepProgress / 100) / analysisSteps.length) * 100;
+
         setAnalysisProgress(Math.min(overall, 95));
         if (stepProgress >= 100) {
           clearInterval(interval);
