@@ -3,8 +3,10 @@ import './globals.css'
 
 import { ThemeProvider } from '@/components/theme-provider'
 import { cn } from '@/lib/utils'
-import { AuthKitProvider } from '@workos-inc/authkit-nextjs/components'
+import { Toaster } from 'sonner'
+
 import { LingoProvider, loadDictionary } from "lingo.dev/react/rsc";
+import { ConvexClientProvider } from "@/components/convex-provider";
 
 
 export const metadata: Metadata = {
@@ -23,21 +25,20 @@ export default function RootLayout({
 }>) {
   return (
     <LingoProvider loadDictionary={(locale) => loadDictionary(locale)}>
-
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={cn(
-          'min-h-screen bg-background font-sans antialiased'
-        )}
-      >
-
-        <AuthKitProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            {children}
-          </ThemeProvider>
-        </AuthKitProvider>
-      </body>
-    </html>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={cn(
+            'min-h-screen bg-background font-sans antialiased'
+          )}
+        >
+          <ConvexClientProvider>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              <Toaster position="top-right" />
+              {children}
+            </ThemeProvider>
+          </ConvexClientProvider>
+        </body>
+      </html>
     </LingoProvider>
   )
 }

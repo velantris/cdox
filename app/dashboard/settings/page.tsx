@@ -10,100 +10,152 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
-import { Edit, Plus, Save, Trash2 } from "lucide-react"
-import { useState } from "react"
-
-const customRules = [
-  {
-    id: "rule-001",
-    name: "Sole Discretion Ambiguity",
-    pattern: "at (its|their) sole discretion",
-    type: "regex",
-    label: "Ambiguity",
-    severity: "High",
-    description: "Flags vague discretionary language that may confuse customers",
-    active: true,
-    created: "2024-12-15",
-    lastModified: "2025-01-02",
-  },
-  {
-    id: "rule-002",
-    name: "Legal Jargon - Hereinafter",
-    pattern: "hereinafter",
-    type: "keyword",
-    label: "Legal Jargon",
-    severity: "Medium",
-    description: "Identifies outdated legal terminology",
-    active: true,
-    created: "2024-12-10",
-    lastModified: "2024-12-10",
-  },
-  {
-    id: "rule-003",
-    name: "Complex Liability Language",
-    pattern: "(consequential|incidental|punitive) damages?",
-    type: "regex",
-    label: "Legal Jargon",
-    severity: "Critical",
-    description: "Detects complex liability terms that need simplification",
-    active: true,
-    created: "2024-12-08",
-    lastModified: "2024-12-20",
-  },
-  {
-    id: "rule-004",
-    name: "Passive Voice Overuse",
-    pattern: "shall be (held|considered|deemed)",
-    type: "regex",
-    label: "Readability",
-    severity: "Low",
-    description: "Identifies passive voice constructions that could be simplified",
-    active: false,
-    created: "2024-11-25",
-    lastModified: "2024-11-25",
-  },
-]
+import { Edit, Loader2, Plus, Save, Trash2 } from "lucide-react"
+import { useState, useEffect } from "react"
+import { useQuery, useMutation } from "convex/react"
+import { api } from "@/convex/_generated/api"
+import { Id } from "@/convex/_generated/dataModel"
+import { toast } from "sonner"
 
 export default function SettingsPage() {
-  const [rules, setRules] = useState(customRules)
+  const rules = useQuery(api.customRules.getAllCustomRules) || []
+  const createRule = useMutation(api.customRules.createCustomRule)
+  const updateRule = useMutation(api.customRules.updateCustomRule)
+  const toggleRuleStatus = useMutation(api.customRules.toggleRuleStatus)
+  const deleteRuleMutation = useMutation(api.customRules.deleteCustomRule)
+
   const [newRule, setNewRule] = useState({
     name: "",
     pattern: "",
-    type: "keyword",
+    type: "keyword" as "keyword" | "regex" | "phrase",
     label: "Custom",
-    severity: "Medium",
+    severity: "Medium" as "Critical" | "High" | "Medium" | "Low",
     description: "",
   })
   const [showAddRule, setShowAddRule] = useState(false)
+  const [editingRule, setEditingRule] = useState<string | null>(null)
+  const [editRule, setEditRule] = useState(newRule)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
-  const handleAddRule = () => {
-    if (newRule.name && newRule.pattern) {
-      const rule = {
-        id: `rule-${Date.now()}`,
-        ...newRule,
-        active: true,
-        created: new Date().toISOString().split("T")[0],
-        lastModified: new Date().toISOString().split("T")[0],
+  // Initialize with default rules if none exist
+  useEffect(() => {
+    const initializeDefaultRules = async () => {
+      if (rules && rules.length === 0) {
+        const defaultRules = [
+          {
+            name: "Sole Discretion Ambiguity",
+            pattern: "at (its|their) sole discretion",
+            type: "regex" as const,
+            label: "Ambiguity",
+            severity: "High" as const,
+            description: "Flags vague discretionary language that may confuse customers",
+          },
+          {
+            name: "Legal Jargon - Hereinafter",
+            pattern: "hereinafter",
+            type: "keyword" as const,
+            label: "Legal Jargon",
+            severity: "Medium" as const,
+            description: "Identifies outdated legal terminology",
+          },
+          {
+            name: "Complex Liability Language",
+            pattern: "(consequential|incidental|punitive) damages?",
+            type: "regex" as const,
+            label: "Legal Jargon",
+            severity: "Critical" as const,
+            description: "Detects complex liability terms that need simplification",
+          },
+          {
+            name: "Passive Voice Overuse",
+            pattern: "shall be (held|considered|deemed)",
+            type: "regex" as const,
+            label: "Readability",
+            severity: "Low" as const,
+            description: "Identifies passive voice constructions that could be simplified",
+          },
+        ]
+
+        for (const rule of defaultRules) {
+          await createRule(rule)
+        }
       }
-      setRules([...rules, rule])
-      setNewRule({
-        name: "",
-        pattern: "",
-        type: "keyword",
-        label: "Custom",
-        severity: "Medium",
-        description: "",
-      })
-      setShowAddRule(false)
+    }
+
+    initializeDefaultRules()
+  }, [rules, createRule])
+
+  const handleAddRule = async () => {
+    if (newRule.name && newRule.pattern) {
+      try {
+        setIsSubmitting(true)
+        await createRule(newRule)
+        setNewRule({
+          name: "",
+          pattern: "",
+          type: "keyword",
+          label: "Custom",
+          severity: "Medium",
+          description: "",
+        })
+        setShowAddRule(false)
+        toast.success("Rule created successfully")
+      } catch (error) {
+        toast.error("Failed to create rule")
+        console.error(error)
+      } finally {
+        setIsSubmitting(false)
+      }
     }
   }
 
-  const toggleRule = (id: string) => {
-    setRules(rules.map((rule) => (rule.id === id ? { ...rule, active: !rule.active } : rule)))
+  const handleEditRule = (rule: any) => {
+    setEditingRule(rule._id)
+    setEditRule({
+      name: rule.name,
+      pattern: rule.pattern,
+      type: rule.type,
+      label: rule.label,
+      severity: rule.severity,
+      description: rule.description,
+    })
   }
 
-  const deleteRule = (id: string) => {
-    setRules(rules.filter((rule) => rule.id !== id))
+  const handleSaveEdit = async (id: Id<"customRules">) => {
+    try {
+      setIsSubmitting(true)
+      await updateRule({
+        id,
+        ...editRule
+      })
+      setEditingRule(null)
+      toast.success("Rule updated successfully")
+    } catch (error) {
+      toast.error("Failed to update rule")
+      console.error(error)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleToggleRule = async (id: Id<"customRules">) => {
+    try {
+      await toggleRuleStatus({ id })
+      toast.success("Rule status updated")
+    } catch (error) {
+      toast.error("Failed to update rule status")
+      console.error(error)
+    }
+  }
+
+  const handleDeleteRule = async (id: Id<"customRules">) => {
+    try {
+      await deleteRuleMutation({ id })
+      toast.success("Rule deleted successfully")
+    } catch (error) {
+      toast.error("Failed to delete rule")
+      console.error(error)
+    }
   }
 
   return (
@@ -158,7 +210,10 @@ export default function SettingsPage() {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="rule-type">Pattern Type</Label>
-                      <Select value={newRule.type} onValueChange={(value) => setNewRule({ ...newRule, type: value })}>
+                      <Select
+                        value={newRule.type}
+                        onValueChange={(value: "keyword" | "regex" | "phrase") => setNewRule({ ...newRule, type: value })}
+                      >
                         <SelectTrigger>
                           <SelectValue />
                         </SelectTrigger>
@@ -199,7 +254,8 @@ export default function SettingsPage() {
                       <Label htmlFor="rule-severity">Severity</Label>
                       <Select
                         value={newRule.severity}
-                        onValueChange={(value) => setNewRule({ ...newRule, severity: value })}
+                        onValueChange={(value: "Critical" | "High" | "Medium" | "Low") =>
+                          setNewRule({ ...newRule, severity: value })}
                       >
                         <SelectTrigger>
                           <SelectValue />
@@ -224,11 +280,20 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Button onClick={handleAddRule}>
-                      <Save className="w-4 h-4 mr-2" />
-                      Save Rule
+                    <Button onClick={handleAddRule} disabled={isSubmitting}>
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Saving...
+                        </>
+                      ) : (
+                        <>
+                          <Save className="w-4 h-4 mr-2" />
+                          Save Rule
+                        </>
+                      )}
                     </Button>
-                    <Button variant="outline" onClick={() => setShowAddRule(false)}>
+                    <Button variant="outline" onClick={() => setShowAddRule(false)} disabled={isSubmitting}>
                       Cancel
                     </Button>
                   </div>
@@ -238,55 +303,177 @@ export default function SettingsPage() {
 
             {/* Rules List */}
             <div className="space-y-4">
-              {rules.map((rule) => (
-                <Card key={rule.id}>
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-3 mb-2">
-                          <h3 className="font-medium text-lg">{rule.name}</h3>
-                          <Badge
-                            variant={
-                              rule.severity === "Critical"
-                                ? "destructive"
-                                : rule.severity === "High"
-                                  ? "destructive"
-                                  : rule.severity === "Medium"
-                                    ? "secondary"
-                                    : "default"
-                            }
-                          >
-                            {rule.severity}
-                          </Badge>
-                          <Badge variant="outline">{rule.label}</Badge>
-                          <Badge variant={rule.type === "regex" ? "secondary" : "outline"}>{rule.type}</Badge>
-                        </div>
-                        <p className="text-gray-600 mb-3">{rule.description}</p>
-                        <div className="bg-gray-50 rounded-lg p-3 mb-3">
-                          <code className="text-sm font-mono">{rule.pattern}</code>
-                        </div>
-                        <div className="flex items-center space-x-4 text-sm text-gray-500">
-                          <span>Created: {rule.created}</span>
-                          <span>•</span>
-                          <span>Modified: {rule.lastModified}</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <div className="flex items-center space-x-2">
-                          <Switch checked={rule.active} onCheckedChange={() => toggleRule(rule.id)} />
-                          <span className="text-sm">{rule.active ? "Active" : "Inactive"}</span>
-                        </div>
-                        <Button size="sm" variant="outline">
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                        <Button size="sm" variant="outline" onClick={() => deleteRule(rule.id)}>
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
+              {!rules ? (
+                <Card>
+                  <CardContent className="p-6 flex justify-center items-center">
+                    <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+                    <span className="ml-2">Loading rules...</span>
                   </CardContent>
                 </Card>
-              ))}
+              ) : rules.length === 0 ? (
+                <Card>
+                  <CardContent className="p-6 text-center">
+                    <p className="text-gray-500">No custom rules found. Add your first rule to get started.</p>
+                  </CardContent>
+                </Card>
+              ) : (
+                rules.map((rule) => (
+                  <Card key={rule._id}>
+                    <CardContent className="p-6">
+                      {editingRule === rule._id ? (
+                        // Edit mode
+                        <div className="space-y-4">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label htmlFor={`edit-name-${rule._id}`}>Rule Name</Label>
+                              <Input
+                                id={`edit-name-${rule._id}`}
+                                value={editRule.name}
+                                onChange={(e) => setEditRule({ ...editRule, name: e.target.value })}
+                              />
+                            </div>
+                            <div className="space-y-2">
+                              <Label htmlFor={`edit-type-${rule._id}`}>Pattern Type</Label>
+                              <Select
+                                value={editRule.type}
+                                onValueChange={(value: "keyword" | "regex" | "phrase") =>
+                                  setEditRule({ ...editRule, type: value })}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="keyword">Keyword</SelectItem>
+                                  <SelectItem value="regex">Regular Expression</SelectItem>
+                                  <SelectItem value="phrase">Exact Phrase</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor={`edit-pattern-${rule._id}`}>Pattern</Label>
+                            <Input
+                              id={`edit-pattern-${rule._id}`}
+                              value={editRule.pattern}
+                              onChange={(e) => setEditRule({ ...editRule, pattern: e.target.value })}
+                            />
+                          </div>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                              <Label htmlFor={`edit-label-${rule._id}`}>Issue Label</Label>
+                              <Select
+                                value={editRule.label}
+                                onValueChange={(value) => setEditRule({ ...editRule, label: value })}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="Legal Jargon">Legal Jargon</SelectItem>
+                                  <SelectItem value="Ambiguity">Ambiguity</SelectItem>
+                                  <SelectItem value="Readability">Readability</SelectItem>
+                                  <SelectItem value="Compliance">Compliance</SelectItem>
+                                  <SelectItem value="Custom">Custom</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div className="space-y-2">
+                              <Label htmlFor={`edit-severity-${rule._id}`}>Severity</Label>
+                              <Select
+                                value={editRule.severity}
+                                onValueChange={(value: "Critical" | "High" | "Medium" | "Low") =>
+                                  setEditRule({ ...editRule, severity: value })}
+                              >
+                                <SelectTrigger>
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="Critical">Critical</SelectItem>
+                                  <SelectItem value="High">High</SelectItem>
+                                  <SelectItem value="Medium">Medium</SelectItem>
+                                  <SelectItem value="Low">Low</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor={`edit-description-${rule._id}`}>Description</Label>
+                            <Textarea
+                              id={`edit-description-${rule._id}`}
+                              value={editRule.description}
+                              onChange={(e) => setEditRule({ ...editRule, description: e.target.value })}
+                              rows={3}
+                            />
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <Button onClick={() => handleSaveEdit(rule._id)} disabled={isSubmitting}>
+                              {isSubmitting ? (
+                                <>
+                                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                                  Saving...
+                                </>
+                              ) : (
+                                <>
+                                  <Save className="w-4 h-4 mr-2" />
+                                  Save Changes
+                                </>
+                              )}
+                            </Button>
+                            <Button variant="outline" onClick={() => setEditingRule(null)} disabled={isSubmitting}>
+                              Cancel
+                            </Button>
+                          </div>
+                        </div>
+                      ) : (
+                        // View mode
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <div className="flex items-center space-x-3 mb-2">
+                              <h3 className="font-medium text-lg">{rule.name}</h3>
+                              <Badge
+                                variant={
+                                  rule.severity === "Critical"
+                                    ? "destructive"
+                                    : rule.severity === "High"
+                                      ? "destructive"
+                                      : rule.severity === "Medium"
+                                        ? "secondary"
+                                        : "default"
+                                }
+                              >
+                                {rule.severity}
+                              </Badge>
+                              <Badge variant="outline">{rule.label}</Badge>
+                              <Badge variant={rule.type === "regex" ? "secondary" : "outline"}>{rule.type}</Badge>
+                            </div>
+                            <p className="text-gray-600 mb-3">{rule.description}</p>
+                            <div className="bg-gray-50 rounded-lg p-3 mb-3">
+                              <code className="text-sm font-mono">{rule.pattern}</code>
+                            </div>
+                            <div className="flex items-center space-x-4 text-sm text-gray-500">
+                              <span>Created: {rule.created}</span>
+                              <span>•</span>
+                              <span>Modified: {rule.lastModified}</span>
+                            </div>
+                          </div>
+                          <div className="flex items-center space-x-3">
+                            <div className="flex items-center space-x-2">
+                              <Switch checked={rule.active} onCheckedChange={() => handleToggleRule(rule._id)} />
+                              <span className="text-sm">{rule.active ? "Active" : "Inactive"}</span>
+                            </div>
+                            <Button size="sm" variant="outline" onClick={() => handleEditRule(rule)}>
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button size="sm" variant="outline" onClick={() => handleDeleteRule(rule._id)}>
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))
+              )}
             </div>
           </TabsContent>
 

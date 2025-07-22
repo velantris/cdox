@@ -10,7 +10,10 @@ import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
-import { useUser } from "@/lib/auth/hooks";
+
+import { api } from "@/convex/_generated/api";
+import type { Id } from "@/convex/_generated/dataModel";
+import { useAction, useQuery } from "convex/react";
 import { AlertCircle, ArrowLeft, CheckCircle, Clock, Loader2, Upload, Zap } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -38,12 +41,22 @@ export default function UploadPage() {
   const [language, setLanguage] = useState("");
   const [compliance, setCompliance] = useState<string[]>(["GDPR", "MiFID"]);
   const [isDragOver, setIsDragOver] = useState(false);
-  const [currentDocId, setCurrentDocId] = useState<string | null>(null);
+  const [currentScanId, setCurrentScanId] = useState<Id<"scans"> | null>(null);
   const [analysisError, setAnalysisError] = useState<string | null>(null);
   const router = useRouter();
-  const { user } = useUser();
   const { toast } = useToast();
   const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [stepSimState, setStepSimState] = useState<{
+    running: boolean;
+    paused: boolean;
+    currentStep: number;
+    stepProgress: number;
+  } | null>(null);
+  const backendDoneRef = useRef<null | "completed" | "failed">(null);
+
+  // Convex actions
+  const uploadDocument = useAction(api.upload.uploadDocument);
+  const performAnalysis = useAction(api.analysis_action.performDocumentAnalysis);
 
   const [analysisSteps, setAnalysisSteps] = useState<AnalysisStep[]>([
     { id: "extraction", label: "Extracting text content", status: "pending" },
@@ -53,6 +66,81 @@ export default function UploadPage() {
     { id: "suggestions", label: "Generating improvement suggestions", status: "pending" },
     { id: "scoring", label: "Calculating comprehensibility score", status: "pending" },
   ]);
+
+  const analysisQuery = useQuery(
+    api.analysis.getAnalysisByScan,
+    currentScanId && uploadStep === "analyzing"
+      ? { scanId: currentScanId }
+      : "skip"
+  );
+
+  // Simulate step progress, pausing at last step
+  useEffect(() => {
+    if (uploadStep !== "analyzing") return;
+    if (stepSimState?.running) return;
+    setStepSimState({ running: true, paused: false, currentStep: 0, stepProgress: 0 });
+    let currentStepIndex = 0;
+    const stepDurations = [2000, 2000, 2000, 2000, 2000, 2000];
+    let paused = false;
+    function runStep() {
+      if (paused) return;
+      if (currentStepIndex >= analysisSteps.length - 1) {
+        // Pause at last step (simulate 95%)
+        setStepSimState(s => s && { ...s, paused: true, currentStep: currentStepIndex, stepProgress: 95 });
+        setAnalysisProgress(95);
+        return;
+      }
+      setAnalysisSteps(prev => prev.map((step, idx) => {
+        if (idx < currentStepIndex) return { ...step, status: "completed", progress: 100 };
+        if (idx === currentStepIndex) return { ...step, status: "running", progress: 0 };
+        return { ...step, status: "pending", progress: 0 };
+      }));
+      let stepProgress = 0;
+      const interval = setInterval(() => {
+        if (paused) { clearInterval(interval); return; }
+        stepProgress += 100 / (stepDurations[currentStepIndex] / 100);
+        setAnalysisSteps(prev => prev.map((step, idx) =>
+          idx === currentStepIndex ? { ...step, status: "running", progress: Math.min(stepProgress, 100) } : step
+        ));
+        // Update overall progress
+        const completed = currentStepIndex;
+        const overall = ((completed + stepProgress / 100) / analysisSteps.length) * 100;
+        setAnalysisProgress(Math.min(overall, 95));
+        if (stepProgress >= 100) {
+          clearInterval(interval);
+          setAnalysisSteps(prev => prev.map((step, idx) =>
+            idx === currentStepIndex ? { ...step, status: "completed", progress: 100 } : step
+          ));
+          currentStepIndex++;
+          setStepSimState(s => s && { ...s, currentStep: currentStepIndex, stepProgress: 0 });
+          setTimeout(runStep, 200);
+        }
+      }, 100);
+    }
+    setTimeout(runStep, 200);
+    return () => { paused = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uploadStep]);
+
+  // Watch backend status
+  useEffect(() => {
+    if (uploadStep !== "analyzing" || !analysisQuery || !Array.isArray(analysisQuery) || analysisQuery.length === 0) return;
+    const analysis = analysisQuery[0];
+    if (analysis.status === "completed") {
+      backendDoneRef.current = "completed";
+      // Finish last step, set progress to 100, then show complete
+      setAnalysisSteps(prev => prev.map((step, idx) =>
+        idx < prev.length - 1 ? { ...step, status: "completed", progress: 100 } :
+          idx === prev.length - 1 ? { ...step, status: "completed", progress: 100 } : step
+      ));
+      setAnalysisProgress(100);
+      setTimeout(() => setUploadStep("complete"), 500);
+    } else if (analysis.status === "failed") {
+      backendDoneRef.current = "failed";
+      setAnalysisError(analysis.summary || "Analysis failed");
+      setUploadStep("upload");
+    }
+  }, [analysisQuery, uploadStep]);
 
   // Cleanup polling on unmount
   useEffect(() => {
@@ -171,62 +259,36 @@ export default function UploadPage() {
 
     try {
       setUploadProgress(20);
-
-      // 1. Upload file to Vercel Blob
-      const uploadRes = await fetch(`/api/upload?filename=${selectedFile.name}`, {
-        method: "POST",
-        body: selectedFile,
+      // Convert file to bytes for Convex
+      const fileBuffer = await selectedFile.arrayBuffer();
+      setUploadProgress(40);
+      // Upload document using Convex action
+      const result = await uploadDocument({
+        filename: selectedFile.name,
+        fileData: fileBuffer,
+        contentType: selectedFile.type,
+        scanMetadata: {
+          name: title || selectedFile.name,
+          language: language || "english",
+          documentType: docType || "other",
+          targetAudience: audience || "general",
+          jurisdiction: jurisdiction || "eu",
+          regulations: compliance.join(", ") || "GDPR",
+        },
       });
-
-      if (!uploadRes.ok) throw new Error("Upload to Vercel Blob failed");
-      const { url } = await uploadRes.json();
-
-      setUploadProgress(60);
-
-      // 2. Create document record with the new URL
-      const docRes = await fetch("/api/document/new", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title,
-          url,
-          userId: user?.id,
-          options: {
-            type: docType,
-            target_audience: audience,
-            jurisdiction,
-            language,
-            team_id: team,
-            version: versionTag,
-            additional_instructions: notes,
-            compliance: compliance
-          }
-        })
-      });
-
-      if (!docRes.ok) throw new Error("Failed to create document record");
-
-      const newDoc = await docRes.json();
-      setCurrentDocId(newDoc.doc_id);
-
+      setCurrentScanId(result.scanId as Id<"scans">);
       setUploadProgress(100);
-
-      setTimeout(() => {
+      setTimeout(async () => {
         setUploadStep("analyzing");
-
-        fetch("/api/analyze", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ doc_id: newDoc.doc_id })
-        }).catch((error) => {
-          console.error("Analysis failed:", error);
-          setAnalysisError("Analysis failed to start. Please try again.");
-        });
-
-        simulateAnalysisProgress();
-
+        try {
+          await performAnalysis({ scanId: result.scanId });
+        } catch (err) {
+          setAnalysisError("Failed to start analysis: " + (err instanceof Error ? err.message : "Unknown error"));
+          setUploadStep("upload");
+          return;
+        }
+        // No manual polling needed; useQuery will update reactively
       }, 1000);
-
     } catch (error) {
       console.error("Upload error:", error);
       setUploadStep("upload");
@@ -569,7 +631,7 @@ export default function UploadPage() {
                 </div>
 
                 <div className="space-y-3">
-                  {analysisSteps.map((step, index) => (
+                  {analysisSteps.map((step: AnalysisStep, index: number) => (
                     <div key={step.id} className="flex items-center space-x-3">
                       {getStepIcon(step)}
                       <div className="flex-1">
@@ -664,7 +726,7 @@ export default function UploadPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Button className="w-full" onClick={() => router.push(`/dashboard/documents/${currentDocId || "doc-new"}`)}>
+                  <Button className="w-full" onClick={() => router.push(`/dashboard/documents/${currentScanId || "doc-new"}`)}>
                     View Analysis Results
                   </Button>
                   <Button variant="outline" className="w-full bg-transparent" onClick={() => router.push("/dashboard")}>

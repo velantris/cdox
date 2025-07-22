@@ -24,7 +24,6 @@ interface IDocument extends MongooseDocument {
     title: string;
     url: string;
     options: IOptions;
-    userId: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -34,7 +33,6 @@ const documentSchema = new Schema<IDocument>({
     title: { type: String, required: true },
     url: { type: String, required: true },
     options: { type: Object, required: true },
-    userId: { type: String, required: true },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
 });
