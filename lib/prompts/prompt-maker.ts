@@ -126,18 +126,18 @@ export const makePrompt = (
                 "Recommendations should address real problems identified in this specific document",
                 "Focus on high-impact changes that improve clarity for the target audience"
             ],
-            "score": 75,
+            "score": 80,
             "issues": [
                 {
-                    "offset_start": 1234 this is the start of the original text ,
-                    "offset_end": 1297 this is the end of the original text,
+                    "offset_start": 1234,
+                    "offset_end": 1297,
                     "original_text": "A short, exact quote from the document demonstrating the issue. Keep it concise, ideally under 500 characters.",
                     "issue_explanation": "Clear explanation of why this specific text is problematic for the target audience",
                     "suggested_rewrite": "Concrete example of how to improve this specific text while maintaining legal accuracy",
                     "grading": "medium",
                     "issue_type": "Legal jargon",
                     "section_category": "Terms and Conditions",
-                    "score": 60
+                    "score": 96
                 }
             ]
         }

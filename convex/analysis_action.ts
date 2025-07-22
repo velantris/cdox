@@ -1,4 +1,6 @@
 "use node";
+import { anthropic } from "@ai-sdk/anthropic";
+import { google } from "@ai-sdk/google";
 import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
 import { v } from "convex/values";
@@ -196,12 +198,35 @@ async function analyseWithOpenAI(prompt: string) {
             })
         ),
     });
-    const { object } = await generateObject({
-        model: openai("gpt-4o-mini"),
-        // model: google("gemini-2.5-flash"),
-        prompt,
-        schema,
-    });
+    let object;
+    try {
+        ({ object } = await generateObject({
+            model: anthropic("claude-sonnet-4-20250514"),
+            prompt,
+            schema,
+        }));
+        console.log("Claude success", object);
+    } catch (claudeError) {
+        try {
+            ({ object } = await generateObject({
+                model: openai("gpt-4o-mini"),
+                prompt,
+                schema,
+            }));
+            console.log("OpenAI success", object);
+        } catch (openaiError) {
+            try {
+                ({ object } = await generateObject({
+                    model: google("gemini-2.5-flash"),
+                    prompt,
+                    schema,
+                }));
+                console.log("Google success", object);
+            } catch (googleError) {
+                throw new Error("Failed to parse analysis response from both models");
+            }
+        }
+    }
     return object;
 }
 

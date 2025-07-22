@@ -16581,6 +16581,58 @@ export default {
     },
     "../components/pdf-viewer.tsx": {
       entries: {
+        "16/declaration/body/6/0/init/0/body/2/argument/openingElement/1/value/expression/1/3":
+          {
+            content: {
+              de: "<expression/> Problem<expression/>",
+              en: "{h.issue.severity} issue",
+              es: "<expression/> problema<expression/>",
+              fr: "<expression/> problème<expression/>",
+              it: "<expression/> problema<expression/>",
+            },
+            hash: "70b0b07567db3cab98b3ea16b7dffe03",
+          },
+        "16/declaration/body/6/0/init/0/body/2/argument/openingElement/1/value/expression/5":
+          {
+            content: {
+              de: "Fokus",
+              en: "Focus",
+              es: "Enfocar",
+              fr: "Focus",
+              it: "Focalizzare",
+            },
+            hash: "d0a2ece0ab3e38f6453f836cdfa17fe5",
+          },
+        "16/declaration/body/7/consequent/0/argument": {
+          content: {
+            de: "Kein Dokument ausgewählt",
+            en: "No document selected",
+            es: "No se ha seleccionado ningún documento",
+            fr: "Aucun document sélectionné",
+            it: "Nessun documento selezionato",
+          },
+          hash: "31c1b451de44a457cd528ba1f2e67ec4",
+        },
+        "16/declaration/body/8/argument/1/openingElement/1/value/expression": {
+          content: {
+            de: "PDF wird geladen…",
+            en: "Loading PDF…",
+            es: "Cargando PDF…",
+            fr: "Chargement du PDF…",
+            it: "Caricamento PDF in corso…",
+          },
+          hash: "de8da0d26886451aadbf0d67045d1455",
+        },
+        "16/declaration/body/8/argument/1/openingElement/2/value/expression": {
+          content: {
+            de: "PDF konnte nicht geladen werden",
+            en: "Failed to load PDF",
+            es: "Error al cargar el PDF",
+            fr: "Échec du chargement du PDF",
+            it: "Caricamento PDF fallito",
+          },
+          hash: "1bdd4d34cf4e0547ff3ce1bf87270909",
+        },
         "5/declaration/body/6/argument/1/openingElement/1/value/expression": {
           content: {
             de: "PDF wird geladen...",
@@ -16590,6 +16642,264 @@ export default {
             it: "Caricamento PDF in corso...",
           },
           hash: "fc478d5c1650a33f64e436fd1099f4f7",
+        },
+        "6/declaration/body/4/argument/1/1/expression/body/1/openingElement/5/value/expression/body/1/argument/openingElement/0/value/expression/1/3":
+          {
+            content: {
+              de: "<expression/> Problem",
+              en: "<expression/> Issue",
+              es: "<expression/> Problema",
+              fr: "<expression/> Problème",
+              it: "<expression/> Problema",
+            },
+            hash: "16ebf4ee9ca277a974c189c3280c4483",
+          },
+        "6/declaration/body/4/argument/1/1/expression/body/1/openingElement/5/value/expression/body/1/argument/openingElement/0/value/expression/5":
+          {
+            content: {
+              de: "Details anzeigen",
+              en: "View Details",
+              es: "Ver Detalles",
+              fr: "Voir les détails",
+              it: "Visualizza Dettagli",
+            },
+            hash: "52e1d3671adb102c1baa5c5183b8dbba",
+          },
+        "6/declaration/body/4/argument/1/openingElement/1/value/expression": {
+          content: {
+            de: "PDF wird geladen...",
+            en: "Loading PDF...",
+            es: "Cargando PDF...",
+            fr: "Chargement du PDF...",
+            it: "Caricamento PDF in corso...",
+          },
+          hash: "fc478d5c1650a33f64e436fd1099f4f7",
+        },
+        "7/declaration/body/5/argument/1/1/expression/body/1/argument/1/openingElement/5/value/expression/body/1/argument/openingElement/0/value/expression/1/3":
+          {
+            content: {
+              de: "<expression/> Problem",
+              en: "<expression/> Issue",
+              es: "<expression/> Problema",
+              fr: "<expression/> Problème",
+              it: "<expression/> Problema",
+            },
+            hash: "8a642247cda64221ae3ebc7fe756d718",
+          },
+        "7/declaration/body/5/argument/1/1/expression/body/1/argument/1/openingElement/5/value/expression/body/1/argument/openingElement/0/value/expression/5":
+          {
+            content: {
+              de: "Details anzeigen",
+              en: "View Details",
+              es: "Ver Detalles",
+              fr: "Voir les détails",
+              it: "Visualizza Dettagli",
+            },
+            hash: "609e223de762abba376c28c52778f53d",
+          },
+        "7/declaration/body/5/argument/1/openingElement/1/value/expression": {
+          content: {
+            de: "PDF wird geladen...",
+            en: "Loading PDF...",
+            es: "Cargando PDF...",
+            fr: "Chargement du PDF...",
+            it: "Caricamento PDF in corso...",
+          },
+          hash: "fc478d5c1650a33f64e436fd1099f4f7",
+        },
+        "9/declaration/body/10/argument/1/1/expression/body/1/argument/1/expression/right":
+          {
+            content: {
+              de: "Hervorhebungen werden verarbeitet...",
+              en: "Processing highlights...",
+              es: "Procesando resaltados...",
+              fr: "Traitement des surlignages...",
+              it: "Elaborazione delle evidenziazioni...",
+            },
+            hash: "51c1ae8bf06e66e97a06d816c9f01ca3",
+          },
+        "9/declaration/body/10/argument/1/openingElement/1/value/expression/1/3":
+          {
+            content: {
+              de: "PDF wird geladen...",
+              en: "Loading PDF...",
+              es: "Cargando PDF...",
+              fr: "Chargement du PDF...",
+              it: "Caricamento PDF in corso...",
+            },
+            hash: "fc478d5c1650a33f64e436fd1099f4f7",
+          },
+        "9/declaration/body/10/argument/1/openingElement/2/value/expression/1/1":
+          {
+            content: {
+              de: "PDF konnte nicht geladen werden",
+              en: "Failed to load PDF",
+              es: "Error al cargar el PDF",
+              fr: "Échec du chargement du PDF",
+              it: "Caricamento PDF fallito",
+            },
+            hash: "f41049225a236de44ef40e05803965a9",
+          },
+        "9/declaration/body/10/argument/1/openingElement/2/value/expression/1/3":
+          {
+            content: {
+              de: "Bitte überprüfen Sie die Dokument-URL",
+              en: "Please check the document URL",
+              es: "Por favor, verifique la URL del documento",
+              fr: "Veuillez vérifier l'URL du document",
+              it: "Controlla l'URL del documento",
+            },
+            hash: "680b57dcc2cda6f51d339f1ddab210e1",
+          },
+        "9/declaration/body/10/argument/3/expression/right": {
+          content: {
+            de: "{highlights.length} Problem<expression/> hervorgehoben",
+            en: "{highlights.length} issue<expression/> highlighted",
+            es: "{highlights.length} problema<expression/> resaltado",
+            fr: "{highlights.length} problème<expression/> surligné",
+            it: "{highlights.length} problema<expression/> evidenziato",
+          },
+          hash: "c376d6a6a1b46f8b4ca4507839f22fd8",
+        },
+        "9/declaration/body/7/0/init/0/body/2/argument/openingElement/0/value/expression/1/3":
+          {
+            content: {
+              de: "<expression/> Problem",
+              en: "<expression/> Issue",
+              es: "<expression/> Problema",
+              fr: "<expression/> Problème",
+              it: "<expression/> Problema",
+            },
+            hash: "d3e7d9887e9e67d8a1cd4cd010eb97fa",
+          },
+        "9/declaration/body/7/0/init/0/body/2/argument/openingElement/0/value/expression/5":
+          {
+            content: {
+              de: "Seite {highlight.position.pageNumber}",
+              en: "Page {highlight.position.pageNumber}",
+              es: "Página {highlight.position.pageNumber}",
+              fr: "Page {highlight.position.pageNumber}",
+              it: "Pagina {highlight.position.pageNumber}",
+            },
+            hash: "1279c66c595de4fb451e87b59b136f17",
+          },
+        "9/declaration/body/7/0/init/0/body/2/argument/openingElement/0/value/expression/7":
+          {
+            content: {
+              de: "Problem auswählen",
+              en: "Select Issue",
+              es: "Seleccionar Problema",
+              fr: "Sélectionner le problème",
+              it: "Seleziona Problema",
+            },
+            hash: "3d3f0981b2d462a593edc8decc307a21",
+          },
+        "9/declaration/body/8/0/init/0/body/2/argument/openingElement/0/value/expression/1/3":
+          {
+            content: {
+              de: "<expression/> Problem",
+              en: "<expression/> Issue",
+              es: "<expression/> Problema",
+              fr: "<expression/> Problème",
+              it: "<expression/> Problema",
+            },
+            hash: "d3e7d9887e9e67d8a1cd4cd010eb97fa",
+          },
+        "9/declaration/body/8/0/init/0/body/2/argument/openingElement/0/value/expression/5":
+          {
+            content: {
+              de: "Seite {highlight.position.pageNumber}",
+              en: "Page {highlight.position.pageNumber}",
+              es: "Página {highlight.position.pageNumber}",
+              fr: "Page {highlight.position.pageNumber}",
+              it: "Pagina {highlight.position.pageNumber}",
+            },
+            hash: "1279c66c595de4fb451e87b59b136f17",
+          },
+        "9/declaration/body/8/0/init/0/body/2/argument/openingElement/0/value/expression/7":
+          {
+            content: {
+              de: "Problem auswählen",
+              en: "Select Issue",
+              es: "Seleccionar Problema",
+              fr: "Sélectionner le problème",
+              it: "Seleziona Problema",
+            },
+            hash: "3d3f0981b2d462a593edc8decc307a21",
+          },
+        "9/declaration/body/8/consequent/0/argument/1": {
+          content: {
+            de: "Keine Dokument-URL bereitgestellt",
+            en: "No document URL provided",
+            es: "No se proporcionó la URL del documento",
+            fr: "Aucune URL de document fournie",
+            it: "Nessun URL del documento fornito",
+          },
+          hash: "4a915e90fd8551cebc405655982504bc",
+        },
+        "9/declaration/body/9/argument/1/1/expression/body/1/argument/1/expression/right":
+          {
+            content: {
+              de: "Hervorhebungen werden verarbeitet...",
+              en: "Processing highlights...",
+              es: "Procesando resaltados...",
+              fr: "Traitement des surlignages...",
+              it: "Elaborazione delle evidenziazioni...",
+            },
+            hash: "51c1ae8bf06e66e97a06d816c9f01ca3",
+          },
+        "9/declaration/body/9/argument/1/openingElement/1/value/expression/1/3":
+          {
+            content: {
+              de: "PDF wird geladen...",
+              en: "Loading PDF...",
+              es: "Cargando PDF...",
+              fr: "Chargement du PDF...",
+              it: "Caricamento PDF in corso...",
+            },
+            hash: "fc478d5c1650a33f64e436fd1099f4f7",
+          },
+        "9/declaration/body/9/argument/1/openingElement/2/value/expression/1/1":
+          {
+            content: {
+              de: "PDF konnte nicht geladen werden",
+              en: "Failed to load PDF",
+              es: "Error al cargar el PDF",
+              fr: "Échec du chargement du PDF",
+              it: "Caricamento PDF fallito",
+            },
+            hash: "f41049225a236de44ef40e05803965a9",
+          },
+        "9/declaration/body/9/argument/1/openingElement/2/value/expression/1/3":
+          {
+            content: {
+              de: "Bitte überprüfen Sie die Dokument-URL",
+              en: "Please check the document URL",
+              es: "Por favor, verifique la URL del documento",
+              fr: "Veuillez vérifier l'URL du document",
+              it: "Controlla l'URL del documento",
+            },
+            hash: "680b57dcc2cda6f51d339f1ddab210e1",
+          },
+        "9/declaration/body/9/argument/3/expression/right": {
+          content: {
+            de: "{highlights.length} Problem<expression/> hervorgehoben",
+            en: "{highlights.length} issue<expression/> highlighted",
+            es: "{highlights.length} problema<expression/> resaltado",
+            fr: "{highlights.length} problème<expression/> surligné",
+            it: "{highlights.length} problema<expression/> evidenziato",
+          },
+          hash: "c376d6a6a1b46f8b4ca4507839f22fd8",
+        },
+        "9/declaration/body/9/consequent/0/argument/1": {
+          content: {
+            de: "Keine Dokument-URL bereitgestellt",
+            en: "No document URL provided",
+            es: "No se proporcionó la URL del documento",
+            fr: "Aucune URL de document fournie",
+            it: "Nessun URL del documento fornito",
+          },
+          hash: "4a915e90fd8551cebc405655982504bc",
         },
       },
     },

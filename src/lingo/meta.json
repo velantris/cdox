@@ -13047,6 +13047,46 @@
     },
     "../components/pdf-viewer.tsx": {
       "scopes": {
+        "16/declaration/body/6/0/init/0/body/2/argument/openingElement/1/value/expression/1/3": {
+          "type": "element",
+          "hash": "70b0b07567db3cab98b3ea16b7dffe03",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "{h.issue.severity} issue"
+        },
+        "16/declaration/body/6/0/init/0/body/2/argument/openingElement/1/value/expression/5": {
+          "type": "element",
+          "hash": "d0a2ece0ab3e38f6453f836cdfa17fe5",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Focus"
+        },
+        "16/declaration/body/7/consequent/0/argument": {
+          "type": "element",
+          "hash": "31c1b451de44a457cd528ba1f2e67ec4",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "No document selected"
+        },
+        "16/declaration/body/8/argument/1/openingElement/1/value/expression": {
+          "type": "element",
+          "hash": "de8da0d26886451aadbf0d67045d1455",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Loading PDF…"
+        },
+        "16/declaration/body/8/argument/1/openingElement/2/value/expression": {
+          "type": "element",
+          "hash": "1bdd4d34cf4e0547ff3ce1bf87270909",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Failed to load PDF"
+        },
         "5/declaration/body/6/argument/1/openingElement/1/value/expression": {
           "type": "element",
           "hash": "fc478d5c1650a33f64e436fd1099f4f7",
@@ -13054,6 +13094,198 @@
           "skip": false,
           "overrides": {},
           "content": "Loading PDF..."
+        },
+        "6/declaration/body/4/argument/1/1/expression/body/1/openingElement/5/value/expression/body/1/argument/openingElement/0/value/expression/1/3": {
+          "type": "element",
+          "hash": "16ebf4ee9ca277a974c189c3280c4483",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<expression/> Issue"
+        },
+        "6/declaration/body/4/argument/1/1/expression/body/1/openingElement/5/value/expression/body/1/argument/openingElement/0/value/expression/5": {
+          "type": "element",
+          "hash": "52e1d3671adb102c1baa5c5183b8dbba",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "View Details"
+        },
+        "6/declaration/body/4/argument/1/openingElement/1/value/expression": {
+          "type": "element",
+          "hash": "fc478d5c1650a33f64e436fd1099f4f7",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Loading PDF..."
+        },
+        "7/declaration/body/5/argument/1/1/expression/body/1/argument/1/openingElement/5/value/expression/body/1/argument/openingElement/0/value/expression/1/3": {
+          "type": "element",
+          "hash": "8a642247cda64221ae3ebc7fe756d718",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<expression/> Issue"
+        },
+        "7/declaration/body/5/argument/1/1/expression/body/1/argument/1/openingElement/5/value/expression/body/1/argument/openingElement/0/value/expression/5": {
+          "type": "element",
+          "hash": "609e223de762abba376c28c52778f53d",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "View Details"
+        },
+        "7/declaration/body/5/argument/1/openingElement/1/value/expression": {
+          "type": "element",
+          "hash": "fc478d5c1650a33f64e436fd1099f4f7",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Loading PDF..."
+        },
+        "9/declaration/body/10/argument/1/1/expression/body/1/argument/1/expression/right": {
+          "type": "element",
+          "hash": "51c1ae8bf06e66e97a06d816c9f01ca3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Processing highlights..."
+        },
+        "9/declaration/body/10/argument/1/openingElement/1/value/expression/1/3": {
+          "type": "element",
+          "hash": "fc478d5c1650a33f64e436fd1099f4f7",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Loading PDF..."
+        },
+        "9/declaration/body/10/argument/1/openingElement/2/value/expression/1/1": {
+          "type": "element",
+          "hash": "f41049225a236de44ef40e05803965a9",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Failed to load PDF"
+        },
+        "9/declaration/body/10/argument/1/openingElement/2/value/expression/1/3": {
+          "type": "element",
+          "hash": "680b57dcc2cda6f51d339f1ddab210e1",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Please check the document URL"
+        },
+        "9/declaration/body/10/argument/3/expression/right": {
+          "type": "element",
+          "hash": "c376d6a6a1b46f8b4ca4507839f22fd8",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "{highlights.length} issue<expression/> highlighted"
+        },
+        "9/declaration/body/7/0/init/0/body/2/argument/openingElement/0/value/expression/1/3": {
+          "type": "element",
+          "hash": "d3e7d9887e9e67d8a1cd4cd010eb97fa",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<expression/> Issue"
+        },
+        "9/declaration/body/7/0/init/0/body/2/argument/openingElement/0/value/expression/5": {
+          "type": "element",
+          "hash": "1279c66c595de4fb451e87b59b136f17",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Page {highlight.position.pageNumber}"
+        },
+        "9/declaration/body/7/0/init/0/body/2/argument/openingElement/0/value/expression/7": {
+          "type": "element",
+          "hash": "3d3f0981b2d462a593edc8decc307a21",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Select Issue"
+        },
+        "9/declaration/body/8/0/init/0/body/2/argument/openingElement/0/value/expression/1/3": {
+          "type": "element",
+          "hash": "d3e7d9887e9e67d8a1cd4cd010eb97fa",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<expression/> Issue"
+        },
+        "9/declaration/body/8/0/init/0/body/2/argument/openingElement/0/value/expression/5": {
+          "type": "element",
+          "hash": "1279c66c595de4fb451e87b59b136f17",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Page {highlight.position.pageNumber}"
+        },
+        "9/declaration/body/8/0/init/0/body/2/argument/openingElement/0/value/expression/7": {
+          "type": "element",
+          "hash": "3d3f0981b2d462a593edc8decc307a21",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Select Issue"
+        },
+        "9/declaration/body/8/consequent/0/argument/1": {
+          "type": "element",
+          "hash": "4a915e90fd8551cebc405655982504bc",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "No document URL provided"
+        },
+        "9/declaration/body/9/argument/1/1/expression/body/1/argument/1/expression/right": {
+          "type": "element",
+          "hash": "51c1ae8bf06e66e97a06d816c9f01ca3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Processing highlights..."
+        },
+        "9/declaration/body/9/argument/1/openingElement/1/value/expression/1/3": {
+          "type": "element",
+          "hash": "fc478d5c1650a33f64e436fd1099f4f7",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Loading PDF..."
+        },
+        "9/declaration/body/9/argument/1/openingElement/2/value/expression/1/1": {
+          "type": "element",
+          "hash": "f41049225a236de44ef40e05803965a9",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Failed to load PDF"
+        },
+        "9/declaration/body/9/argument/1/openingElement/2/value/expression/1/3": {
+          "type": "element",
+          "hash": "680b57dcc2cda6f51d339f1ddab210e1",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Please check the document URL"
+        },
+        "9/declaration/body/9/argument/3/expression/right": {
+          "type": "element",
+          "hash": "c376d6a6a1b46f8b4ca4507839f22fd8",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "{highlights.length} issue<expression/> highlighted"
+        },
+        "9/declaration/body/9/consequent/0/argument/1": {
+          "type": "element",
+          "hash": "4a915e90fd8551cebc405655982504bc",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "No document URL provided"
         }
       }
     },

@@ -48,7 +48,7 @@ export function IssuesList({ issues, selectedIssueId, onIssueClick, severityFilt
                     <li
                         key={issue._id}
                         onClick={() => onIssueClick(issue)}
-                        className={`p-3 border-b cursor-pointer hover:bg-gray-100 transition-colors ${selectedIssueId === issue._id ? 'bg-blue-50 border-blue-200' : ''
+                        className={`p-3 border-b cursor-pointer hover:bg-gray-100 transition-colors ${selectedIssueId === issue._id ? 'bg-blue-50 border-blue-200 border-l-4 border-l-blue-500' : ''
                             }`}
                     >
                         <div className="flex items-start space-x-2">
