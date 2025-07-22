@@ -1,17 +1,17 @@
 "use client"
 
+import { ConvexLoading } from "@/components/convex-error-boundary"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Download, ExternalLink, FileText, MoreHorizontal, Search, Upload } from "lucide-react"
-import Link from "next/link"
-import { useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
-import { useState, useMemo } from "react"
-import { ConvexLoading } from "@/components/convex-error-boundary"
+import { useQuery } from "convex/react"
+import { FileText, Search, Upload } from "lucide-react"
+import Link from "next/link"
+import { useMemo, useState } from "react"
 
 // Helper to map score to letter grade
 const gradeForScore = (score: number | undefined) => {
@@ -300,20 +300,6 @@ export default function DocumentsPage() {
                       >
                         {doc.status}
                       </Badge>
-                      <div className="flex items-center space-x-2">
-                        <Link href={`/dashboard/documents/${doc.id}`}>
-                          <Button size="sm" variant="outline">
-                            <ExternalLink className="w-4 h-4 mr-2" />
-                            Analyze
-                          </Button>
-                        </Link>
-                        <Button size="sm" variant="ghost">
-                          <Download className="w-4 h-4" />
-                        </Button>
-                        <Button size="sm" variant="ghost">
-                          <MoreHorizontal className="w-4 h-4" />
-                        </Button>
-                      </div>
                     </div>
                   </Link>
                 ))}
