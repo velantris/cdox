@@ -144,7 +144,7 @@ export default function DocumentsPage() {
             </div>
             <div className="flex items-center space-x-4">
               <ThemeToggle />
-              <Link href="/dashboard/upload">
+              <Link href="/dashboard/doc-new">
                 <Button>
                   <Upload className="w-4 h-4 mr-2" />
                   Upload Document
@@ -236,7 +236,7 @@ export default function DocumentsPage() {
                   }
                 </p>
                 {documents.length === 0 && (
-                  <Link href="/dashboard/upload">
+                  <Link href="/dashboard/doc-new">
                     <Button>
                       <Upload className="w-4 h-4 mr-2" />
                       Upload Document

@@ -4,6 +4,8 @@ import { ComprehensibilityGauge } from "@/components/comprehensibility-gauge"
 import { ConvexLoading } from "@/components/convex-error-boundary"
 import { CustomRulesSelector } from "@/components/custom-rules-selector"
 import { DashboardHeader } from "@/components/dashboard-header"
+import { IssuesList } from "@/components/issues-list"
+import { PdfViewer } from "@/components/pdf-viewer"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -16,26 +18,16 @@ import { api } from "@/convex/_generated/api"
 import type { Id } from "@/convex/_generated/dataModel"
 import { useAction, useMutation, useQuery } from "convex/react"
 import {
-  AlertCircle,
-  AlertTriangle,
   ArrowLeft,
   CheckCircle,
   Download,
   Info,
   RefreshCw,
-  Share,
   Wand2
 } from "lucide-react"
-import dynamic from "next/dynamic"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { use, useEffect, useRef, useState } from "react"
-import 'react-pdf/dist/Page/AnnotationLayer.css'
-import 'react-pdf/dist/Page/TextLayer.css'
-
-// Dynamically import PDF components to avoid SSR issues
-const PdfDocument = dynamic(() => import("react-pdf").then(mod => ({ default: mod.Document })), { ssr: false })
-const Page = dynamic(() => import("react-pdf").then(mod => ({ default: mod.Page })), { ssr: false })
+import { use, useState } from "react"
 
 export default function DocumentAnalysisPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -68,158 +60,32 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
   // Small helper to capitalise first letter
   const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
 
-
+  // Map severity levels to color classes (bg + text)
+  const severityClass = (severity: string) => {
+    const sev = cap(severity)
+    switch (sev) {
+      case "Critical":
+        return "bg-[#FF0000] text-white" // Red
+      case "High":
+        return "bg-[#FFA500] text-white" // Orange
+      case "Medium":
+        return "bg-[#FFFF00] text-black" // Yellow
+      case "Low":
+      default:
+        return "bg-[#008000] text-white" // Green
+    }
+  }
 
   const [selectedRules, setSelectedRules] = useState<Id<"customRules">[]>([])
   const [showRulesSelector, setShowRulesSelector] = useState(false)
 
   // PDF Viewer state
   const [showPdfViewer, setShowPdfViewer] = useState(false)
-  const [numPages, setNumPages] = useState<number>(0)
-  const [pdfDocProxy, setPdfDocProxy] = useState<any | null>(null)
-  const viewerContainerRef = useRef<HTMLDivElement>(null)
-  const issuePageMapRef = useRef<Record<string, number>>({})
   const [selectedIssueId, setSelectedIssueId] = useState<string | null>(null)
-  const [highlightedText, setHighlightedText] = useState<string | null>(null)
-  const [highlightedPageNumber, setHighlightedPageNumber] = useState<number | null>(null)
-  const [isClient, setIsClient] = useState(false)
 
-  // Initialise pdf.js worker
-  useEffect(() => {
-    setIsClient(true)
-    // Only initialize PDF.js on client side
-    const initPdfjs = async () => {
-      const pdfjs = await import("react-pdf").then(mod => mod.pdfjs)
-      pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.mjs"
-    }
-    initPdfjs()
-  }, [])
-
-  // Helper to find the page that contains a snippet of text and get text positions
-  const findPageForText = async (text: string): Promise<{ pageNumber: number; textItems: any[] }> => {
-    if (!pdfDocProxy) return { pageNumber: 1, textItems: [] }
-    const snippet = text.slice(0, 50).toLowerCase()
-    for (let i = 1; i <= pdfDocProxy.numPages; i++) {
-      try {
-        // Attempt to fetch the page. This may throw if the underlying
-        // PDF worker has already been destroyed (e.g. after unmount).
-        const page = await pdfDocProxy.getPage(i)
-        const content = await page.getTextContent()
-        const textItems = content.items as any[]
-        const strings = textItems.map((it: any) => it.str).join(" ").toLowerCase()
-        if (strings.includes(snippet)) {
-          return { pageNumber: i, textItems }
-        }
-      } catch (err) {
-        // If we can no longer access the page, bail out gracefully instead of
-        // crashing the whole component.
-        console.error("PDF getPage failed:", err)
-        return { pageNumber: 1, textItems: [] }
-      }
-    }
-    return { pageNumber: 1, textItems: [] }
-  }
-
-  // Helper to find text positions within a page for highlighting
-  const findTextPositions = (textItems: any[], searchText: string): any[] => {
-    const positions: any[] = []
-    if (!searchText) return positions
-    const joined = textItems.map((it: any) => it.str).join(' ').toLowerCase()
-    const search = searchText.toLowerCase().replace(/\s+/g, ' ').trim()
-    const idx = joined.indexOf(search)
-    if (idx === -1) return positions
-    // Fallback: highlight all items that are part of the match
-    let charCount = 0
-    let start = -1, end = -1
-    for (let i = 0; i < textItems.length; i++) {
-      const item = textItems[i]
-      const itemLen = item.str.length + 1 // +1 for space
-      if (charCount <= idx && charCount + itemLen > idx) {
-        start = i
-      }
-      if (charCount < idx + search.length && charCount + itemLen >= idx + search.length) {
-        end = i
-        break
-      }
-      charCount += itemLen
-    }
-    if (start !== -1 && end !== -1) {
-      for (let i = start; i <= end; i++) positions.push(textItems[i])
-    }
-    return positions
-  }
-
-  const handleIssueClickPdf = async (issue: any) => {
-    if (!showPdfViewer) return
+  // Handle issue selection for PDF viewer
+  const handleIssueClick = (issue: any) => {
     setSelectedIssueId(issue._id)
-    setHighlightedText(issue.originalText)
-
-    let pageNum = issuePageMapRef.current[issue._id]
-    if (!pageNum) {
-      const result = await findPageForText(issue.originalText)
-      pageNum = result.pageNumber
-      issuePageMapRef.current[issue._id] = pageNum
-    }
-    setHighlightedPageNumber(pageNum)
-    const elem = window.document.getElementById(`page_${pageNum}`)
-    if (elem) {
-      elem.scrollIntoView({ behavior: "smooth", block: "start" })
-    }
-  }
-
-  // Component to render text highlights on PDF pages
-  const TextHighlight = ({ pageNumber, searchText }: { pageNumber: number; searchText: string }) => {
-    const [highlights, setHighlights] = useState<any[]>([])
-
-    useEffect(() => {
-      const findHighlights = async () => {
-        if (!pdfDocProxy || !searchText) {
-          setHighlights([])
-          return
-        }
-
-        try {
-          const page = await pdfDocProxy.getPage(pageNumber)
-          const content = await page.getTextContent()
-          const viewport = page.getViewport({ scale: 1 })
-          const textItems = content.items as any[]
-          const positions = findTextPositions(textItems, searchText)
-
-          const highlightElements = positions.map((item, index) => ({
-            id: `highlight-${pageNumber}-${index}`,
-            left: (item.transform[4] / viewport.width) * 100,
-            top: ((viewport.height - item.transform[5] - item.height) / viewport.height) * 100,
-            width: (item.width / viewport.width) * 100,
-            height: (item.height / viewport.height) * 100,
-          }))
-
-          setHighlights(highlightElements)
-        } catch (error) {
-          // The PDF page might have been unloaded if the viewer was toggled off
-          console.error('Error finding highlights:', error)
-          setHighlights([])
-        }
-      }
-
-      findHighlights()
-    }, [pageNumber, searchText])
-
-    return (
-      <>
-        {highlights.map((highlight) => (
-          <div
-            key={highlight.id}
-            className="absolute bg-yellow-300 opacity-50 pointer-events-none rounded-sm"
-            style={{
-              left: `${highlight.left}%`,
-              top: `${highlight.top}%`,
-              width: `${highlight.width}%`,
-              height: `${highlight.height}%`,
-            }}
-          />
-        ))}
-      </>
-    )
   }
 
   // Rewrite section state
@@ -355,28 +221,7 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
   return (
     <div className="min-h-screen bg-gray-50">
       <DashboardHeader
-        actions={
-          <>
-            <Button
-              variant="outline"
-              onClick={() => setShowRulesSelector(!showRulesSelector)}
-            >
-              {showRulesSelector ? "Hide Custom Rules" : "Select Custom Rules"}
-            </Button>
-            <Button onClick={handleReanalysis} disabled={isAnalyzing}>
-              <RefreshCw className={`w-4 h-4 mr-2 ${isAnalyzing ? "animate-spin" : ""}`} />
-              {isAnalyzing ? "Analyzing..." : "Re-analyze"}
-            </Button>
-            <Button variant="outline">
-              <Share className="w-4 h-4 mr-2" />
-            </Button>
-            <Button variant="outline" asChild>
-              <a href={document.url} download>
-                <Download className="w-4 h-4 mr-2" />
-              </a>
-            </Button>
-          </>
-        }
+
       />
 
       <div className="p-6">
@@ -394,7 +239,28 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                 <span>{new Date(document.createdAt).toLocaleDateString()}</span>
               </div>
             </div>
-            {analysis && <Badge className="text-sm px-3 py-1">{analysis.status || "Analyzed"}</Badge>}
+            <div className="flex items-center space-x-2">
+              <Button
+                variant="outline"
+                onClick={() => setShowRulesSelector(!showRulesSelector)}
+              >
+                {showRulesSelector ? "Hide Custom Rules" : "Select Custom Rules"}
+              </Button>
+
+              {/* <Button variant="outline">
+                <Share className="w-4 h-4 mr-2" />
+              </Button> */}
+              {/* <Button variant="outline" asChild>
+                <a href={document.url} download>
+                  <Download className="w-4 h-4 mr-2" />
+                </a>
+              </Button> */}
+              <Button onClick={handleReanalysis} disabled={isAnalyzing}>
+                <RefreshCw className={`w-4 h-4 mr-2 ${isAnalyzing ? "animate-spin" : ""}`} />
+                {isAnalyzing ? "Analyzing..." : "Re-analyze"}
+              </Button>
+              {/* {analysis && <Badge className="text-sm px-3 py-1">{analysis.status || "Analyzed"}</Badge>} */}
+            </div>
           </div>
         </div>
 
@@ -445,7 +311,7 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
               <Tabs defaultValue="overview" className="space-y-6">
                 <TabsList className="grid w-full grid-cols-4">
                   <TabsTrigger value="overview">Overview</TabsTrigger>
-                  <TabsTrigger value="issues">Issues ({issues.length || 0})</TabsTrigger>
+                  <TabsTrigger value="issues">Issues</TabsTrigger>
                   <TabsTrigger value="heatmap">Heatmap</TabsTrigger>
                   <TabsTrigger value="rewrite">Rewrite</TabsTrigger>
                 </TabsList>
@@ -456,7 +322,7 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                       <CardTitle>Analysis Summary</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-700 leading-relaxed">{analysis.summary}</p>
+                      <p className="text-gray-700 leading-relaxed">{analysis?.summary ?? ''}</p>
                     </CardContent>
                   </Card>
 
@@ -466,7 +332,7 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                     </CardHeader>
                     <CardContent>
                       <ul className="space-y-3">
-                        {analysis.recommendations.map((rec: string, index: number) => (
+                        {(analysis?.recommendations ?? []).map((rec: string, index: number) => (
                           <li key={index} className="flex items-start space-x-3">
                             <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
                             <span className="text-gray-700">{rec}</span>
@@ -493,85 +359,38 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                     </Select>
                     <div className="flex items-center space-x-4">
                       <div className="flex space-x-2">
-                        <Badge variant="destructive">{severityCounts['Critical'] ?? 0}</Badge>
-                        <Badge variant="destructive">{severityCounts['High'] ?? 0}</Badge>
-                        <Badge variant="secondary">{severityCounts['Medium'] ?? 0}</Badge>
-                        <Badge>{severityCounts['Low'] ?? 0}</Badge>
+                        <div className="text-sm text-gray-500"> Total issues: {issues.length} </div>
+                        <Badge className={severityClass('Critical')}>Critical </Badge>
+                        <Badge className={severityClass('High')}>High</Badge>
+                        <Badge className={severityClass('Medium')}>Medium</Badge>
+                        <Badge className={severityClass('Low')}>Low</Badge>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Switch id="pdf-viewer-toggle" checked={showPdfViewer} onCheckedChange={setShowPdfViewer} />
                         <label htmlFor="pdf-viewer-toggle" className="text-sm">PDF Viewer</label>
+                        <Button asChild variant="outline" size="sm">
+                          <a href={document?.url ?? '#'} download>
+                            <Download className="w-4 h-4 mr-1" />
+                            PDF
+                          </a>
+                        </Button>
                       </div>
                     </div>
                   </div>
                   {showPdfViewer ? (
                     <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
-                      <div ref={viewerContainerRef} className="overflow-auto max-h-[calc(100vh-250px)] border rounded">
-                        {isClient && document?.url ? (
-                          <PdfDocument
-                            file={document.url}
-                            onLoadSuccess={(pdf) => {
-                              setNumPages(pdf.numPages)
-                              setPdfDocProxy(pdf)
-                            }}
-                            onLoadError={(error) => {
-                              console.error("PDF load error:", error)
-                            }}
-                          >
-                            {Array.from({ length: numPages }, (_, i) => (
-                              <div key={`page_${i + 1}`} id={`page_${i + 1}`} className="mb-4 flex justify-center relative">
-                                <div className="relative">
-                                  <Page pageNumber={i + 1} width={600} />
-                                  {highlightedText && selectedIssueId && highlightedPageNumber === i + 1 && (
-                                    <div className="absolute inset-0">
-                                      <TextHighlight pageNumber={i + 1} searchText={highlightedText} />
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            ))}
-                          </PdfDocument>
-                        ) : (
-                          <div className="flex items-center justify-center h-96">
-                            <div className="text-gray-500">Loading PDF viewer...</div>
-                          </div>
-                        )}
-                      </div>
-                      <div className="border rounded overflow-auto max-h-[calc(100vh-250px)]">
-                        {filteredIssues.length === 0 ? (
-                          <p className="text-center text-gray-500">
-                            {severityFilter === "All" ? "No issues found." : `No ${severityFilter.toLowerCase()} issues found.`}
-                          </p>
-                        ) : (
-                          <ul>
-                            {filteredIssues.map((issue: any) => (
-                              <li
-                                key={issue._id}
-                                onClick={() => handleIssueClickPdf(issue)}
-                                className={`p-3 border-b cursor-pointer hover:bg-gray-100 transition-colors ${selectedIssueId === issue._id ? 'bg-blue-50 border-blue-200' : ''
-                                  }`}
-                              >
-                                <div className="flex items-start space-x-2">
-                                  <Badge
-                                    variant={
-                                      cap(issue.severity) === "Critical"
-                                        ? "destructive"
-                                        : cap(issue.severity) === "High"
-                                          ? "destructive"
-                                          : cap(issue.severity) === "Medium"
-                                            ? "secondary"
-                                            : "default"
-                                    }
-                                  >
-                                    {cap(issue.severity)}
-                                  </Badge>
-                                  <span className="text-xs line-clamp-2 flex-1">{issue.originalText}</span>
-                                </div>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                      </div>
+                      <PdfViewer
+                        documentUrl={document?.url || ''}
+                        selectedIssue={issues.find(issue => issue._id === selectedIssueId)}
+                        onIssueSelect={handleIssueClick}
+                        issues={issues}
+                      />
+                      <IssuesList
+                        issues={issues}
+                        selectedIssueId={selectedIssueId}
+                        onIssueClick={handleIssueClick}
+                        severityFilter={severityFilter}
+                      />
                     </div>
                   ) : (
                     filteredIssues.length === 0 ? (
@@ -587,39 +406,22 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                             <CardHeader>
                               <div className="flex items-start justify-between">
                                 <div className="flex items-start space-x-3">
-                                  <div
-                                    className={`w-8 h-8 rounded-lg flex items-center justify-center ${cap(issue.severity) === "Critical"
-                                      ? "bg-red-100"
-                                      : cap(issue.severity) === "High"
-                                        ? "bg-orange-100"
-                                        : cap(issue.severity) === "Medium"
-                                          ? "bg-yellow-100"
-                                          : "bg-green-100"
-                                      }`}
+                                  {/* <div
+                                    className={`w-8 h-8 rounded-lg flex items-center justify-center ${severityClass(issue.severity)}`}
                                   >
                                     {cap(issue.severity) === "Critical" ? (
-                                      <AlertTriangle className="w-4 h-4 text-red-500" />
+                                      <AlertTriangle className="w-4 h-4 text-white" />
                                     ) : cap(issue.severity) === "High" ? (
-                                      <AlertCircle className="w-4 h-4 text-orange-500" />
+                                      <AlertCircle className="w-4 h-4 text-white" />
                                     ) : cap(issue.severity) === "Medium" ? (
-                                      <Info className="w-4 h-4 text-yellow-500" />
+                                      <Info className="w-4 h-4 text-black" />
                                     ) : (
-                                      <CheckCircle className="w-4 h-4 text-green-500" />
+                                      <CheckCircle className="w-4 h-4 text-white" />
                                     )}
-                                  </div>
+                                  </div> */}
                                   <div>
                                     <div className="flex items-center space-x-2">
-                                      <Badge
-                                        variant={
-                                          cap(issue.severity) === "Critical"
-                                            ? "destructive"
-                                            : cap(issue.severity) === "High"
-                                              ? "destructive"
-                                              : cap(issue.severity) === "Medium"
-                                                ? "secondary"
-                                                : "default"
-                                        }
-                                      >
+                                      <Badge className={severityClass(issue.severity)}>
                                         {cap(issue.severity)}
                                       </Badge>
                                       <Badge variant="outline">{issue.type}</Badge>

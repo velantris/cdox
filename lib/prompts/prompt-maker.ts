@@ -85,7 +85,6 @@ export const makePrompt = (
     - The recommendations must be written in ${language}
     - All issue explanations must be written in ${language}
     - All suggested rewrites must be written in ${language}
-    - Only the JSON structure and field names should remain in English
     `;
 
     const final_prompt = `
@@ -130,7 +129,9 @@ export const makePrompt = (
             "score": 75,
             "issues": [
                 {
-                    "original_text": "Exact text excerpt from the document that demonstrates the issue",
+                    "offset_start": 1234 this is the start of the original text ,
+                    "offset_end": 1297 this is the end of the original text,
+                    "original_text": "A short, exact quote from the document demonstrating the issue. Keep it concise, ideally under 500 characters.",
                     "issue_explanation": "Clear explanation of why this specific text is problematic for the target audience",
                     "suggested_rewrite": "Concrete example of how to improve this specific text while maintaining legal accuracy",
                     "grading": "medium",
@@ -141,11 +142,20 @@ export const makePrompt = (
             ]
         }
         
+        CRITICAL REQUIREMENTS FOR ORIGINAL_TEXT:
+        - The "original_text" MUST be copied EXACTLY as it appears in the document
+        - DO NOT paraphrase, summarize, or rewrite the original text in any way
+        - DO NOT change capitalization, punctuation, or spacing
+        - DO NOT add quotation marks or formatting that isn't in the original
+        - The selected text should be concise, but provide enough context to understand the issue.
+        - This should be a literal copy-paste of the text that demonstrates the issue
+        - Think of it as highlighting text in a PDF - you're selecting the exact characters
+
         IMPORTANT: 
+        - You are judged on whether the original_text map to **exact** characters in the document
         - Ensure all JSON is properly formatted and escaped
-        - Include actual text excerpts in "original_text" 
         - Provide specific, implementable rewrites based on the actual document content
-        - Score should reflect overall document comprehensibility (0-100)
+        - Score should reflect overall document comprehensibility (0-100 dont play safe here)
         - Summary should describe what the document actually contains, not just generic analysis
         - Recommendations should be specific to problems found in this document
     `

@@ -47,6 +47,9 @@ export default defineSchema({
     originalText: v.string(),
     issueExplanation: v.string(),
     suggestedRewrite: v.string(),
+    // Character offsets of the issue text within the analysed document (inclusive start, exclusive end)
+    offsetStart: v.optional(v.number()),
+    offsetEnd: v.optional(v.number()),
     createdAt: v.number(),
   }).index("by_analysis", ["analysisId"]),
 

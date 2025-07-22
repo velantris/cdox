@@ -16,6 +16,8 @@ const issueValidator = v.object({
   originalText: v.string(),
   issueExplanation: v.string(),
   suggestedRewrite: v.string(),
+  offsetStart: v.optional(v.number()),
+  offsetEnd: v.optional(v.number()),
 });
 
 // Validation helper functions
@@ -27,6 +29,8 @@ const validateIssueData = (issue: {
   originalText: string;
   issueExplanation: string;
   suggestedRewrite: string;
+  offsetStart?: number;
+  offsetEnd?: number;
 }) => {
   // Validate required fields
   if (!issue.severity || !issue.type) {
@@ -65,6 +69,15 @@ const validateIssueData = (issue: {
   }
   if (issue.suggestedRewrite.length > 5000) {
     throw new Error("Suggested rewrite cannot exceed 5000 characters");
+  }
+
+  if (issue.offsetStart !== undefined && issue.offsetEnd !== undefined) {
+    if (typeof issue.offsetStart !== "number" || typeof issue.offsetEnd !== "number") {
+      throw new Error("offsetStart and offsetEnd must be numbers if provided");
+    }
+    if (issue.offsetStart < 0 || issue.offsetEnd <= issue.offsetStart) {
+      throw new Error("offsetEnd must be greater than offsetStart and both must be non-negative");
+    }
   }
 };
 
@@ -134,6 +147,8 @@ export const createIssues = mutation({
         originalText: issue.originalText,
         issueExplanation: issue.issueExplanation,
         suggestedRewrite: issue.suggestedRewrite,
+        offsetStart: issue.offsetStart,
+        offsetEnd: issue.offsetEnd,
         createdAt: currentTime,
       });
       issueIds.push(issueId);
@@ -160,6 +175,8 @@ export const createIssue = mutation({
     originalText: v.string(),
     issueExplanation: v.string(),
     suggestedRewrite: v.string(),
+    offsetStart: v.optional(v.number()),
+    offsetEnd: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     // Verify the analysis exists
@@ -177,6 +194,8 @@ export const createIssue = mutation({
       originalText: args.originalText,
       issueExplanation: args.issueExplanation,
       suggestedRewrite: args.suggestedRewrite,
+      offsetStart: args.offsetStart,
+      offsetEnd: args.offsetEnd,
     });
 
     const issueId = await ctx.db.insert("issues", {
@@ -188,6 +207,8 @@ export const createIssue = mutation({
       originalText: args.originalText,
       issueExplanation: args.issueExplanation,
       suggestedRewrite: args.suggestedRewrite,
+      offsetStart: args.offsetStart,
+      offsetEnd: args.offsetEnd,
       createdAt: Date.now(),
     });
 
@@ -235,6 +256,8 @@ export const updateIssue = mutation({
     originalText: v.optional(v.string()),
     issueExplanation: v.optional(v.string()),
     suggestedRewrite: v.optional(v.string()),
+    offsetStart: v.optional(v.number()),
+    offsetEnd: v.optional(v.number()),
   },
   handler: async (ctx, args) => {
     const { id, ...updates } = args;
@@ -263,9 +286,11 @@ export const updateIssue = mutation({
         originalText: cleanUpdates.originalText || issue.originalText,
         issueExplanation: cleanUpdates.issueExplanation || issue.issueExplanation,
         suggestedRewrite: cleanUpdates.suggestedRewrite || issue.suggestedRewrite,
+        offsetStart: cleanUpdates.offsetStart || issue.offsetStart,
+        offsetEnd: cleanUpdates.offsetEnd || issue.offsetEnd,
       };
 
-      validateIssueData(updatedIssue);
+      validateIssueData(updatedIssue as any);
     }
 
     await ctx.db.patch(id, cleanUpdates);

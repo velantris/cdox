@@ -53,6 +53,7 @@ export default function UploadPage() {
     stepProgress: number;
   } | null>(null);
   const backendDoneRef = useRef<null | "completed" | "failed">(null);
+  const [validationErrors, setValidationErrors] = useState<{ [key: string]: string }>({});
 
   // Convex actions
   const uploadDocument = useAction(api.upload.uploadDocument);
@@ -214,6 +215,17 @@ export default function UploadPage() {
     processStep();
   };
 
+  const validateFields = () => {
+    const errors: { [key: string]: string } = {};
+    if (!title.trim()) errors.title = "Title is required";
+    if (!docType) errors.docType = "Type is required";
+    if (!audience) errors.audience = "Audience is required";
+    if (!jurisdiction) errors.jurisdiction = "Jurisdiction is required";
+    if (!language) errors.language = "Language is required";
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -256,6 +268,7 @@ export default function UploadPage() {
 
   const handleUpload = async () => {
     if (!selectedFile) return;
+    if (!validateFields()) return;
 
     setUploadStep("processing");
     setAnalysisError(null);
@@ -376,16 +389,17 @@ export default function UploadPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="title">Document Title</Label>
+                    <Label htmlFor="title">Document Title <span className="text-red-500">*</span></Label>
                     <Input
                       id="title"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
                       placeholder="e.g., Terms & Conditions v5.0"
                     />
+                    {validationErrors.title && <div className="text-xs text-red-600">{validationErrors.title}</div>}
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="type">Document Type</Label>
+                    <Label htmlFor="type">Document Type <span className="text-red-500">*</span></Label>
                     <Select value={docType} onValueChange={(val) => setDocType(val)}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select document type" />
@@ -399,12 +413,13 @@ export default function UploadPage() {
                         <SelectItem value="other">Other</SelectItem>
                       </SelectContent>
                     </Select>
+                    {validationErrors.docType && <div className="text-xs text-red-600">{validationErrors.docType}</div>}
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="audience">Target Audience</Label>
+                    <Label htmlFor="audience">Target Audience <span className="text-red-500">*</span></Label>
                     <Select value={audience} onValueChange={(val) => setAudience(val)}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select audience" />
@@ -416,9 +431,10 @@ export default function UploadPage() {
                         <SelectItem value="general">General Public</SelectItem>
                       </SelectContent>
                     </Select>
+                    {validationErrors.audience && <div className="text-xs text-red-600">{validationErrors.audience}</div>}
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="jurisdiction">Jurisdiction</Label>
+                    <Label htmlFor="jurisdiction">Jurisdiction <span className="text-red-500">*</span></Label>
                     <Select value={jurisdiction} onValueChange={(val) => setJurisdiction(val)}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select jurisdiction" />
@@ -432,13 +448,14 @@ export default function UploadPage() {
                         <SelectItem value="nl">Netherlands</SelectItem>
                       </SelectContent>
                     </Select>
+                    {validationErrors.jurisdiction && <div className="text-xs text-red-600">{validationErrors.jurisdiction}</div>}
                   </div>
                 </div>
 
                 {/* Language Selector */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="language">Language</Label>
+                    <Label htmlFor="language">Language <span className="text-red-500">*</span></Label>
                     <Select value={language} onValueChange={(val) => setLanguage(val)}>
                       <SelectTrigger>
                         <SelectValue placeholder="Select language" />
@@ -450,6 +467,7 @@ export default function UploadPage() {
                         <SelectItem value="hindi">Hindi</SelectItem>
                       </SelectContent>
                     </Select>
+                    {validationErrors.language && <div className="text-xs text-red-600">{validationErrors.language}</div>}
                   </div>
                 </div>
 
@@ -555,7 +573,7 @@ export default function UploadPage() {
                   </div>
                 )}
 
-                <Button onClick={handleUpload} disabled={!selectedFile} className="w-full" size="lg">
+                <Button onClick={handleUpload} disabled={!selectedFile || !title.trim() || !docType || !audience || !jurisdiction || !language} className="w-full" size="lg">
                   <Upload className="w-4 h-4 mr-2" />
                   Start Analysis
                 </Button>
