@@ -32,10 +32,30 @@ const nextConfig = {
     
     return config;
   },
-}
+
+  async rewrites() {
+    return [
+      {
+        source: '/ingest/static/:path*',
+        destination: 'https://us-assets.i.posthog.com/static/:path*',
+      },
+      {
+        source: '/ingest/:path*',
+        destination: 'https://us.i.posthog.com/:path*',
+      },
+      {
+        source: '/ingest/decide',
+        destination: 'https://us.i.posthog.com/decide',
+      },
+    ];
+  },
+
+  // This is required to support PostHog trailing slash API requests
+  skipTrailingSlashRedirect: true,
+};
 
 export default lingoCompiler.next({
-sourceLocale: "en",
+  sourceLocale: "en",
   targetLocales: ["es", "fr", "de", "it"],
   models: "lingo.dev", // Option 1: Lingo.dev Engine
   models: {
@@ -47,6 +67,3 @@ sourceLocale: "en",
   //   "*:*": "mistral:mistral-small-latest", // Mistral
   },
 })(nextConfig)
-
-
-// export default nextConfig

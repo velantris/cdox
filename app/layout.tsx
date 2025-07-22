@@ -6,9 +6,9 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { cn } from '@/lib/utils'
 import { Toaster } from 'sonner'
 
-import { ConvexClientProvider } from "@/components/convex-provider"
-import { LingoProvider, loadDictionary } from "lingo.dev/react/rsc"
-
+import { ConvexClientProvider } from '@/components/convex-provider'
+import { LingoProvider, loadDictionary } from 'lingo.dev/react/rsc'
+import { PostHogProvider } from '@/components/PostHogProvider'
 
 export const metadata: Metadata = {
   title: 'CDox AI - Making documents comprehensible for everyday.',
@@ -27,17 +27,15 @@ export default function RootLayout({
   return (
     <LingoProvider loadDictionary={(locale) => loadDictionary(locale)}>
       <html lang="en" suppressHydrationWarning>
-        <body
-          className={cn(
-            'min-h-screen bg-background font-sans antialiased'
-          )}
-        >
-          <ConvexClientProvider>
-            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-              <Toaster position="top-right" />
-              {children}
-            </ThemeProvider>
-          </ConvexClientProvider>
+        <body className={cn('min-h-screen bg-background font-sans antialiased')}>
+          <PostHogProvider>
+            <ConvexClientProvider>
+              <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+                <Toaster position="top-right" />
+                {children}
+              </ThemeProvider>
+            </ConvexClientProvider>
+          </PostHogProvider>
         </body>
       </html>
     </LingoProvider>
