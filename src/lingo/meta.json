@@ -4614,6 +4614,542 @@
           "skip": false,
           "overrides": {},
           "content": "Created:"
+        },
+        "21/declaration/body/31/consequent/0/argument/1": {
+          "type": "element",
+          "hash": "67bebd0b5bd54542a1ba0fc11bb73cd9",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Document not found."
+        },
+        "21/declaration/body/32/argument/3/1/1": {
+          "type": "element",
+          "hash": "d096547035f6bb4a3f8cacd894e166a5",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:ArrowLeft></element:ArrowLeft> Back to Documents"
+        },
+        "21/declaration/body/32/argument/3/1/3/1/3/3": {
+          "type": "element",
+          "hash": "5f1c90d0fd46023ba1bfaaa2537f59fb",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "•"
+        },
+        "21/declaration/body/32/argument/3/3/expression/right/1/1": {
+          "type": "element",
+          "hash": "3984a12211f867510a15fb838aba04a9",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Select Custom Rules for Analysis"
+        },
+        "21/declaration/body/32/argument/3/3/expression/right/3/1": {
+          "type": "element",
+          "hash": "758597cd03dcb1ab4c614d96928a855b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Select the custom rules you want to apply during document analysis:"
+        },
+        "21/declaration/body/32/argument/3/5/expression/right/1/1": {
+          "type": "element",
+          "hash": "4e07f4d5ebda43b15571e92c8ae2cc57",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Analysis Pending"
+        },
+        "21/declaration/body/32/argument/3/5/expression/right/3/1": {
+          "type": "element",
+          "hash": "7a91eac4b7cfc39182d49a1f1e778510",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "The document is currently being analyzed. This page will update automatically when it's complete."
+        },
+        "21/declaration/body/32/argument/3/7/expression/right/1/1": {
+          "type": "element",
+          "hash": "6469f83d45f668c92342a138c5bb9f95",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Analysis in Progress"
+        },
+        "21/declaration/body/32/argument/3/7/expression/right/3/1": {
+          "type": "element",
+          "hash": "7a91eac4b7cfc39182d49a1f1e778510",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "The document is currently being analyzed. This page will update automatically when it's complete."
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/1/1": {
+          "type": "element",
+          "hash": "30c54e4dc4ce599b87d94be34a8617f5",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Overview"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/1/3": {
+          "type": "element",
+          "hash": "ab59b86fa15be1302b2583321b6129f8",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Issues"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/1/5": {
+          "type": "element",
+          "hash": "4365354c7f482ac8e6cdfa642da98bbd",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Heatmap"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/1/7": {
+          "type": "element",
+          "hash": "a40df24d40b6ee81bf761f24895eb685",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Rewrite"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/3/1/1/1": {
+          "type": "element",
+          "hash": "4efe3b6be13bffa24bff24d8635357c6",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Analysis Summary"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/3/3/1/1": {
+          "type": "element",
+          "hash": "710bb60c3812fe35b719bbe2305fc3eb",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Recommendations"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/1/1/1/1-placeholder": {
+          "type": "attribute",
+          "hash": "efe5db9bd772f75a4c37dd87da9bb0bb",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Filter by severity"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/1/1/3/1": {
+          "type": "element",
+          "hash": "5e2e93f8e2a5f315b6fecdd0a0e6f55f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "All"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/1/1/3/3": {
+          "type": "element",
+          "hash": "eb327cd411b50aee954f8d1d215d003a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Critical"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/1/1/3/5": {
+          "type": "element",
+          "hash": "dabe777f3b670e9407e46c186197d188",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "High"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/1/1/3/7": {
+          "type": "element",
+          "hash": "43983f2178fb28aacaef6c5f41282c4a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Medium"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/1/1/3/9": {
+          "type": "element",
+          "hash": "97359f18d6648e0980854c5e68bb0969",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Low"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/1/3/1/1": {
+          "type": "element",
+          "hash": "201d4732809d94b1c3aca4ac636bfce6",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": " Total issues: {issues.length} "
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/1/3/1/3": {
+          "type": "element",
+          "hash": "238af6dc0dc74fcc1c9f3aef193eb265",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Critical "
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/1/3/1/5": {
+          "type": "element",
+          "hash": "dabe777f3b670e9407e46c186197d188",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "High"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/1/3/1/7": {
+          "type": "element",
+          "hash": "43983f2178fb28aacaef6c5f41282c4a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Medium"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/1/3/1/9": {
+          "type": "element",
+          "hash": "97359f18d6648e0980854c5e68bb0969",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Low"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/1/3/3/3": {
+          "type": "element",
+          "hash": "4aadd59993d72612b2657e29f8b8aa56",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "PDF Viewer"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/1/3/3/5/1": {
+          "type": "element",
+          "hash": "99750e73c00f44e4f1ad70c641e34852",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:Download></element:Download> PDF"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/3/expression/alternate/alternate/1/expression/0/body/1/1/3/1/1-placeholder": {
+          "type": "attribute",
+          "hash": "4e1fcce15854d824919b4a582c697c90",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Status"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/3/expression/alternate/alternate/1/expression/0/body/1/1/3/3/1": {
+          "type": "element",
+          "hash": "9a8c3b16091ea6cef3f771fc6715ab67",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Open"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/3/expression/alternate/alternate/1/expression/0/body/1/1/3/3/3": {
+          "type": "element",
+          "hash": "3de9afebcb9d4ce8ac42e14995f79ffd",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "In Progress"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/3/expression/alternate/alternate/1/expression/0/body/1/1/3/3/5": {
+          "type": "element",
+          "hash": "9566bd61c1f754dd5082eea5101f15a8",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Verified"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/3/expression/alternate/alternate/1/expression/0/body/1/1/3/3/7": {
+          "type": "element",
+          "hash": "180560eb657a20f3d4edc44d5f7e7c2a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Closed"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/3/expression/alternate/alternate/1/expression/0/body/1/1/3/3/9": {
+          "type": "element",
+          "hash": "befb409d54a13b391e8409e2c229b7a5",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "False Positive"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/3/expression/alternate/alternate/1/expression/0/body/3/1/1": {
+          "type": "element",
+          "hash": "bce52baa2d6845ab44e3210bd820ff0b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Original Text:"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/3/expression/alternate/alternate/1/expression/0/body/3/3/1": {
+          "type": "element",
+          "hash": "ea12c1d7dbf9c0bf0fe1989b600c6714",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Issue Explanation:"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/3/expression/alternate/alternate/1/expression/0/body/3/5/1": {
+          "type": "element",
+          "hash": "6c8fc12c9854f9db7030376bf2963d92",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Suggested Rewrite:"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/3/expression/alternate/alternate/1/expression/0/body/3/5/3/3-aria-label": {
+          "type": "attribute",
+          "hash": "eb601898746c209bfc5624efcee1eac6",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Copy suggested rewrite"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/5/3/expression/alternate/alternate/1/expression/0/body/3/5/3/3/1/expression/consequent": {
+          "type": "element",
+          "hash": "0d1b21bf6919e363f5c4a4ac75dab210",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Copied!"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/7/1/1/1": {
+          "type": "element",
+          "hash": "5e43e4ded0eb56f85b1fb47360f7012e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Section Heatmap"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/7/1/1/3": {
+          "type": "element",
+          "hash": "a9ff5dd39914d5c4d6bdbe6541924a8a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Comprehensibility scores by document section"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/7/1/3/1/1/expression/callee/body/3/argument/0/body/1/3/1": {
+          "type": "element",
+          "hash": "70b0b07567db3cab98b3ea16b7dffe03",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<expression/> issue<expression/>"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/7/1/3/1/1/expression/callee/body/3/argument/0/body/9/1/expression/right/3": {
+          "type": "element",
+          "hash": "16cd4a08bbf456ecb30d94dfa01269aa",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "{data.severityWeights.critical} Critical"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/7/1/3/1/1/expression/callee/body/3/argument/0/body/9/3/expression/right/3": {
+          "type": "element",
+          "hash": "dc65bd3d1e67b02def2e9804ef4ae375",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "{data.severityWeights.high} High"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/7/1/3/1/1/expression/callee/body/3/argument/0/body/9/5/expression/right/3": {
+          "type": "element",
+          "hash": "1549367805c628a1ad3ac17c2f9dbc5f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "{data.severityWeights.medium} Medium"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/7/1/3/1/1/expression/callee/body/3/argument/0/body/9/7/expression/right/3": {
+          "type": "element",
+          "hash": "ab7803e02a6219d65a840f77c382fa1e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "{data.severityWeights.low} Low"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/9/1/1/1": {
+          "type": "element",
+          "hash": "fa751807d8b354138521ec3f6441bc5f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Document Rewrite"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/9/1/1/3": {
+          "type": "element",
+          "hash": "434fbcf648a328fd5b36e9ec20c05c21",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "AI-generated improved version with better comprehensibility"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/9/1/3/1/3/1/1": {
+          "type": "element",
+          "hash": "7e55782bdf7cb49f5616b326c003c278",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Original"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/9/1/3/1/3/1/3/expression/right": {
+          "type": "element",
+          "hash": "5a4bb7776168d5d2c22b5f997daee228",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Score: {originalScore}"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/9/1/3/1/3/3-placeholder": {
+          "type": "attribute",
+          "hash": "c0735944a21e2b9d02ee82bede1f4f21",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Paste the text you want to improve here..."
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/9/1/3/1/7/1/1": {
+          "type": "element",
+          "hash": "b6bcb9afc004f78a17e3101ea1ab45da",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Improved Version"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/9/1/3/1/7/1/3/expression/right": {
+          "type": "element",
+          "hash": "5a4bb7776168d5d2c22b5f997daee228",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Score: {rewrittenScore}"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/9/1/3/1/7/3-placeholder": {
+          "type": "attribute",
+          "hash": "f7c66cfaf47d1d7d31e0a4282486d0e5",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Improved version will appear here..."
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/9/1/3/13/expression/right/1/3/1": {
+          "type": "element",
+          "hash": "9175189d46afb8baae9f82ed4c5252da",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Custom Rules Applied"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/9/1/3/13/expression/right/1/3/3": {
+          "type": "element",
+          "hash": "2abb8fc2e83852dccd2e722e93bc5586",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "The rewrite will consider the {selectedRules.length} custom rule<expression/> you selected for this document analysis."
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/9/1/3/17/1": {
+          "type": "element",
+          "hash": "76778cee67d9df5b51254e3ce0dc6e6c",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "How to use:"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/9/1/3/17/3/1": {
+          "type": "element",
+          "hash": "e9686830c51888a96921b3023a91adf3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Paste the text you want to improve in the \"Original\" box"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/9/1/3/17/3/3": {
+          "type": "element",
+          "hash": "a7606a488599937f26de395071ffa3e7",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Click \"Rewrite Text\" to generate an improved version"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/9/1/3/17/3/5": {
+          "type": "element",
+          "hash": "823aefc941652e75caf0b4a366578f58",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Review the improved version and comprehensibility score"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/9/1/3/17/3/7": {
+          "type": "element",
+          "hash": "075a0c6ae2fa7ecd0042b48690743f27",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Download the rewrite if you're satisfied with the results"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/9/1/3/5/expression/right/1/1": {
+          "type": "element",
+          "hash": "f621f81ba8ab180acc3c55fa3eadd0f8",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Comprehensibility improved from {originalScore} to {rewrittenScore} (+<expression/> points)"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/1/1/9/1/3/5/expression/right/1/3/1": {
+          "type": "element",
+          "hash": "745f9e4b4de3d5e8aff6ad6e6fa974bd",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:Download></element:Download> Download Rewrite"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/3/expression/right/1/1/1": {
+          "type": "element",
+          "hash": "624968366b373b25af6f9b2776395b9b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Comprehensibility Score"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/3/expression/right/3/1/1": {
+          "type": "element",
+          "hash": "1f7274720ebe93b3adbb59647090299a",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Document Details"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/3/expression/right/3/3/1/1": {
+          "type": "element",
+          "hash": "fce9d6a826b5cddb6f87a11cdc11eb04",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Type:"
+        },
+        "21/declaration/body/32/argument/3/9/expression/right/3/expression/right/3/3/3/1": {
+          "type": "element",
+          "hash": "27460d082f450ccbae82893390baf9fd",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Created:"
         }
       }
     },
@@ -6144,6 +6680,294 @@
           "content": "60-79"
         },
         "13/declaration/body/8/argument/5/7/1/1/3/5/3/7": {
+          "type": "element",
+          "hash": "9aaa3dbf197691f2a4d9121f923cd38b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "0-59"
+        },
+        "14/declaration/body/7/consequent/0/argument/1/1/1/1/1/3": {
+          "type": "element",
+          "hash": "2bca37992e9862f2646c9dad92e8d574",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "CDox"
+        },
+        "14/declaration/body/8/argument/3/1/1/1/1/3": {
+          "type": "element",
+          "hash": "2bca37992e9862f2646c9dad92e8d574",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "CDox"
+        },
+        "14/declaration/body/8/argument/3/1/1/1/3/1": {
+          "type": "element",
+          "hash": "a8bd7d4a57d651051cc7c786106d8fae",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Dashboard"
+        },
+        "14/declaration/body/8/argument/3/1/1/1/3/3": {
+          "type": "element",
+          "hash": "043956103ec9fbe5201820125e927088",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Documents"
+        },
+        "14/declaration/body/8/argument/3/1/1/1/3/5": {
+          "type": "element",
+          "hash": "939071de0b5b3b5658645947c46634a2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Teams"
+        },
+        "14/declaration/body/8/argument/3/1/1/1/3/7": {
+          "type": "element",
+          "hash": "4081660897ef1d339f155859b0c496db",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Settings"
+        },
+        "14/declaration/body/8/argument/3/1/1/3/3/1": {
+          "type": "element",
+          "hash": "920fb0f9e7347c0fe9b78c90980537c1",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:Upload></element:Upload> Upload Document"
+        },
+        "14/declaration/body/8/argument/5/11/1/1": {
+          "type": "element",
+          "hash": "9d67fa04cbb753937624d86fd435a63f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "All Documents ({filteredDocuments.length})"
+        },
+        "14/declaration/body/8/argument/5/11/1/3": {
+          "type": "element",
+          "hash": "4631bda21cafbdec2349c8777e2180b3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Complete list of analyzed documents with comprehensibility scores"
+        },
+        "14/declaration/body/8/argument/5/11/3/1/expression/alternate/1/expression/0/body/1/3/3/11": {
+          "type": "element",
+          "hash": "5f1c90d0fd46023ba1bfaaa2537f59fb",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "•"
+        },
+        "14/declaration/body/8/argument/5/11/3/1/expression/alternate/1/expression/0/body/1/3/3/3": {
+          "type": "element",
+          "hash": "5f1c90d0fd46023ba1bfaaa2537f59fb",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "•"
+        },
+        "14/declaration/body/8/argument/5/11/3/1/expression/alternate/1/expression/0/body/1/3/3/7": {
+          "type": "element",
+          "hash": "5f1c90d0fd46023ba1bfaaa2537f59fb",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "•"
+        },
+        "14/declaration/body/8/argument/5/11/3/1/expression/alternate/1/expression/0/body/1/3/5": {
+          "type": "element",
+          "hash": "9a5ecbd8625fbf160768b0efdb35bbe9",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Assigned to: {doc.assignedTo}"
+        },
+        "14/declaration/body/8/argument/5/11/3/1/expression/alternate/1/expression/0/body/3/3/3": {
+          "type": "element",
+          "hash": "8e73c329c9195d921a8ee9d9a6f7d70c",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "issues"
+        },
+        "14/declaration/body/8/argument/5/11/3/1/expression/consequent/3": {
+          "type": "element",
+          "hash": "23e89f32204428a9f3a25ac197c18523",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "No documents found"
+        },
+        "14/declaration/body/8/argument/5/11/3/1/expression/consequent/7/expression/right/1": {
+          "type": "element",
+          "hash": "2be960b4140f21f063d35a300d141320",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "<element:Upload></element:Upload> Upload Document"
+        },
+        "14/declaration/body/8/argument/5/3/1": {
+          "type": "element",
+          "hash": "c3882fc98216636873ab9091f3453f0c",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Documents"
+        },
+        "14/declaration/body/8/argument/5/3/3": {
+          "type": "element",
+          "hash": "eaece41aeb916ce6316f4ae27ff9e27e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Manage and analyze your legal documents"
+        },
+        "14/declaration/body/8/argument/5/7/1/1/1/1/3-placeholder": {
+          "type": "attribute",
+          "hash": "871fbf354961a9d3a3eadc5c6cb15d31",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Search documents..."
+        },
+        "14/declaration/body/8/argument/5/7/1/1/3/1/1/1-placeholder": {
+          "type": "attribute",
+          "hash": "abf0202f127616cf3d3f2e3914b089f3",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Document Type"
+        },
+        "14/declaration/body/8/argument/5/7/1/1/3/1/3/1": {
+          "type": "element",
+          "hash": "32b4b35f93cc4c04ba5a5d2192340a99",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "All Types"
+        },
+        "14/declaration/body/8/argument/5/7/1/1/3/1/3/11": {
+          "type": "element",
+          "hash": "2551c10e8450052b4f99beac8d3ec98b",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Disclosure"
+        },
+        "14/declaration/body/8/argument/5/7/1/1/3/1/3/13": {
+          "type": "element",
+          "hash": "79acaa6cd481262bea4e743a422529d2",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Other"
+        },
+        "14/declaration/body/8/argument/5/7/1/1/3/1/3/3": {
+          "type": "element",
+          "hash": "c531b88ecfe7dd2337a34f4a9ed18a5f",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Terms"
+        },
+        "14/declaration/body/8/argument/5/7/1/1/3/1/3/5": {
+          "type": "element",
+          "hash": "6007d5d5f6591c027b15bd49ab7a8c47",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Privacy"
+        },
+        "14/declaration/body/8/argument/5/7/1/1/3/1/3/7": {
+          "type": "element",
+          "hash": "3c78364d43a0359820d62d44fb72846c",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Loan"
+        },
+        "14/declaration/body/8/argument/5/7/1/1/3/1/3/9": {
+          "type": "element",
+          "hash": "5f5645051b0a6897019322e23c5c832e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Fee"
+        },
+        "14/declaration/body/8/argument/5/7/1/1/3/3/1/1-placeholder": {
+          "type": "attribute",
+          "hash": "4e1fcce15854d824919b4a582c697c90",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Status"
+        },
+        "14/declaration/body/8/argument/5/7/1/1/3/3/3/1": {
+          "type": "element",
+          "hash": "492b4d1d54e4b92c29ed654fb2d1d1d8",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "All Status"
+        },
+        "14/declaration/body/8/argument/5/7/1/1/3/3/3/3": {
+          "type": "element",
+          "hash": "72b7a117ea2d60eaa4abfaa6048e6208",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Analyzed"
+        },
+        "14/declaration/body/8/argument/5/7/1/1/3/3/3/5": {
+          "type": "element",
+          "hash": "cc04b77fa4bfd479fc80b05a769d49ce",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Uploaded"
+        },
+        "14/declaration/body/8/argument/5/7/1/1/3/5/1/1-placeholder": {
+          "type": "attribute",
+          "hash": "b5e6f7445382f67427b5c48cc9ef33bc",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Score"
+        },
+        "14/declaration/body/8/argument/5/7/1/1/3/5/3/1": {
+          "type": "element",
+          "hash": "ec59e6dad0d78ae8ea9bc47042417013",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "All Scores"
+        },
+        "14/declaration/body/8/argument/5/7/1/1/3/5/3/3": {
+          "type": "element",
+          "hash": "bce5e3e42fef519b6af98db334f3310e",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "80-100"
+        },
+        "14/declaration/body/8/argument/5/7/1/1/3/5/3/5": {
+          "type": "element",
+          "hash": "afb95c36ea855ee2f7185debc36a8fa5",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "60-79"
+        },
+        "14/declaration/body/8/argument/5/7/1/1/3/5/3/7": {
           "type": "element",
           "hash": "9aaa3dbf197691f2a4d9121f923cd38b",
           "context": "",
@@ -12189,6 +13013,18 @@
         }
       }
     },
+    "../components/issues-list.tsx": {
+      "scopes": {
+        "2/declaration/body/4/argument/1/1/expression/0/body/1/3/5/expression/right": {
+          "type": "element",
+          "hash": "b34cf137589e0a7b835542b371f5d9af",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Offset: {issue.offsetStart}"
+        }
+      }
+    },
     "../components/issues-summary.tsx": {
       "scopes": {
         "5/declaration/body/2/argument/1/expression/0/body/2/argument/1/1/3/1": {
@@ -12206,6 +13042,18 @@
           "skip": false,
           "overrides": {},
           "content": "<function:percentage.toFixed/>%"
+        }
+      }
+    },
+    "../components/pdf-viewer.tsx": {
+      "scopes": {
+        "5/declaration/body/6/argument/1/openingElement/1/value/expression": {
+          "type": "element",
+          "hash": "fc478d5c1650a33f64e436fd1099f4f7",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Loading PDF..."
         }
       }
     },
@@ -12279,6 +13127,14 @@
     },
     "../components/theme-toggle.tsx": {
       "scopes": {
+        "3/declaration/body/6/argument/1-aria-label": {
+          "type": "attribute",
+          "hash": "dd03ee6b83901fc440f90236483dafc5",
+          "context": "",
+          "skip": false,
+          "overrides": {},
+          "content": "Toggle theme"
+        },
         "4/declaration/body/5/argument-aria-label": {
           "type": "attribute",
           "hash": "dd03ee6b83901fc440f90236483dafc5",

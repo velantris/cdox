@@ -20,6 +20,7 @@ import { useAction, useMutation, useQuery } from "convex/react"
 import {
   ArrowLeft,
   CheckCircle,
+  Copy,
   Download,
   Info,
   RefreshCw,
@@ -198,6 +199,8 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
   // AI-powered rewrite using Convex action
   const performTextRewrite = useAction(api.rewrite_action.performTextRewrite);
 
+  const [copiedIssueId, setCopiedIssueId] = useState<string | null>(null)
+
   // Show loading state while data is being fetched
   if (scanData === undefined) {
     return (
@@ -322,7 +325,7 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                       <CardTitle>Analysis Summary</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-700 leading-relaxed">{analysis?.summary ?? ''}</p>
+                      <p className="text-whiteleading-relaxed">{analysis?.summary ?? ''}</p>
                     </CardContent>
                   </Card>
 
@@ -335,7 +338,7 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                         {(analysis?.recommendations ?? []).map((rec: string, index: number) => (
                           <li key={index} className="flex items-start space-x-3">
                             <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-gray-700">{rec}</span>
+                            <span className="text-black dark:text-white ">{rec}</span>
                           </li>
                         ))}
                       </ul>
@@ -452,12 +455,28 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                               </div>
                               <div>
                                 <h4 className="font-medium mb-2">Issue Explanation:</h4>
-                                <p className="text-gray-600 dark:text-white">{issue.issueExplanation}</p>
+                                <p className=" dark:text-white">{issue.issueExplanation}</p>
                               </div>
                               <div>
                                 <h4 className="font-medium mb-2">Suggested Rewrite:</h4>
-                                <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                                  <p className="text-black">{issue.suggestedRewrite}</p>
+                                <div className="bg-green-50 border border-green-200 rounded-lg p-3 flex items-start justify-between">
+                                  <p className="text-black break-words mr-2">{issue.suggestedRewrite}</p>
+                                  <button
+                                    type="button"
+                                    className="ml-2 p-1 rounded hover:bg-green-100 transition-colors"
+                                    onClick={async () => {
+                                      await navigator.clipboard.writeText(issue.suggestedRewrite || "")
+                                      setCopiedIssueId(issue._id)
+                                      setTimeout(() => setCopiedIssueId(null), 1500)
+                                    }}
+                                    aria-label="Copy suggested rewrite"
+                                  >
+                                    {copiedIssueId === issue._id ? (
+                                      <span className="text-green-600 text-xs font-medium">Copied!</span>
+                                    ) : (
+                                      <Copy className="w-4 h-4 text-green-700" />
+                                    )}
+                                  </button>
                                 </div>
                               </div>
                             </CardContent>

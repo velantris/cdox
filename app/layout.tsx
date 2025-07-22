@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
+import 'react-pdf-highlighter/dist/style.css'
 import './globals.css'
 
 import { ThemeProvider } from '@/components/theme-provider'
 import { cn } from '@/lib/utils'
 import { Toaster } from 'sonner'
 
-import { LingoProvider, loadDictionary } from "lingo.dev/react/rsc";
-import { ConvexClientProvider } from "@/components/convex-provider";
+import { ConvexClientProvider } from "@/components/convex-provider"
+import { LingoProvider, loadDictionary } from "lingo.dev/react/rsc"
 
 
 export const metadata: Metadata = {
