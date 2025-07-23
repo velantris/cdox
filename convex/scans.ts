@@ -1,6 +1,5 @@
-import { v } from "convex/values";
-import { mutation, query, internalMutation } from "./_generated/server";
-import { ConvexError } from "convex/values";
+import { ConvexError, v } from "convex/values";
+import { internalMutation, mutation, query } from "./_generated/server";
 
 // Validation helpers
 const validateScanData = (args: {
@@ -399,7 +398,7 @@ export const getScanWithAnalysisAndIssues = query({
 
     return {
       document: scan, // Keep the same structure as the API
-      analysis,
+      analysis: analysis ? { ...analysis, documentText: analysis.documentText } : undefined,
       issues,
     };
   },

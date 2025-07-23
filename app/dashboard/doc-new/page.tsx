@@ -64,8 +64,8 @@ export default function UploadPage() {
     { id: "parsing", label: "Parsing document structure", status: "pending" },
     { id: "readability", label: "Analyzing readability metrics", status: "pending" },
     { id: "compliance", label: "Checking regulatory compliance", status: "pending" },
-    { id: "suggestions", label: "Generating improvement suggestions", status: "pending" },
     { id: "scoring", label: "Calculating comprehensibility score", status: "pending" },
+    { id: "suggestions", label: "Generating improvement suggestions", status: "pending" },
   ]);
 
   const analysisQuery = useQuery(

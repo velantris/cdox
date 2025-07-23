@@ -25,6 +25,7 @@ export const createAnalysis = mutation({
   args: {
     scanId: v.id("scans"),
     customRuleIds: v.optional(v.array(v.id("customRules"))),
+    documentText: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     // Verify the scan exists
@@ -45,6 +46,7 @@ export const createAnalysis = mutation({
       },
       customRuleIds: args.customRuleIds || [],
       createdAt: Date.now(),
+      documentText: args.documentText || "",
     });
     return analysisId;
   },
@@ -55,7 +57,15 @@ export const updateAnalysisResults = mutation({
   args: {
     id: v.id("analysis"),
     summary: v.string(),
-    recommendations: v.array(v.string()),
+    recommendations: v.array(v.object({
+      heading: v.string(),
+      points: v.array(v.string()),
+      priority: v.union(
+        v.literal("high"),
+        v.literal("medium"),
+        v.literal("low")
+      ),
+    })),
     score: v.number(),
     status: v.union(
       v.literal("pending"),
@@ -67,6 +77,7 @@ export const updateAnalysisResults = mutation({
       gemini: v.optional(v.any()),
     }),
     customRuleIds: v.optional(v.array(v.id("customRules"))),
+    documentText: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const { id, ...updates } = args;

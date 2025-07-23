@@ -1,8 +1,8 @@
 "use node";
 
 import { v } from "convex/values";
-import { action } from "./_generated/server";
 import { api } from "./_generated/api";
+import { action } from "./_generated/server";
 
 // AI SDK imports
 import { google } from "@ai-sdk/google";
@@ -80,6 +80,7 @@ export const performTextRewrite = action({
         targetAudience: v.optional(v.string()),
         jurisdiction: v.optional(v.string()),
         customRuleIds: v.optional(v.array(v.id("customRules"))),
+        documentText: v.optional(v.string()), // <-- add this line
     },
     handler: async (ctx, args): Promise<{
         rewritten: string;
@@ -98,6 +99,9 @@ export const performTextRewrite = action({
                 );
                 customRules = (await Promise.all(rulePromises)).filter(rule => rule && rule.active);
             }
+
+            // Use documentText if provided, otherwise fallback to text
+            const contextText = args.documentText || args.text;
 
             // Create rewrite prompt
             const prompt = createRewritePrompt(

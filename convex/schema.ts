@@ -17,7 +17,18 @@ export default defineSchema({
   analysis: defineTable({
     scanId: v.id("scans"),
     summary: v.string(),
-    recommendations: v.array(v.string()),
+    recommendations: v.array(v.union(
+      v.string(),
+      v.object({
+        heading: v.string(),
+        points: v.array(v.string()),
+        priority: v.union(
+          v.literal('high'),
+          v.literal('medium'),
+          v.literal('low')
+        ),
+      })
+    )),
     score: v.number(),
     status: v.union(
       v.literal("pending"),
@@ -30,6 +41,7 @@ export default defineSchema({
     }),
     customRuleIds: v.optional(v.array(v.id("customRules"))),
     createdAt: v.number(),
+    documentText: v.optional(v.string()),
   }).index("by_scan", ["scanId"]),
 
   issues: defineTable({

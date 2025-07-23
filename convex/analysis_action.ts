@@ -1,5 +1,4 @@
 "use node";
-import { anthropic } from "@ai-sdk/anthropic";
 import { google } from "@ai-sdk/google";
 import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
@@ -90,7 +89,17 @@ async function extractText(
 ): Promise<string> {
     if (contentType.includes("pdf") || fileName.toLowerCase().endsWith(".pdf")) {
         const { text } = await extractPdfText(new Uint8Array(bytes), { mergePages: true });
-        if (!text.trim()) throw new Error("Empty PDF");
+        if (!text.trim()) {
+            // @ts-ignore: missing types for tesseract.js
+            const { createWorker } = await import("tesseract.js");
+            const worker: any = await createWorker();
+            await worker.load();
+            await worker.loadLanguage("eng");
+            await worker.initialize("eng");
+            const { data: { text: ocrText } } = await worker.recognize(new Uint8Array(bytes));
+            await worker.terminate();
+            return ocrText;
+        }
         return text;
     }
 
@@ -180,7 +189,15 @@ function matchCustomRules(doc: string, rules: any[]) {
 async function analyseWithOpenAI(prompt: string) {
     const schema = z.object({
         summary: z.string(),
-        recommendations: z.array(z.string()),
+        recommendations: z.array(z.object({
+            heading: z.string(),
+            points: z.array(z.string()),
+            priority: z.union([
+                z.literal("high"),
+                z.literal("medium"),
+                z.literal("low"),
+            ]),
+        })),
         score: z.number(),
         issues: z.array(
             z.object({
@@ -201,7 +218,8 @@ async function analyseWithOpenAI(prompt: string) {
     let object;
     try {
         ({ object } = await generateObject({
-            model: anthropic("claude-sonnet-4-20250514"),
+            // model: anthropic("claude-sonnet-4-20250514"),
+            model: openai("gpt-4o"),
             prompt,
             schema,
         }));
@@ -352,10 +370,27 @@ export const performDocumentAnalysis = action({
             await ctx.runMutation(api.analysis.updateAnalysisResults, {
                 id: analysisId,
                 summary: openAIRes.summary,
-                recommendations: Array.from(new Set(openAIRes.recommendations)),
+                recommendations: Array.from(new Set(openAIRes.recommendations))
+                    .map((rec: any) => {
+                        if (typeof rec === "string") {
+                            return {
+                                heading: rec,
+                                points: [rec],
+                                priority: "medium",
+                            };
+                        }
+                        // Defensive: if points is not an array, wrap it
+                        return {
+                            heading: rec.heading,
+                            points: Array.isArray(rec.points) ? rec.points : [String(rec.points)],
+                            priority: rec.priority || "medium",
+                        };
+                    }),
                 score: Math.round(openAIRes.score),
                 status: "completed",
                 providerRaw: { openai: openAIRes },
+                customRuleIds: customRuleIds,
+                documentText: documentText,
             });
 
             if (dbIssues.length) {

@@ -122,9 +122,14 @@ export const makePrompt = (
         {
             "summary": "Comprehensive summary of the document content including its main purpose, key sections, and primary comprehensibility concerns. Focus on what the document actually contains and covers (max 150 words)",
             "recommendations": [
-                "Specific, actionable recommendations based on the actual document content and issues found",
-                "Recommendations should address real problems identified in this specific document",
-                "Focus on high-impact changes that improve clarity for the target audience"
+                {
+                    "heading": "Specific, actionable recommendations based on the actual document content and issues found",
+                    "points": [
+                        "Recommendations should address real problems identified in this specific document",
+                        "Focus on high-impact changes that improve clarity for the target audience"
+                    ],
+                    "priority": "high" | "medium" | "low"
+                }
             ],
             "score": 80,
             "issues": [

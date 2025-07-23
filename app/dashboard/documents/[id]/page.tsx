@@ -169,6 +169,7 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
       // Use AI-powered rewrite with the same models as document analysis
       const rewriteResult = await performTextRewrite({
         text: originalText,
+        documentText: analysis?.documentText,
         documentType: document?.documentType,
         targetAudience: document?.targetAudience,
         jurisdiction: document?.jurisdiction,
@@ -335,12 +336,33 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                     </CardHeader>
                     <CardContent>
                       <ul className="space-y-3">
-                        {(analysis?.recommendations ?? []).map((rec: string, index: number) => (
-                          <li key={index} className="flex items-start space-x-3">
-                            <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
-                            <span className="text-black dark:text-white ">{rec}</span>
-                          </li>
-                        ))}
+                        {/* arrange the recommendations by priority, fallback if array of strings */}
+                        {Array.isArray(analysis?.recommendations) && analysis.recommendations.length > 0 ? (
+                          analysis.recommendations.every(rec => typeof rec === "string") ? (
+                            analysis.recommendations.map((rec, idx) => (
+                              <li key={idx} className="flex items-start space-x-3">
+                                <CheckCircle className="w-5 h-5 text-green-500 mt-0.5 flex-shrink-0" />
+                                <span className="text-black dark:text-white ">{rec as string}</span>
+                              </li>
+                            ))
+                          ) : (
+                            (analysis.recommendations as { heading: string, points: string[], priority: "low" | "medium" | "high" }[]).sort((a, b) => {
+                              if (a.priority === "high") return -1;
+                              if (a.priority === "medium") return 0;
+                              return 1;
+                            }).map((rec, index) => (
+                              <li key={index} className="flex items-start space-x-3">
+                                <CheckCircle className={`w-5 h-5 text-green-500 mt-0.5 flex-shrink-0 ${rec.priority === "high" ? "text-red-500" : rec.priority === "medium" ? "text-yellow-500" : "text-green-500"}`} />
+                                <span className="text-black dark:text-white ">{rec.heading}</span>
+                                <ul className="list-disc list-inside">
+                                  {rec.points.map((point, pointIndex) => (
+                                    <li key={pointIndex} className="text-black dark:text-white ">{point}</li>
+                                  ))}
+                                </ul>
+                              </li>
+                            ))
+                          )
+                        ) : null}
                       </ul>
                     </CardContent>
                   </Card>

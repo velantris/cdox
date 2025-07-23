@@ -2,7 +2,8 @@
   "node": {
     "externalPackages": [
       "mammoth",
-      "unpdf"
+      "unpdf",
+      "tesseract.js"
     ]
   }
 }
