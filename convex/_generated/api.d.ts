@@ -18,6 +18,7 @@ import type * as analysis_action from "../analysis_action.js";
 import type * as analysis_example from "../analysis_example.js";
 import type * as customRules from "../customRules.js";
 import type * as issues from "../issues.js";
+import type * as report_action from "../report_action.js";
 import type * as rewrite_action from "../rewrite_action.js";
 import type * as scans from "../scans.js";
 import type * as test from "../test.js";
@@ -37,6 +38,7 @@ declare const fullApi: ApiFromModules<{
   analysis_example: typeof analysis_example;
   customRules: typeof customRules;
   issues: typeof issues;
+  report_action: typeof report_action;
   rewrite_action: typeof rewrite_action;
   scans: typeof scans;
   test: typeof test;

@@ -28,7 +28,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { use, useState } from "react"
+import { use, useEffect, useState } from "react"
 
 export default function DocumentAnalysisPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -41,11 +41,38 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
   const scanData = useQuery(api.scans.getScanWithAnalysisAndIssues, { id: id as Id<"scans"> })
   const performAnalysis = useAction(api.analysis_action.performDocumentAnalysis)
   const updateIssue = useMutation(api.issues.updateIssue)
+  const generateReport = useAction(api.report_action.generateReport)
 
   // Extract data from Convex response
   const document = scanData?.document
   const analysis = scanData?.analysis
   const issues = scanData?.issues || []
+
+  // --- Move fileSize state and effect here, before any return ---
+  const [fileSize, setFileSize] = useState<string | null>(null);
+  useEffect(() => {
+    async function fetchFileSize() {
+      if (!document?.url) return;
+      try {
+        const response = await fetch(document.url, { method: "HEAD" });
+        const size = response.headers.get("Content-Length");
+        if (size) {
+          const num = Number(size);
+          setFileSize(
+            num > 1024 * 1024
+              ? `${(num / (1024 * 1024)).toFixed(2)} MB`
+              : `${(num / 1024).toFixed(2)} KB`
+          );
+        } else {
+          setFileSize("N/A");
+        }
+      } catch {
+        setFileSize("N/A");
+      }
+    }
+    fetchFileSize();
+  }, [document?.url]);
+  // --- End move ---
 
   // Calculate counts per severity and filtered issues list
   const severityCounts: Record<string, number> = issues.reduce((acc: Record<string, number>, issue: any) => {
@@ -201,6 +228,119 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
   const performTextRewrite = useAction(api.rewrite_action.performTextRewrite);
 
   const [copiedIssueId, setCopiedIssueId] = useState<string | null>(null)
+  const [isGeneratingReport, setIsGeneratingReport] = useState(false)
+
+  // Handler for report download
+  const handleDownloadReport = async (format: "csv" | "pdf") => {
+    if (!document) return;
+
+    setIsGeneratingReport(true);
+    try {
+      if (format === "pdf") {
+        // For PDF, we'll generate it client-side using lib/report.ts
+        const { generatePDFReport } = await import("@/lib/report");
+
+        // Transform the existing scanData to the expected format
+        if (!scanData || !analysis) {
+          throw new Error("Analysis data not available for PDF generation");
+        }
+
+        const reportData = {
+          id: document._id,
+          name: document.name,
+          documentType: document.documentType,
+          language: document.language,
+          targetAudience: document.targetAudience,
+          jurisdiction: document.jurisdiction,
+          regulations: document.regulations,
+          status: analysis.status,
+          url: document.url,
+          startedAt: new Date(analysis.createdAt).toISOString(),
+          completedAt: analysis.status === 'completed' ? new Date(analysis.createdAt).toISOString() : undefined,
+          createdAt: new Date(document.createdAt).toISOString(),
+          updatedAt: new Date(document.createdAt).toISOString(),
+          analysisId: analysis._id,
+          comprehensibilityScore: analysis.score,
+          analysis: {
+            summary: analysis.summary,
+            recommendations: analysis.recommendations,
+            readability_metrics: analysis.readability_metrics,
+            accessibility_assessment: analysis.accessibility_assessment,
+            compliance_status: analysis.compliance_status,
+          },
+          issues: issues.map(issue => ({
+            id: issue._id,
+            severity: issue.severity,
+            type: issue.type,
+            status: issue.status,
+            section: issue.section,
+            originalText: issue.originalText,
+            issueExplanation: issue.issueExplanation,
+            suggestedRewrite: issue.suggestedRewrite,
+            offsetStart: issue.offsetStart,
+            offsetEnd: issue.offsetEnd,
+          })),
+          stats: {
+            total: issues.length,
+            critical: issues.filter((i: any) => i.severity === 'critical').length,
+            high: issues.filter((i: any) => i.severity === 'high').length,
+            medium: issues.filter((i: any) => i.severity === 'medium').length,
+            low: issues.filter((i: any) => i.severity === 'low').length,
+            openCount: issues.filter(i => i.status === 'open' || i.status === 'inprogress').length,
+            closedCount: issues.filter(i => i.status === 'closed' || i.status === 'verified').length,
+          }
+        };
+
+        // Generate PDF
+        const pdfBuffer = await generatePDFReport(reportData);
+        const blob = new Blob([new Uint8Array(pdfBuffer)], { type: 'application/pdf' });
+
+        // Create download link
+        const url = window.URL.createObjectURL(blob);
+        const link = window.document.createElement('a');
+        link.href = url;
+        link.download = `${document.name.replace(/[^a-zA-Z0-9]/g, '_')}_report.pdf`;
+        window.document.body.appendChild(link);
+        link.click();
+        window.document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      } else {
+        // For CSV, use the server-side generation
+        const reportResult = await generateReport({
+          scanId: id as Id<"scans">,
+          format
+        });
+
+        // For text files (CSV), use content directly
+        const blob = new Blob([reportResult.content], { type: reportResult.contentType });
+
+        // Create download link
+        const url = window.URL.createObjectURL(blob);
+        const link = window.document.createElement('a');
+        link.href = url;
+        link.download = reportResult.filename;
+        window.document.body.appendChild(link);
+        link.click();
+        window.document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      }
+
+      toast({
+        title: "Report Downloaded",
+        description: `${format.toUpperCase()} report has been downloaded successfully.`,
+      });
+    } catch (error) {
+      console.error("Failed to generate report:", error);
+      const errorMessage = error instanceof Error ? error.message : "Unknown error occurred"
+      toast({
+        title: "Download Failed",
+        description: `Could not generate the report: ${errorMessage}`,
+        variant: "destructive",
+      });
+    } finally {
+      setIsGeneratingReport(false);
+    }
+  };
 
   // Show loading state while data is being fetched
   if (scanData === undefined) {
@@ -244,6 +384,24 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
               </div>
             </div>
             <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-1">
+                <Button
+                  variant="outline"
+                  onClick={() => handleDownloadReport("csv")}
+                  disabled={isGeneratingReport || !analysis}
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  {isGeneratingReport ? "Generating..." : "CSV Report"}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => handleDownloadReport("pdf")}
+                  disabled={isGeneratingReport || !analysis}
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  {isGeneratingReport ? "Generating..." : "PDF Report"}
+                </Button>
+              </div>
               <Button
                 variant="outline"
                 onClick={() => setShowRulesSelector(!showRulesSelector)}
@@ -330,6 +488,171 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                     </CardContent>
                   </Card>
 
+                  {/* Readability Metrics */}
+                  {analysis?.readability_metrics && (
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Readability Metrics</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                          {analysis.readability_metrics.flesch_kincaid_grade && (
+                            <div className="text-center">
+                              <div className="text-2xl font-bold text-blue-600">
+                                {analysis.readability_metrics.flesch_kincaid_grade.toFixed(1)}
+                              </div>
+                              <div className="text-sm text-gray-500">Reading Level</div>
+                            </div>
+                          )}
+                          {analysis.readability_metrics.avg_sentence_length && (
+                            <div className="text-center">
+                              <div className="text-2xl font-bold text-green-600">
+                                {analysis.readability_metrics.avg_sentence_length.toFixed(1)}
+                              </div>
+                              <div className="text-sm text-gray-500">Avg Sentence Length</div>
+                            </div>
+                          )}
+                          {analysis.readability_metrics.complex_words_percentage && (
+                            <div className="text-center">
+                              <div className="text-2xl font-bold text-orange-600">
+                                {analysis.readability_metrics.complex_words_percentage.toFixed(1)}%
+                              </div>
+                              <div className="text-sm text-gray-500">Complex Words</div>
+                            </div>
+                          )}
+                          {analysis.readability_metrics.passive_voice_percentage && (
+                            <div className="text-center">
+                              <div className="text-2xl font-bold text-purple-600">
+                                {analysis.readability_metrics.passive_voice_percentage.toFixed(1)}%
+                              </div>
+                              <div className="text-sm text-gray-500">Passive Voice</div>
+                            </div>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Accessibility Assessment */}
+                  {analysis?.accessibility_assessment && (
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Accessibility Assessment</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                          {analysis.accessibility_assessment.wcag_compliance_level && (
+                            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                              <span className="text-sm font-medium">WCAG Compliance</span>
+                              <Badge
+                                className={`${analysis.accessibility_assessment.wcag_compliance_level === 'AA' ? 'bg-green-100 text-green-800' :
+                                  analysis.accessibility_assessment.wcag_compliance_level === 'A' ? 'bg-yellow-100 text-yellow-800' :
+                                    'bg-red-100 text-red-800'
+                                  }`}
+                              >
+                                {analysis.accessibility_assessment.wcag_compliance_level}
+                              </Badge>
+                            </div>
+                          )}
+                          {analysis.accessibility_assessment.screen_reader_compatibility && (
+                            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                              <span className="text-sm font-medium">Screen Reader</span>
+                              <Badge
+                                className={`${analysis.accessibility_assessment.screen_reader_compatibility === 'high' ? 'bg-green-100 text-green-800' :
+                                  analysis.accessibility_assessment.screen_reader_compatibility === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                                    'bg-red-100 text-red-800'
+                                  }`}
+                              >
+                                {analysis.accessibility_assessment.screen_reader_compatibility}
+                              </Badge>
+                            </div>
+                          )}
+                          {analysis.accessibility_assessment.cognitive_accessibility && (
+                            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                              <span className="text-sm font-medium">Cognitive Access</span>
+                              <Badge
+                                className={`${analysis.accessibility_assessment.cognitive_accessibility === 'high' ? 'bg-green-100 text-green-800' :
+                                  analysis.accessibility_assessment.cognitive_accessibility === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                                    'bg-red-100 text-red-800'
+                                  }`}
+                              >
+                                {analysis.accessibility_assessment.cognitive_accessibility}
+                              </Badge>
+                            </div>
+                          )}
+                        </div>
+                        {analysis.accessibility_assessment.multilingual_considerations && (
+                          <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+                            <h4 className="font-medium text-blue-800 mb-2">Multilingual Considerations</h4>
+                            <p className="text-sm text-blue-700">{analysis.accessibility_assessment.multilingual_considerations}</p>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  )}
+
+                  {/* Compliance Status */}
+                  {analysis?.compliance_status && (
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Compliance Status</CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-4">
+                          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                            {analysis.compliance_status.regulatory_alignment && (
+                              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <span className="text-sm font-medium">Regulatory Alignment</span>
+                                <Badge
+                                  className={`${analysis.compliance_status.regulatory_alignment === 'full' ? 'bg-green-100 text-green-800' :
+                                    analysis.compliance_status.regulatory_alignment === 'partial' ? 'bg-yellow-100 text-yellow-800' :
+                                      'bg-red-100 text-red-800'
+                                    }`}
+                                >
+                                  {analysis.compliance_status.regulatory_alignment}
+                                </Badge>
+                              </div>
+                            )}
+                            {analysis.compliance_status.transparency_score && (
+                              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <span className="text-sm font-medium">Transparency Score</span>
+                                <Badge variant="outline">
+                                  {analysis.compliance_status.transparency_score}/100
+                                </Badge>
+                              </div>
+                            )}
+                            {analysis.compliance_status.improvement_priority && (
+                              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <span className="text-sm font-medium">Priority</span>
+                                <Badge
+                                  className={`${analysis.compliance_status.improvement_priority === 'high' ? 'bg-red-100 text-red-800' :
+                                    analysis.compliance_status.improvement_priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                                      'bg-green-100 text-green-800'
+                                    }`}
+                                >
+                                  {analysis.compliance_status.improvement_priority}
+                                </Badge>
+                              </div>
+                            )}
+                          </div>
+                          {analysis.compliance_status.legal_risk_areas && analysis.compliance_status.legal_risk_areas.length > 0 && (
+                            <div className="p-3 bg-red-50 rounded-lg">
+                              <h4 className="font-medium text-red-800 mb-2">Legal Risk Areas</h4>
+                              <ul className="text-sm text-red-700 space-y-1">
+                                {analysis.compliance_status.legal_risk_areas.map((risk, index) => (
+                                  <li key={index} className="flex items-start">
+                                    <span className="w-2 h-2 bg-red-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                                    {risk}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
                   <Card>
                     <CardHeader>
                       <CardTitle>Recommendations</CardTitle>
@@ -346,23 +669,51 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                               </li>
                             ))
                           ) : (
-                            (analysis.recommendations as { heading: string, points: string[], priority: "low" | "medium" | "high" }[]).sort((a, b) => {
+                            (analysis.recommendations as { heading: string, points: string[], priority: "low" | "medium" | "high", category?: string, impact_score?: number, implementation_effort?: "low" | "medium" | "high" }[]).sort((a, b) => {
                               if (a.priority === "high") return -1;
                               if (a.priority === "medium") return 0;
                               return 1;
                             }).map((rec, index) => (
-                              <li key={index} className="flex items-start space-x-3">
-                                <CheckCircle className={`w-5 h-5 text-green-500 mt-0.5 flex-shrink-0 ${rec.priority === "high" ? "text-red-500" : rec.priority === "medium" ? "text-yellow-500" : "text-green-500"}`} />
-                                <span className="text-black dark:text-white ">{rec.heading}</span>
-                                <ul className="list-disc list-inside">
+                              <li key={index} className="border rounded-lg p-4 space-y-3">
+                                <div className="flex items-start justify-between">
+                                  <div className="flex items-start space-x-3">
+                                    <CheckCircle className={`w-5 h-5 mt-0.5 flex-shrink-0 ${rec.priority === "high" ? "text-red-500" : rec.priority === "medium" ? "text-yellow-500" : "text-green-500"}`} />
+                                    <div>
+                                      <h3 className="font-medium text-black dark:text-white">{rec.heading}</h3>
+                                      {rec.category && (
+                                        <Badge variant="outline" className="mt-1 text-xs">
+                                          {rec.category}
+                                        </Badge>
+                                      )}
+                                    </div>
+                                  </div>
+                                  <div className="flex items-center space-x-2">
+                                    <Badge className={`${rec.priority === "high" ? "bg-red-100 text-red-800" : rec.priority === "medium" ? "bg-yellow-100 text-yellow-800" : "bg-green-100 text-green-800"}`}>
+                                      {rec.priority}
+                                    </Badge>
+                                    {rec.impact_score && (
+                                      <Badge variant="outline" className="text-xs">
+                                        Impact: {rec.impact_score}
+                                      </Badge>
+                                    )}
+                                    {rec.implementation_effort && (
+                                      <Badge variant="secondary" className="text-xs">
+                                        Effort: {rec.implementation_effort}
+                                      </Badge>
+                                    )}
+                                  </div>
+                                </div>
+                                <ul className="list-disc list-inside ml-8 space-y-1">
                                   {rec.points.map((point, pointIndex) => (
-                                    <li key={pointIndex} className="text-black dark:text-white ">{point}</li>
+                                    <li key={pointIndex} className="text-black dark:text-white text-sm">{point}</li>
                                   ))}
                                 </ul>
                               </li>
                             ))
                           )
-                        ) : null}
+                        ) : (
+                          <li className="text-gray-500">No recommendations available</li>
+                        )}
                       </ul>
                     </CardContent>
                   </Card>
@@ -682,7 +1033,22 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                               (+{rewrittenScore - originalScore} points)
                             </span>
                             <div className="flex space-x-2">
-                              <Button variant="outline" size="sm">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                  const blob = new Blob([rewrittenText], { type: 'text/plain' });
+                                  const url = window.URL.createObjectURL(blob);
+                                  const link = window.document.createElement('a');
+                                  link.href = url;
+                                  link.download = `${document?.name || 'document'}_rewritten.txt`;
+                                  window.document.body.appendChild(link);
+                                  link.click();
+                                  window.document.body.removeChild(link);
+                                  window.URL.revokeObjectURL(url);
+                                }}
+                                disabled={!rewrittenText}
+                              >
                                 <Download className="w-4 h-4 mr-2" />
                                 Download Rewrite
                               </Button>
@@ -755,6 +1121,14 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                     <div className="flex justify-between">
                       <span className="text-sm text-gray-500">Type:</span>
                       <span className="text-sm font-medium">{document.documentType || "N/A"}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-500">Language:</span>
+                      <span className="text-sm font-medium">{document.language || "N/A"}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-sm text-gray-500">Size:</span>
+                      <span className="text-sm font-medium">{fileSize || "N/A"}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-sm text-gray-500">Created:</span>
