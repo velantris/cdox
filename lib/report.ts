@@ -903,16 +903,6 @@ export async function generatePDFReport(data: ComprehensibilityReportData): Prom
         y = drawComplianceStatus(page, data.analysis.compliance_status, y, colors, helvetica, helveticaBold, width);
     }
 
-    // === PAGE 3: CATEGORY ANALYSIS ===
-    page = pdfDoc.addPage();
-    y = height - 60;
-
-    drawPageHeader(page, "Category Analysis", colors, helveticaBold, width);
-    y -= 80;
-
-    const categoryAnalysis = generateDetailedCategoryAnalysis(data.issues);
-    y = drawCategoryAnalysis(page, categoryAnalysis, y, colors, helvetica, helveticaBold, width);
-
     // === ISSUES PAGES (Multiple pages for detailed issues) ===
     let issueIdx = 0;
     const issuesPerPage = 6;
@@ -1637,28 +1627,28 @@ function drawCategoryAnalysis(page: any, analysis: any, y: number, colors: any, 
     page.drawRectangle({ x: 40, y: y - totalHeight, width: width - 80, height: totalHeight, color: colors.background });
     page.drawRectangle({ x: 40, y: y - totalHeight, width: width - 80, height: totalHeight, borderColor: colors.border, borderWidth: 1 });
 
-    page.drawText("Category Analysis", { x: 60, y: y - 25, size: 14, font: boldFont, color: colors.primary });
+    // page.drawText("Category Analysis", { x: 60, y: y - 25, size: 14, font: boldFont, color: colors.primary });
 
-    categories.forEach(([category, stats], i) => {
-        const categoryInfo = complianceCategories[category] || complianceCategories.other;
-        const cardY = y - 50 - (i * (categoryHeight + 10));
+    // categories.forEach(([category, stats], i) => {
+    //     const categoryInfo = complianceCategories[category] || complianceCategories.other;
+    //     const cardY = y - 50 - (i * (categoryHeight + 10));
 
-        // Category card
-        const cardColor = (stats as any).critical > 0 ? colors.critical :
-            (stats as any).high > 0 ? colors.high :
-                (stats as any).medium > 0 ? colors.medium : colors.low;
+    //     // Category card
+    //     const cardColor = (stats as any).critical > 0 ? colors.critical :
+    //         (stats as any).high > 0 ? colors.high :
+    //             (stats as any).medium > 0 ? colors.medium : colors.low;
 
-        page.drawRectangle({ x: 60, y: cardY - categoryHeight, width: width - 120, height: categoryHeight, color: cardColor, opacity: 0.1 });
-        page.drawRectangle({ x: 60, y: cardY - categoryHeight, width: width - 120, height: categoryHeight, borderColor: cardColor, borderWidth: 1 });
+    //     page.drawRectangle({ x: 60, y: cardY - categoryHeight, width: width - 120, height: categoryHeight, color: cardColor, opacity: 0.1 });
+    //     page.drawRectangle({ x: 60, y: cardY - categoryHeight, width: width - 120, height: categoryHeight, borderColor: cardColor, borderWidth: 1 });
 
-        page.drawText(`${categoryInfo.icon} ${categoryInfo.title}`, { x: 75, y: cardY - 15, size: 11, font: boldFont, color: cardColor });
-        page.drawText(`${(stats as any).total} issues | Score: ${(stats as any).complianceScore}%`, { x: 75, y: cardY - 30, size: 9, font, color: colors.text });
+    //     page.drawText(`${categoryInfo.icon} ${categoryInfo.title}`, { x: 75, y: cardY - 15, size: 11, font: boldFont, color: cardColor });
+    //     page.drawText(`${(stats as any).total} issues | Score: ${(stats as any).complianceScore}%`, { x: 75, y: cardY - 30, size: 9, font, color: colors.text });
 
-        // Progress bar
-        const progressWidth = ((stats as any).complianceScore / 100) * 100;
-        page.drawRectangle({ x: width - 180, y: cardY - 25, width: 100, height: 6, color: colors.lightGray });
-        page.drawRectangle({ x: width - 180, y: cardY - 25, width: progressWidth, height: 6, color: cardColor });
-    });
+    //     // Progress bar
+    //     const progressWidth = ((stats as any).complianceScore / 100) * 100;
+    //     page.drawRectangle({ x: width - 180, y: cardY - 25, width: 100, height: 6, color: colors.lightGray });
+    //     page.drawRectangle({ x: width - 180, y: cardY - 25, width: progressWidth, height: 6, color: cardColor });
+    // });
 
     return y - totalHeight - 20;
 }
