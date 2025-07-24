@@ -200,7 +200,7 @@ export const makePrompt = (
                 "implementation_effort": "low" | "medium" | "high" (optional)
             }
         ],
-        "score": number (0-100, default: 50),
+        "score": number (0-100, default: 50, Be a bit generous with the score score mostly based on number of issues and the severity of the issues), 
         "readability_metrics": {
             "flesch_kincaid_grade": number (optional),
             "avg_sentence_length": number (optional),
