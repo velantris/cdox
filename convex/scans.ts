@@ -489,3 +489,88 @@ export const getScanStats = query({
     return stats;
   },
 });
+
+// Query to get comprehensive report data for a scan
+export const getReportData = query({
+  args: { id: v.id("scans") },
+  handler: async (ctx, args) => {
+    const scan = await ctx.db.get(args.id);
+    if (!scan) {
+      throw new ConvexError("Scan not found");
+    }
+
+    // Get the most recent analysis for this scan
+    const analysis = await ctx.db
+      .query("analysis")
+      .withIndex("by_scan", (q) => q.eq("scanId", args.id))
+      .order("desc")
+      .first();
+
+    let issues: any[] = [];
+    if (analysis) {
+      issues = await ctx.db
+        .query("issues")
+        .withIndex("by_analysis", (q) => q.eq("analysisId", analysis._id))
+        .order("asc")
+        .collect();
+    }
+
+    // Calculate stats
+    const stats = {
+      total: issues.length,
+      critical: issues.filter(i => i.severity === 'critical').length,
+      high: issues.filter(i => i.severity === 'high').length,
+      medium: issues.filter(i => i.severity === 'medium').length,
+      low: issues.filter(i => i.severity === 'low').length,
+      openCount: issues.filter(i => i.status === 'open' || i.status === 'inprogress').length,
+      closedCount: issues.filter(i => i.status === 'closed' || i.status === 'verified').length,
+    };
+
+    return {
+      // Document info
+      id: scan._id,
+      name: scan.name,
+      documentType: scan.documentType,
+      language: scan.language,
+      targetAudience: scan.targetAudience,
+      jurisdiction: scan.jurisdiction,
+      regulations: scan.regulations,
+      status: analysis?.status || 'pending',
+      url: scan.url,
+      createdAt: new Date(scan.createdAt).toISOString(),
+      updatedAt: new Date(scan.createdAt).toISOString(),
+
+      // Analysis info
+      analysisId: analysis?._id,
+      comprehensibilityScore: analysis?.score,
+      startedAt: analysis ? new Date(analysis.createdAt).toISOString() : new Date(scan.createdAt).toISOString(),
+      completedAt: analysis?.status === 'completed' ? new Date(analysis.createdAt).toISOString() : undefined,
+
+      // Analysis details
+      analysis: analysis ? {
+        summary: analysis.summary,
+        recommendations: analysis.recommendations,
+        readability_metrics: analysis.readability_metrics,
+        accessibility_assessment: analysis.accessibility_assessment,
+        compliance_status: analysis.compliance_status,
+      } : undefined,
+
+      // Issues data
+      issues: issues.map(issue => ({
+        id: issue._id,
+        severity: issue.severity,
+        type: issue.type,
+        status: issue.status,
+        section: issue.section,
+        originalText: issue.originalText,
+        issueExplanation: issue.issueExplanation,
+        suggestedRewrite: issue.suggestedRewrite,
+        offsetStart: issue.offsetStart,
+        offsetEnd: issue.offsetEnd,
+      })),
+
+      // Stats
+      stats,
+    };
+  },
+});

@@ -40,6 +40,9 @@ export const createAnalysis = mutation({
       recommendations: [],
       score: 0,
       status: "pending" as const,
+      readability_metrics: undefined,
+      accessibility_assessment: undefined,
+      compliance_status: undefined,
       providerRaw: {
         openai: undefined,
         gemini: undefined,
@@ -57,21 +60,69 @@ export const updateAnalysisResults = mutation({
   args: {
     id: v.id("analysis"),
     summary: v.string(),
-    recommendations: v.array(v.object({
-      heading: v.string(),
-      points: v.array(v.string()),
-      priority: v.union(
-        v.literal("high"),
-        v.literal("medium"),
-        v.literal("low")
-      ),
-    })),
+    recommendations: v.array(v.union(
+      v.string(),
+      v.object({
+        heading: v.string(),
+        points: v.array(v.string()),
+        priority: v.union(
+          v.literal("high"),
+          v.literal("medium"),
+          v.literal("low")
+        ),
+        category: v.optional(v.string()),
+        impact_score: v.optional(v.number()),
+        implementation_effort: v.optional(v.union(
+          v.literal("low"),
+          v.literal("medium"),
+          v.literal("high")
+        )),
+      })
+    )),
     score: v.number(),
     status: v.union(
       v.literal("pending"),
       v.literal("completed"),
       v.literal("failed")
     ),
+    readability_metrics: v.optional(v.object({
+      flesch_kincaid_grade: v.optional(v.number()),
+      avg_sentence_length: v.optional(v.number()),
+      complex_words_percentage: v.optional(v.number()),
+      passive_voice_percentage: v.optional(v.number()),
+    })),
+    accessibility_assessment: v.optional(v.object({
+      wcag_compliance_level: v.optional(v.union(
+        v.literal("AA"),
+        v.literal("A"),
+        v.literal("Non-compliant"),
+      )),
+      screen_reader_compatibility: v.optional(v.union(
+        v.literal("high"),
+        v.literal("medium"),
+        v.literal("low"),
+      )),
+      cognitive_accessibility: v.optional(v.union(
+        v.literal("high"),
+        v.literal("medium"),
+        v.literal("low"),
+      )),
+      multilingual_considerations: v.optional(v.string()),
+    })),
+    compliance_status: v.optional(v.object({
+      regulatory_alignment: v.optional(v.union(
+        v.literal("full"),
+        v.literal("partial"),
+        v.literal("non-compliant"),
+      )),
+      transparency_score: v.optional(v.number()),
+      legal_risk_areas: v.optional(v.array(v.string())),
+      improvement_priority: v.optional(v.union(
+        v.literal("high"),
+        v.literal("medium"),
+        v.literal("low"),
+      )),
+    })),
     providerRaw: v.object({
       openai: v.optional(v.any()),
       gemini: v.optional(v.any()),
