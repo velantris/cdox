@@ -190,22 +190,25 @@ function matchCustomRules(doc: string, rules: any[]) {
 async function analyseWithOpenAI(prompt: string) {
     const schema = z.object({
         summary: z.string().default("Analysis completed"),
-        recommendations: z.array(z.object({
-            heading: z.string(),
-            points: z.array(z.string()),
-            priority: z.union([
-                z.literal("high"),
-                z.literal("medium"),
-                z.literal("low"),
-            ]).default("medium"),
-            category: z.string().optional(),
-            impact_score: z.number().optional(),
-            implementation_effort: z.union([
-                z.literal("low"),
-                z.literal("medium"),
-                z.literal("high"),
-            ]).optional(),
-        })).default([]),
+        recommendations: z.preprocess(
+            (val) => Array.isArray(val) ? val : [],
+            z.array(z.object({
+                heading: z.string(),
+                points: z.array(z.string()),
+                priority: z.union([
+                    z.literal("high"),
+                    z.literal("medium"),
+                    z.literal("low"),
+                ]).default("medium"),
+                category: z.string().optional(),
+                impact_score: z.number().optional(),
+                implementation_effort: z.union([
+                    z.literal("low"),
+                    z.literal("medium"),
+                    z.literal("high"),
+                ]).optional(),
+            }).passthrough())
+        ).default([]),
         score: z.number().min(0).max(100).default(50),
         readability_metrics: z.object({
             flesch_kincaid_grade: z.number().optional(),
@@ -213,21 +216,24 @@ async function analyseWithOpenAI(prompt: string) {
             complex_words_percentage: z.number().optional(),
             passive_voice_percentage: z.number().optional(),
         }).optional(),
-        issues: z.array(
-            z.object({
-                offset_start: z.number().optional(),
-                offset_end: z.number().optional(),
-                original_text: z.string().max(300).default(""),
-                issue_explanation: z.string().default(""),
-                suggested_rewrite: z.string().default(""),
-                grading: z.string().default("medium"),
-                issue_type: z.string().default("other"),
-                section_category: z.string().default("general"),
-                score: z.number().optional(),
-                reading_level_impact: z.string().optional(),
-                accessibility_impact: z.string().optional(),
-                compliance_risk: z.string().optional(),
-            })
+        issues: z.preprocess(
+            (val) => Array.isArray(val) ? val : [],
+            z.array(
+                z.object({
+                    offset_start: z.number().optional(),
+                    offset_end: z.number().optional(),
+                    original_text: z.string().max(300).default(""),
+                    issue_explanation: z.string().default(""),
+                    suggested_rewrite: z.string().default(""),
+                    grading: z.string().default("medium"),
+                    issue_type: z.string().default("other"),
+                    section_category: z.string().default("general"),
+                    score: z.number().optional(),
+                    reading_level_impact: z.string().optional(),
+                    accessibility_impact: z.string().optional(),
+                    compliance_risk: z.string().optional(),
+                }).passthrough()
+            )
         ).default([]),
         accessibility_assessment: z.object({
             wcag_compliance_level: z.union([
@@ -278,6 +284,15 @@ async function analyseWithOpenAI(prompt: string) {
         console.log("Claude success", object);
         return object;
     } catch (claudeError) {
+        // Enhanced logging for debugging
+        if (claudeError && typeof claudeError === "object") {
+            if ("value" in claudeError) {
+                console.error("Model output that failed validation:", (claudeError as any).value);
+            }
+            if ("errors" in claudeError) {
+                console.error("Zod validation errors:", (claudeError as any).errors);
+            }
+        }
         console.error("Claude failed:", claudeError);
         lastError = claudeError instanceof Error ? claudeError : new Error(String(claudeError));
     }
@@ -447,8 +462,8 @@ export const performDocumentAnalysis = action({
             await ctx.runMutation(api.analysis.updateAnalysisResults, {
                 id: analysisId,
                 summary: openAIRes.summary,
-                recommendations: Array.from(new Set(openAIRes.recommendations))
-                    .map((rec: any) => {
+                recommendations: Array.isArray(openAIRes.recommendations)
+                    ? openAIRes.recommendations.map((rec: any) => {
                         if (typeof rec === "string") {
                             return rec;
                         }
@@ -461,8 +476,9 @@ export const performDocumentAnalysis = action({
                             impact_score: rec.impact_score,
                             implementation_effort: rec.implementation_effort,
                         };
-                    }),
-                score: Math.round(openAIRes.score),
+                    })
+                    : [],
+                score: typeof openAIRes.score === "number" ? Math.round(openAIRes.score) : 50,
                 status: "completed",
                 providerRaw: {
                     openai: {
