@@ -1,4 +1,3 @@
-import lingoCompiler from "lingo.dev/compiler";
 
 
 /** @type {import('next').NextConfig} */
@@ -29,7 +28,14 @@ const nextConfig = {
         zlib: false,
       };
     }
-    
+
+    // Handle .mjs files properly in node_modules
+    config.module.rules.push({
+      test: /\.mjs$/,
+      include: /node_modules/,
+      type: 'javascript/auto',
+    });
+
     return config;
   },
 

@@ -110,3 +110,344 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* PDF Viewer Enhanced Styling */
+@layer components {
+  /* Smooth scrolling for PDF containers */
+  .pdf-container {
+    scroll-behavior: smooth;
+  }
+  
+  /* Enhanced focus states for accessibility */
+  .pdf-control:focus-visible {
+    @apply ring-2 ring-blue-500 ring-offset-2 outline-none;
+  }
+  
+  /* Loading skeleton animations */
+  .skeleton {
+    @apply bg-gray-200 animate-pulse;
+  }
+  
+  .skeleton-text {
+    @apply h-4 bg-gray-200 rounded animate-pulse;
+  }
+  
+  /* Enhanced Highlight Severity Indicators with improved visual hierarchy */
+  .severity-critical {
+    @apply border-red-500 bg-red-50 shadow-red-100;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15), 0 0 0 1px rgba(220, 38, 38, 0.1);
+  }
+  
+  .severity-high {
+    @apply border-orange-500 bg-orange-50 shadow-orange-100;
+    box-shadow: 0 4px 10px rgba(234, 88, 12, 0.15), 0 0 0 1px rgba(234, 88, 12, 0.1);
+  }
+  
+  .severity-medium {
+    @apply border-yellow-500 bg-yellow-50 shadow-yellow-100;
+    box-shadow: 0 4px 10px rgba(217, 119, 6, 0.15), 0 0 0 1px rgba(217, 119, 6, 0.1);
+  }
+  
+  .severity-low {
+    @apply border-green-500 bg-green-50 shadow-green-100;
+    box-shadow: 0 4px 10px rgba(22, 163, 74, 0.15), 0 0 0 1px rgba(22, 163, 74, 0.1);
+  }
+  
+  /* Interactive element base styles with enhanced feedback */
+  .interactive-base {
+    @apply transition-all duration-300 ease-out;
+  }
+  
+  .interactive-base:hover {
+    @apply transform -translate-y-1 shadow-lg;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .interactive-base:active {
+    @apply transform translate-y-0 shadow-md;
+    transition: all 0.1s ease-out;
+  }
+  
+  /* PDF page transitions with fade effect */
+  .pdf-page-transition {
+    @apply transition-all duration-500 ease-in-out;
+  }
+  
+  .pdf-page-enter {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  
+  .pdf-page-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Enhanced button states with ripple effect */
+  .btn-enhanced {
+    @apply relative overflow-hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .btn-enhanced::before {
+    content: '';
+    @apply absolute inset-0 bg-white opacity-0 transition-opacity duration-300;
+  }
+  
+  .btn-enhanced:hover::before {
+    @apply opacity-20;
+  }
+  
+  .btn-enhanced:active::after {
+    content: '';
+    @apply absolute inset-0 bg-white opacity-30;
+    animation: ripple-effect 0.6s ease-out;
+  }
+  
+  /* Enhanced progress bar with shimmer and pulse */
+  .progress-enhanced {
+    @apply relative overflow-hidden;
+    background: linear-gradient(90deg, #f3f4f6, #e5e7eb, #f3f4f6);
+    background-size: 200% 100%;
+    animation: shimmer-bg 2s infinite;
+  }
+  
+  .progress-enhanced::after {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-40;
+    animation: shimmer 2s infinite;
+  }
+  
+  .progress-enhanced .progress-bar {
+    @apply relative overflow-hidden;
+    background: linear-gradient(90deg, #3b82f6, #1d4ed8, #3b82f6);
+    background-size: 200% 100%;
+    animation: progress-flow 3s infinite;
+  }
+  
+  /* Enhanced tooltip with better positioning and animation */
+  .tooltip-enhanced {
+    @apply relative;
+  }
+  
+  .tooltip-enhanced::after {
+    content: attr(data-tooltip);
+    @apply absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 px-3 py-2 text-xs text-white bg-gray-900 rounded-lg opacity-0 pointer-events-none transition-all duration-300 whitespace-nowrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 50;
+  }
+  
+  .tooltip-enhanced::before {
+    content: '';
+    @apply absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 w-0 h-0 opacity-0 transition-opacity duration-300;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid #1f2937;
+    z-index: 50;
+  }
+  
+  .tooltip-enhanced:hover::after,
+  .tooltip-enhanced:hover::before {
+    @apply opacity-100;
+  }
+  
+  /* Loading state enhancements */
+  .loading-enhanced {
+    @apply relative;
+  }
+  
+  .loading-enhanced::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-50;
+    animation: loading-sweep 2s infinite;
+  }
+  
+  /* Highlight focus ring for accessibility */
+  .highlight-focus {
+    @apply ring-2 ring-blue-500 ring-offset-2;
+    animation: focus-pulse 2s infinite;
+  }
+  
+  /* Smooth scroll behavior for containers */
+  .smooth-scroll {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+  }
+  
+  .smooth-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .smooth-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .smooth-scroll::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5);
+    border-radius: 3px;
+  }
+  
+  .smooth-scroll::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(156, 163, 175, 0.8);
+  }
+}
+
+/* Enhanced Keyframe Animations */
+@keyframes ripple-effect {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+@keyframes shimmer-bg {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes progress-flow {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes loading-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes focus-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.3);
+  }
+}
+
+/* Advanced animations for enhanced visual feedback */
+@keyframes breathe {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(59, 130, 246, 0.3), 0 0 10px rgba(59, 130, 246, 0.2), 0 0 15px rgba(59, 130, 246, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.4), 0 0 20px rgba(59, 130, 246, 0.3), 0 0 30px rgba(59, 130, 246, 0.2);
+  }
+}
+
+@keyframes slide-up-fade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes highlight-flash {
+  0%, 100% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: rgba(59, 130, 246, 0.1);
+  }
+}
+
+@keyframes loading-dots-wave {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-10px);
+    opacity: 1;
+  }
+}
+
+/* Enhanced utility classes for better visual feedback */
+.breathe-animation {
+  animation: breathe 3s ease-in-out infinite;
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+.glow-pulse-animation {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.slide-up-fade-animation {
+  animation: slide-up-fade 0.5s ease-out;
+}
+
+.scale-in-animation {
+  animation: scale-in 0.3s ease-out;
+}
+
+.highlight-flash-animation {
+  animation: highlight-flash 1s ease-in-out;
+}
+
+.loading-dots-wave > div:nth-child(1) {
+  animation: loading-dots-wave 1.4s infinite ease-in-out;
+  animation-delay: -0.32s;
+}
+
+.loading-dots-wave > div:nth-child(2) {
+  animation: loading-dots-wave 1.4s infinite ease-in-out;
+  animation-delay: -0.16s;
+}
+
+.loading-dots-wave > div:nth-child(3) {
+  animation: loading-dots-wave 1.4s infinite ease-in-out;
+}

@@ -5,7 +5,7 @@ import { ConvexLoading } from "@/components/convex-error-boundary"
 import { CustomRulesSelector } from "@/components/custom-rules-selector"
 import { DashboardHeader } from "@/components/dashboard-header"
 import { IssuesList } from "@/components/issues-list"
-import { PdfViewer } from "@/components/pdf-viewer"
+import { PdfViewerWrapper as PdfViewer } from "@/components/pdf-viewer-wrapper"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -114,6 +114,45 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
   // Handle issue selection for PDF viewer
   const handleIssueClick = (issue: any) => {
     setSelectedIssueId(issue._id)
+  }
+
+  // Handle PDF highlighting feedback
+  const handleIssueHighlight = (issue: any, success: boolean) => {
+    if (success) {
+      toast({
+        title: "Issue Located",
+        description: `Successfully highlighted "${issue.type}" issue in PDF.`,
+      })
+    } else {
+      // Provide more detailed error information and fallback options
+      const hasOffset = issue.offsetStart !== undefined && issue.offsetEnd !== undefined
+      const hasOriginalText = issue.originalText && issue.originalText.trim().length > 0
+
+      let description = "Could not locate the selected issue text in the PDF document."
+
+      if (!hasOffset && !hasOriginalText) {
+        description = "Issue lacks both position data and text content for location."
+      } else if (!hasOffset) {
+        description = "Issue position data unavailable. Text search also failed."
+      } else if (!hasOriginalText) {
+        description = "Issue text content unavailable for fallback search."
+      }
+
+      toast({
+        title: "Issue Not Found",
+        description,
+        variant: "destructive",
+        action: document?.url ? (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => window.open(document.url, '_blank')}
+          >
+            Open PDF
+          </Button>
+        ) : undefined,
+      })
+    }
   }
 
   // Rewrite section state
@@ -409,6 +448,22 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                 {showRulesSelector ? "Hide Custom Rules" : "Select Custom Rules"}
               </Button>
 
+              <Button
+                variant="outline"
+                onClick={() => setShowPdfViewer(!showPdfViewer)}
+                className={`transition-all duration-300 ${showPdfViewer
+                  ? 'bg-blue-50 border-blue-300 text-blue-700 hover:bg-blue-100 shadow-md'
+                  : 'hover:bg-gray-50 hover:border-gray-300'
+                  }`}
+              >
+                <span className="flex items-center space-x-2">
+                  <span className={`transition-transform duration-300 ${showPdfViewer ? 'rotate-180' : ''}`}>
+                    📄
+                  </span>
+                  <span>{showPdfViewer ? "Hide PDF" : "Show PDF"}</span>
+                </span>
+              </Button>
+
               {/* <Button variant="outline">
                 <Share className="w-4 h-4 mr-2" />
               </Button> */}
@@ -468,9 +523,9 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
         )}
 
         {analysis && (
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
             <div className={showPdfViewer ? "lg:col-span-4" : "lg:col-span-3"}>
-              <Tabs defaultValue="overview" className="space-y-6">
+              <Tabs defaultValue="overview" className="space-y-4 lg:space-y-6">
                 <TabsList className="grid w-full grid-cols-4">
                   <TabsTrigger value="overview">Overview</TabsTrigger>
                   <TabsTrigger value="issues">Issues</TabsTrigger>
@@ -745,28 +800,32 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                         <Switch id="pdf-viewer-toggle" checked={showPdfViewer} onCheckedChange={setShowPdfViewer} />
                         <label htmlFor="pdf-viewer-toggle" className="text-sm">PDF Viewer</label>
                         <Button asChild variant="outline" size="sm">
-                          <a href={document?.url ?? '#'} download>
+                          <Link href={document?.url ?? '#'} target="_blank" download>
                             <Download className="w-4 h-4 mr-1" />
                             PDF
-                          </a>
+                          </Link>
                         </Button>
                       </div>
                     </div>
                   </div>
                   {showPdfViewer ? (
-                    <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
-                      <PdfViewer
-                        documentUrl={document?.url || ''}
-                        selectedIssue={issues.find(issue => issue._id === selectedIssueId)}
-                        onIssueSelect={handleIssueClick}
-                        issues={issues}
-                      />
-                      <IssuesList
-                        issues={issues}
-                        selectedIssueId={selectedIssueId}
-                        onIssueClick={handleIssueClick}
-                        severityFilter={severityFilter}
-                      />
+                    <div className="grid grid-cols-1 xl:grid-cols-[2fr_1fr] gap-4 lg:gap-6">
+                      <div className="order-2 xl:order-1">
+                        <PdfViewer
+                          documentUrl={document?.url || ''}
+                          selectedIssue={issues.find(issue => issue._id === selectedIssueId) || null}
+                          onIssueHighlight={handleIssueHighlight}
+                          className="h-[400px] sm:h-[500px] lg:h-[600px] xl:h-[700px]"
+                        />
+                      </div>
+                      <div className="order-1 xl:order-2">
+                        <IssuesList
+                          issues={issues}
+                          selectedIssueId={selectedIssueId}
+                          onIssueClick={handleIssueClick}
+                          severityFilter={severityFilter}
+                        />
+                      </div>
                     </div>
                   ) : (
                     filteredIssues.length === 0 ? (
@@ -1103,7 +1162,7 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
             </div>
 
             {!showPdfViewer && (
-              <div className="space-y-6">
+              <div className="lg:col-span-1 space-y-4 lg:space-y-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Comprehensibility Score</CardTitle>

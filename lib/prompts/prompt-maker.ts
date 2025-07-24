@@ -20,7 +20,7 @@
 //     TARGET_AUDIENCE_RETAIL_CUSTOMER
 // } from "./prompt.js"
 
-import { JURISDICTION_EU, JURISDICTION_GERMANY, JURISDICTION_FRANCE, JURISDICTION_ITALY, JURISDICTION_SPAIN, JURISDICTION_NETHERLANDS, GDPR, MIFID, PSD2 } from "./prompt"
+import { GDPR, JURISDICTION_EU, JURISDICTION_FRANCE, JURISDICTION_GERMANY, JURISDICTION_ITALY, JURISDICTION_NETHERLANDS, JURISDICTION_SPAIN, MIFID, PSD2 } from "./prompt"
 
 export const makePrompt = (
     document: string,
@@ -186,59 +186,55 @@ export const makePrompt = (
     - FAQ integration and anticipatory guidance
 
     RESPONSE FORMAT:
-    Return your analysis in valid JSON format with the following enhanced structure:
+    Return your analysis in valid JSON format with the following structure. Fields marked (optional) may be omitted. Defaults are shown where applicable. Only use enum values where specified; otherwise, use strings as described.
 
     {
-        "summary": "Comprehensive summary of the document content including its main purpose, key sections, primary comprehensibility concerns, and overall accessibility assessment. Focus on what the document actually contains, covers, and how well it serves its intended audience (max 200 words)",
+        "summary": "string (default: 'Analysis completed')",
         "recommendations": [
             {
-                "heading": "Specific, actionable recommendation based on identified issues",
-                "points": [
-                    "Detailed implementation steps with specific examples from the document",
-                    "Expected impact on comprehensibility and user experience",
-                    "Resource requirements and implementation timeline considerations"
-                ],
-                "priority": "high" | "medium" | "low",
-                "category": "Structure" | "Language" | "Legal Compliance" | "Accessibility" | "User Experience",
-                "impact_score": 85,
-                "implementation_effort": "low" | "medium" | "high"
+                "heading": "string",
+                "points": ["string"],
+                "priority": "high" | "medium" | "low" (default: "medium"),
+                "category": "string" (optional),
+                "impact_score": number (optional),
+                "implementation_effort": "low" | "medium" | "high" (optional)
             }
         ],
-        "score": 75,
+        "score": number (0-100, default: 50),
         "readability_metrics": {
-            "flesch_kincaid_grade": 12.5,
-            "avg_sentence_length": 22.3,
-            "complex_words_percentage": 15.7,
-            "passive_voice_percentage": 8.2
-        },
+            "flesch_kincaid_grade": number (optional),
+            "avg_sentence_length": number (optional),
+            "complex_words_percentage": number (optional),
+            "passive_voice_percentage": number (optional)
+        } (optional),
         "issues": [
             {
-                "offset_start": 1234,
-                "offset_end": 1297,
-                "original_text": "Exact quote from the document demonstrating the issue - keep concise but contextual (under 300 characters ideal)",
-                "issue_explanation": "Detailed explanation of why this specific text creates comprehensibility barriers for the target audience, including cognitive load implications",
-                "suggested_rewrite": "Concrete, implementable rewrite that maintains legal accuracy while dramatically improving clarity and accessibility",
-                "grading": "high" | "medium" | "low",
-                "issue_type": "Legal jargon" | "Complex sentence structure" | "Missing explanation" | "Unclear consequences" | "Accessibility barrier" | "Cognitive overload" | "Poor organization" | "Regulatory non-compliance",
-                "section_category": "Document section where issue occurs",
-                "score": 65,
-                "reading_level_impact": "Increases reading level by X grades",
-                "accessibility_impact": "Specific accessibility concerns addressed",
-                "compliance_risk": "Potential regulatory or legal risks from unclear language"
+                "offset_start": number (optional),
+                "offset_end": number (optional),
+                "original_text": "string, max 300 chars" (default: ""),
+                "issue_explanation": "string" (default: ""),
+                "suggested_rewrite": "string" (default: ""),
+                "grading": "high" | "medium" | "low" (default: "medium"),
+                "issue_type": "string" (default: "other"),
+                "section_category": "string" (default: "general"),
+                "score": number (optional),
+                "reading_level_impact": "string" (optional),
+                "accessibility_impact": "string" (optional),
+                "compliance_risk": "string" (optional)
             }
         ],
         "accessibility_assessment": {
-            "wcag_compliance_level": "AA" | "A" | "Non-compliant",
-            "screen_reader_compatibility": "high" | "medium" | "low",
-            "cognitive_accessibility": "high" | "medium" | "low",
-            "multilingual_considerations": "Text about language accessibility needs"
-        },
+            "wcag_compliance_level": "AA" | "A" | "Non-compliant" (optional),
+            "screen_reader_compatibility": "high" | "medium" | "low" (optional),
+            "cognitive_accessibility": "high" | "medium" | "low" (optional),
+            "multilingual_considerations": "string" (optional)
+        } (optional),
         "compliance_status": {
-            "regulatory_alignment": "full" | "partial" | "non-compliant",
-            "transparency_score": 82,
-            "legal_risk_areas": ["List of specific compliance concerns"],
-            "improvement_priority": "high" | "medium" | "low"
-        }
+            "regulatory_alignment": "full" | "partial" | "non-compliant" (optional),
+            "transparency_score": number (optional),
+            "legal_risk_areas": ["string"] (optional),
+            "improvement_priority": "high" | "medium" | "low" (optional)
+        } (optional)
     }
     
     CRITICAL REQUIREMENTS FOR ANALYSIS ACCURACY:
