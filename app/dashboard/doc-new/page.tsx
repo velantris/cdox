@@ -86,10 +86,17 @@ export default function UploadPage() {
     function runStep() {
       if (paused) return;
       if (currentStepIndex >= analysisSteps.length - 1) {
-        // Pause at last step (simulate random number between 82 to 97 %)
-        const pauseProgress = Math.floor(Math.random() * 13) + 82;
+        // Pause at last step (simulate random number between 82 to 97 %) on suggestions step
+        const pauseProgress = Math.floor(Math.random() * (97 - 82 + 1)) + 82;
+        // Mark prior steps completed and set suggestions as running with randomized progress
+        setAnalysisSteps(prev =>
+          prev.map((step, idx) => {
+            if (idx < currentStepIndex) return { ...step, status: "completed", progress: 100 };
+            if (idx === currentStepIndex) return { ...step, status: "running", progress: pauseProgress };
+            return { ...step, status: "pending", progress: 0 };
+          })
+        );
         setStepSimState(s => s && { ...s, paused: true, currentStep: currentStepIndex, stepProgress: pauseProgress });
-
         setAnalysisProgress(pauseProgress);
         return;
       }
