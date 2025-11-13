@@ -18,7 +18,7 @@ import { DEFAULT_SCORING_CONFIG } from "@/lib/scoring-service";
 import { AlertCircle, ArrowLeft, CheckCircle, Clock, Loader2, Upload, Zap } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 interface AnalysisStep {
   id: string;
