@@ -133,7 +133,7 @@ describe('PDF Viewer Core Functionality', () => {
         it('should handle empty document URL', () => {
             render(<MockPdfViewer {...defaultProps} documentUrl="" />)
 
-            expect(screen.getByTestId('pdf-document')).toHaveTextContent('PDF Document: ')
+            expect(screen.getByTestId('pdf-document')).toHaveTextContent('PDF Document:')
         })
 
         it('should handle issue without required fields', () => {

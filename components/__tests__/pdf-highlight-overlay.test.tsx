@@ -9,6 +9,9 @@ vi.mock('@/lib/utils', () => ({
     cn: vi.fn((...classes) => classes.filter(Boolean).join(' '))
 }))
 
+// Helper function to wait for highlight elements to be rendered
+const getHighlightElement = (id: string) => document.querySelector(`[data-highlight-id="${id}"]`) as HTMLElement
+
 const mockHighlights: Highlight[] = [
     {
         id: 'highlight-1',
@@ -44,7 +47,13 @@ const mockHighlights: Highlight[] = [
         startOffset: 30,
         endOffset: 40,
         pageNumber: 2,
-        severity: 'medium'
+        severity: 'medium',
+        boundingRect: {
+            x: 150,
+            y: 30,
+            width: 70,
+            height: 20
+        }
     }
 ]
 
@@ -116,22 +125,26 @@ describe('PdfHighlightOverlay Component', () => {
             expect(container.firstChild).toHaveClass('absolute', 'inset-0', 'pointer-events-none')
         })
 
-        it('should render highlights for current page only', () => {
+        it('should render highlights for current page only', async () => {
             render(<PdfHighlightOverlay {...defaultProps} pageNumber={1} />)
 
             // Should render 2 highlights for page 1 (highlight-1 and highlight-2)
-            expect(screen.queryByTestId('highlight-highlight-1')).toBeInTheDocument()
-            expect(screen.queryByTestId('highlight-highlight-2')).toBeInTheDocument()
-            expect(screen.queryByTestId('highlight-highlight-3')).not.toBeInTheDocument()
+            await waitFor(() => {
+                expect(document.querySelector('[data-highlight-id="highlight-1"]')).toBeInTheDocument()
+                expect(document.querySelector('[data-highlight-id="highlight-2"]')).toBeInTheDocument()
+                expect(document.querySelector('[data-highlight-id="highlight-3"]')).not.toBeInTheDocument()
+            })
         })
 
-        it('should not render highlights for different page', () => {
+        it('should not render highlights for different page', async () => {
             render(<PdfHighlightOverlay {...defaultProps} pageNumber={2} />)
 
             // Should only render highlight-3 for page 2
-            expect(screen.queryByTestId('highlight-highlight-1')).not.toBeInTheDocument()
-            expect(screen.queryByTestId('highlight-highlight-2')).not.toBeInTheDocument()
-            expect(screen.queryByTestId('highlight-highlight-3')).toBeInTheDocument()
+            await waitFor(() => {
+                expect(document.querySelector('[data-highlight-id="highlight-1"]')).not.toBeInTheDocument()
+                expect(document.querySelector('[data-highlight-id="highlight-2"]')).not.toBeInTheDocument()
+                expect(document.querySelector('[data-highlight-id="highlight-3"]')).toBeInTheDocument()
+            })
         })
 
         it('should render empty overlay when no highlights', () => {
@@ -144,59 +157,69 @@ describe('PdfHighlightOverlay Component', () => {
     })
 
     describe('Highlight Positioning and Scaling', () => {
-        it('should apply correct positioning based on boundingRect and scale', () => {
+        it('should apply correct positioning based on boundingRect and scale', async () => {
             render(<PdfHighlightOverlay {...defaultProps} scale={1.5} />)
 
-            const highlight = screen.getByTestId('highlight-highlight-1')
+            await waitFor(() => {
+                const highlight = getHighlightElement('highlight-1')
+                expect(highlight).toBeInTheDocument()
 
-            // Position should be scaled: x=10*1.5=15, y=20*1.5=30
-            expect(highlight).toHaveStyle({
-                left: '15px',
-                top: '30px',
-                width: '150px', // 100*1.5
-                height: '30px'  // 20*1.5
+                // Position should be scaled: x=10*1.5=15, y=20*1.5=30
+                expect(highlight).toHaveStyle({
+                    left: '15px',
+                    top: '30px',
+                    width: '150px', // 100*1.5
+                    height: '30px'  // 20*1.5
+                })
             })
         })
 
-        it('should handle different scales correctly', () => {
+        it('should handle different scales correctly', async () => {
             const { rerender } = render(<PdfHighlightOverlay {...defaultProps} scale={0.5} />)
 
-            let highlight = screen.getByTestId('highlight-highlight-1')
-            expect(highlight).toHaveStyle({
-                left: '5px',   // 10*0.5
-                top: '10px',   // 20*0.5
-                width: '50px', // 100*0.5
-                height: '10px' // 20*0.5
+            await waitFor(() => {
+                let highlight = getHighlightElement('highlight-1')
+                expect(highlight).toHaveStyle({
+                    left: '5px',   // 10*0.5
+                    top: '10px',   // 20*0.5
+                    width: '50px', // 100*0.5
+                    height: '10px' // 20*0.5
+                })
             })
 
             rerender(<PdfHighlightOverlay {...defaultProps} scale={2.0} />)
 
-            highlight = screen.getByTestId('highlight-highlight-1')
-            expect(highlight).toHaveStyle({
-                left: '20px',   // 10*2.0
-                top: '40px',    // 20*2.0
-                width: '200px', // 100*2.0
-                height: '40px'  // 20*2.0
+            await waitFor(() => {
+                let highlight = getHighlightElement('highlight-1')
+                expect(highlight).toHaveStyle({
+                    left: '20px',   // 10*2.0
+                    top: '40px',    // 20*2.0
+                    width: '200px', // 100*2.0
+                    height: '40px'  // 20*2.0
+                })
             })
         })
     })
 
     describe('Severity-based Styling', () => {
-        it('should apply critical severity styling', () => {
+        it('should apply critical severity styling', async () => {
             render(<PdfHighlightOverlay {...defaultProps} />)
 
-            const criticalHighlight = screen.getByTestId('highlight-highlight-1')
+            await waitFor(() => {
+                const criticalHighlight = getHighlightElement('highlight-1')
+                expect(criticalHighlight).toBeInTheDocument()
 
-            // Should have critical severity styling
-            expect(criticalHighlight).toHaveStyle({
-                borderColor: '#dc2626'
+                // Should have critical severity styling
+                expect(criticalHighlight).toHaveStyle({
+                    borderColor: '#dc2626'
+                })
             })
         })
 
         it('should apply high severity styling', () => {
             render(<PdfHighlightOverlay {...defaultProps} />)
 
-            const highHighlight = screen.getByTestId('highlight-highlight-2')
+            const highHighlight = getHighlightElement('highlight-2')
 
             // Should have high severity styling
             expect(highHighlight).toHaveStyle({
@@ -214,16 +237,16 @@ describe('PdfHighlightOverlay Component', () => {
 
             render(<PdfHighlightOverlay {...defaultProps} highlights={highlights} />)
 
-            expect(screen.getByTestId('highlight-low-highlight')).toHaveStyle({
+            expect(getHighlightElement('highlight-low-highlight')).toHaveStyle({
                 borderColor: '#16a34a' // Green for low
             })
-            expect(screen.getByTestId('highlight-medium-highlight')).toHaveStyle({
+            expect(getHighlightElement('highlight-medium-highlight')).toHaveStyle({
                 borderColor: '#facc15' // Yellow for medium
             })
-            expect(screen.getByTestId('highlight-high-highlight')).toHaveStyle({
+            expect(getHighlightElement('highlight-high-highlight')).toHaveStyle({
                 borderColor: '#ea580c' // Orange for high
             })
-            expect(screen.getByTestId('highlight-critical-highlight')).toHaveStyle({
+            expect(getHighlightElement('highlight-critical-highlight')).toHaveStyle({
                 borderColor: '#dc2626' // Red for critical
             })
         })
@@ -241,7 +264,7 @@ describe('PdfHighlightOverlay Component', () => {
                 />
             )
 
-            const highlight = screen.getByTestId('highlight-highlight-1')
+            const highlight = getHighlightElement('highlight-1')
             await user.click(highlight)
 
             expect(onHighlightClick).toHaveBeenCalledWith(
@@ -258,7 +281,7 @@ describe('PdfHighlightOverlay Component', () => {
 
             render(<PdfHighlightOverlay {...defaultProps} onHighlightClick={undefined} />)
 
-            const highlight = screen.getByTestId('highlight-highlight-1')
+            const highlight = getHighlightElement('highlight-1')
 
             // Should not throw error when clicked without callback
             await expect(user.click(highlight)).resolves.not.toThrow()
@@ -269,7 +292,7 @@ describe('PdfHighlightOverlay Component', () => {
 
             render(<PdfHighlightOverlay {...defaultProps} />)
 
-            const highlight = screen.getByTestId('highlight-highlight-1')
+            const highlight = getHighlightElement('highlight-1')
 
             await user.hover(highlight)
 
@@ -282,7 +305,7 @@ describe('PdfHighlightOverlay Component', () => {
 
             render(<PdfHighlightOverlay {...defaultProps} />)
 
-            const highlight = screen.getByTestId('highlight-highlight-1')
+            const highlight = getHighlightElement('highlight-1')
 
             await user.hover(highlight)
             expect(highlight).toHaveClass('scale-105')
@@ -298,7 +321,7 @@ describe('PdfHighlightOverlay Component', () => {
 
             render(<PdfHighlightOverlay {...defaultProps} />)
 
-            const highlight = screen.getByTestId('highlight-highlight-1')
+            const highlight = getHighlightElement('highlight-1')
 
             await user.hover(highlight)
 
@@ -313,7 +336,7 @@ describe('PdfHighlightOverlay Component', () => {
 
             render(<PdfHighlightOverlay {...defaultProps} />)
 
-            const highlight = screen.getByTestId('highlight-highlight-1')
+            const highlight = getHighlightElement('highlight-1')
 
             await user.hover(highlight)
 
@@ -336,16 +359,16 @@ describe('PdfHighlightOverlay Component', () => {
             render(<PdfHighlightOverlay {...defaultProps} highlights={highlights} />)
 
             // Test each severity emoji
-            await user.hover(screen.getByTestId('highlight-low-highlight'))
+            await user.hover(getHighlightElement('highlight-low-highlight'))
             await waitFor(() => expect(screen.getByText('✅')).toBeInTheDocument())
 
-            await user.hover(screen.getByTestId('highlight-medium-highlight'))
+            await user.hover(getHighlightElement('highlight-medium-highlight'))
             await waitFor(() => expect(screen.getByText('⚡')).toBeInTheDocument())
 
-            await user.hover(screen.getByTestId('highlight-high-highlight'))
+            await user.hover(getHighlightElement('highlight-high-highlight'))
             await waitFor(() => expect(screen.getByText('🔶')).toBeInTheDocument())
 
-            await user.hover(screen.getByTestId('highlight-critical-highlight'))
+            await user.hover(getHighlightElement('highlight-critical-highlight'))
             await waitFor(() => expect(screen.getByText('⚠️')).toBeInTheDocument())
         })
     })
@@ -354,7 +377,7 @@ describe('PdfHighlightOverlay Component', () => {
         it('should apply pulse animation to critical highlights', () => {
             render(<PdfHighlightOverlay {...defaultProps} />)
 
-            const criticalHighlight = screen.getByTestId('highlight-highlight-1')
+            const criticalHighlight = getHighlightElement('highlight-1')
 
             expect(criticalHighlight).toHaveClass('highlight-pulse')
         })
@@ -362,7 +385,7 @@ describe('PdfHighlightOverlay Component', () => {
         it('should apply subtle pulse to high severity highlights', () => {
             render(<PdfHighlightOverlay {...defaultProps} />)
 
-            const highHighlight = screen.getByTestId('highlight-highlight-2')
+            const highHighlight = getHighlightElement('highlight-2')
 
             expect(highHighlight).toHaveClass('animate-pulse')
         })
@@ -372,7 +395,7 @@ describe('PdfHighlightOverlay Component', () => {
 
             render(<PdfHighlightOverlay {...defaultProps} />)
 
-            const highlight = screen.getByTestId('highlight-highlight-1')
+            const highlight = getHighlightElement('highlight-1')
             await user.click(highlight)
 
             // Should temporarily have ripple class
@@ -429,7 +452,7 @@ describe('PdfHighlightOverlay Component', () => {
             )
 
             // Should not crash when text layer is missing
-            expect(screen.getByTestId('highlight-highlight-1')).toBeInTheDocument()
+            expect(getHighlightElement('highlight-1')).toBeInTheDocument()
         })
     })
 
@@ -450,13 +473,13 @@ describe('PdfHighlightOverlay Component', () => {
             )
 
             // Should not crash with null pageRef
-            expect(screen.getByTestId('highlight-highlight-1')).toBeInTheDocument()
+            expect(getHighlightElement('highlight-1')).toBeInTheDocument()
         })
 
         it('should handle zero scale', () => {
             render(<PdfHighlightOverlay {...defaultProps} scale={0} />)
 
-            const highlight = screen.getByTestId('highlight-highlight-1')
+            const highlight = getHighlightElement('highlight-1')
 
             expect(highlight).toHaveStyle({
                 left: '0px',
@@ -477,7 +500,7 @@ describe('PdfHighlightOverlay Component', () => {
         it('should handle very large scale values', () => {
             render(<PdfHighlightOverlay {...defaultProps} scale={10} />)
 
-            const highlight = screen.getByTestId('highlight-highlight-1')
+            const highlight = getHighlightElement('highlight-1')
 
             expect(highlight).toHaveStyle({
                 left: '100px',  // 10 * 10
@@ -539,8 +562,8 @@ describe('PdfHighlightOverlay Component', () => {
 
             // Should render efficiently
             expect(endTime - startTime).toBeLessThan(1000)
-            expect(screen.getByTestId('highlight-highlight-0')).toBeInTheDocument()
-            expect(screen.getByTestId('highlight-highlight-99')).toBeInTheDocument()
+            expect(getHighlightElement('highlight-0')).toBeInTheDocument()
+            expect(getHighlightElement('highlight-99')).toBeInTheDocument()
         })
 
         it('should update efficiently when highlights change', () => {
@@ -552,7 +575,7 @@ describe('PdfHighlightOverlay Component', () => {
                 />
             )
 
-            expect(screen.getByTestId('highlight-highlight-1')).toBeInTheDocument()
+            expect(getHighlightElement('highlight-1')).toBeInTheDocument()
 
             const startTime = performance.now()
             rerender(
@@ -565,7 +588,7 @@ describe('PdfHighlightOverlay Component', () => {
 
             // Should update efficiently
             expect(endTime - startTime).toBeLessThan(100)
-            expect(screen.getByTestId('highlight-highlight-2')).toBeInTheDocument()
+            expect(getHighlightElement('highlight-2')).toBeInTheDocument()
         })
     })
 

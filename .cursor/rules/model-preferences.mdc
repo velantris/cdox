@@ -1,0 +1,61 @@
+# Model Selection Rules
+
+## OpenAI Model Preferences
+
+When selecting OpenAI models for any task, always use the following hierarchy:
+
+### Primary Model: GPT-5
+- **Use for**: Complex reasoning tasks, code generation, architecture planning, debugging complex issues
+- **Why**: GPT-5 offers superior reasoning capabilities, better instruction following, and improved autonomy compared to previous models
+- **Strengths**: Enhanced problem decomposition, proactive information gathering, better decision-making about when to use tools vs internal knowledge
+
+### Secondary Model: GPT-5-mini
+- **Use for**: Faster responses, simpler tasks, quick iterations, basic code completion
+- **Why**: GPT-5-mini provides the same quality as GPT-5 but with faster response times for less complex tasks
+- **Strengths**: Maintains GPT-5's improved capabilities while being more efficient for routine tasks
+
+### Legacy Model Fallback (if GPT-5/GPT-5-mini unavailable)
+- **GPT-4o**: Only use as fallback when GPT-5 series is not available
+- **Never use**: Older models like GPT-3.5-turbo, GPT-4, etc. unless specifically requested
+
+## Implementation Guidelines
+
+### Chat Mode
+- Default to GPT-5 for multi-step reasoning and complex problem-solving
+- Switch to GPT-5-mini for quick questions, clarifications, and simple tasks
+- Maintain context awareness when switching between models in conversations
+
+### Write Mode
+- Use GPT-5 for code generation, refactoring, and architectural changes
+- Use GPT-5-mini for syntax completion, simple edits, and documentation
+
+### MCP Mode
+- Prefer GPT-5 for complex tool interactions and multi-step workflows
+- Use GPT-5-mini for routine API calls and simple data processing
+
+## Context Awareness
+- **Task Complexity**: Automatically assess task complexity and select appropriate model
+- **Response Speed**: Consider user expectations for response time vs depth
+- **Resource Usage**: Balance between model capabilities and system resources
+- **Cost Optimization**: Use GPT-5-mini when full GPT-5 capabilities aren't needed
+
+## Special Cases
+- **Real-time Collaboration**: Use GPT-5-mini for faster iteration cycles
+- **Code Reviews**: Always use GPT-5 for comprehensive analysis
+- **Debugging**: Use GPT-5 for complex issue diagnosis
+- **Documentation**: Use GPT-5-mini for routine documentation tasks
+
+## Model Switching Logic
+1. Assess task complexity and requirements
+2. Consider user context and expectations
+3. Select most appropriate model from GPT-5 series
+4. Maintain consistency within task sessions
+5. Allow manual override when user specifies different model
+
+## Temperature Configuration
+- **DO NOT set temperature parameter** for GPT-5 and GPT-5-mini models
+- These models use optimal default temperature settings
+- Explicit temperature settings may cause API errors
+- Let the models use their built-in temperature optimization
+
+This rule ensures optimal use of OpenAI's most advanced models while maintaining efficiency and cost-effectiveness.

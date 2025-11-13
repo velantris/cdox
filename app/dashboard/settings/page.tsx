@@ -7,22 +7,61 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Slider } from "@/components/ui/slider"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { Edit, Loader2, Plus, Save, Trash2 } from "lucide-react"
-import { useState, useEffect } from "react"
+import { useEffect, useRef, useState, type ChangeEvent } from "react"
 import { useQuery, useMutation } from "convex/react"
 import { api } from "@/convex/_generated/api"
 import { Id } from "@/convex/_generated/dataModel"
 import { toast } from "sonner"
+import { DEFAULT_SCORING_CONFIG, SCORING_CATEGORIES, type ScoringConfig } from "@/lib/scoring-service"
+
+type ConfigFormState = {
+  name: string
+  isDefault: boolean
+  severityWeights: ScoringConfig["severityWeights"]
+  categoryWeights: ScoringConfig["categoryWeights"]
+  thresholds: ScoringConfig["thresholds"]
+}
+
+const SCORING_SEVERITY_KEYS: Array<keyof ScoringConfig["severityWeights"]> = [
+  "critical",
+  "high",
+  "medium",
+  "low",
+]
+
+const buildConfigForm = (config?: Partial<ScoringConfig> | null): ConfigFormState => ({
+  name: config?.name ?? "",
+  isDefault: config?.isDefault ?? false,
+  severityWeights: {
+    ...DEFAULT_SCORING_CONFIG.severityWeights,
+    ...(config?.severityWeights ?? {}),
+  },
+  categoryWeights: {
+    ...DEFAULT_SCORING_CONFIG.categoryWeights,
+    ...(config?.categoryWeights ?? {}),
+  },
+  thresholds: {
+    ...DEFAULT_SCORING_CONFIG.thresholds,
+    ...(config?.thresholds ?? {}),
+  },
+})
 
 export default function SettingsPage() {
-  const rules = useQuery(api.customRules.getAllCustomRules) || []
+  const rulesQuery = useQuery(api.customRules.getAllCustomRules)
+  const rules = useMemo(() => rulesQuery || [], [rulesQuery])
   const createRule = useMutation(api.customRules.createCustomRule)
   const updateRule = useMutation(api.customRules.updateCustomRule)
   const toggleRuleStatus = useMutation(api.customRules.toggleRuleStatus)
   const deleteRuleMutation = useMutation(api.customRules.deleteCustomRule)
+  const scoringConfigsQuery = useQuery(api.scoringConfigs.getScoringConfigs, {})
+  const scoringConfigs = useMemo(() => scoringConfigsQuery ?? [], [scoringConfigsQuery])
+  const createScoringConfig = useMutation(api.scoringConfigs.createScoringConfig)
+  const updateScoringConfigMutation = useMutation(api.scoringConfigs.updateScoringConfig)
 
   const [newRule, setNewRule] = useState({
     name: "",
@@ -36,6 +75,12 @@ export default function SettingsPage() {
   const [editingRule, setEditingRule] = useState<string | null>(null)
   const [editRule, setEditRule] = useState(newRule)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [selectedScoringConfigId, setSelectedScoringConfigId] = useState<string>("new")
+  const [scoringConfigForm, setScoringConfigForm] = useState<ConfigFormState>(() => buildConfigForm())
+  const [isSavingScoring, setIsSavingScoring] = useState(false)
+  const [hasInitializedScoring, setHasInitializedScoring] = useState(false)
+  const lastSelectedScoringConfigIdRef = useRef<string>("new")
+  const lastLoadedConfigUpdatedAtRef = useRef<string | null>(null)
 
   // Initialize with default rules if none exist
   useEffect(() => {
@@ -84,6 +129,135 @@ export default function SettingsPage() {
 
     initializeDefaultRules()
   }, [rules, createRule])
+
+  useEffect(() => {
+    if (hasInitializedScoring) return
+    if (!scoringConfigs) return
+    if (scoringConfigs.length === 0) {
+      setHasInitializedScoring(true)
+      return
+    }
+    const defaultConfig = scoringConfigs.find((config) => config.isDefault) ?? scoringConfigs[0]
+    if (defaultConfig) {
+      setSelectedScoringConfigId(String(defaultConfig._id))
+      setScoringConfigForm(buildConfigForm(defaultConfig))
+    }
+    setHasInitializedScoring(true)
+  }, [scoringConfigs, hasInitializedScoring])
+
+  useEffect(() => {
+    if (!hasInitializedScoring) return
+
+    if (selectedScoringConfigId === "new") {
+      if (lastSelectedScoringConfigIdRef.current !== "new") {
+        setScoringConfigForm(buildConfigForm())
+      }
+      lastSelectedScoringConfigIdRef.current = "new"
+      lastLoadedConfigUpdatedAtRef.current = null
+      return
+    }
+
+    const activeConfig = scoringConfigs.find(
+      (config) => String(config._id) === selectedScoringConfigId
+    )
+    if (!activeConfig) {
+      return
+    }
+
+    const activeUpdatedAt = activeConfig.updatedAt ? String(activeConfig.updatedAt) : "unknown"
+    const shouldLoadConfig =
+      lastSelectedScoringConfigIdRef.current !== selectedScoringConfigId ||
+      lastLoadedConfigUpdatedAtRef.current !== activeUpdatedAt
+
+    if (shouldLoadConfig) {
+      setScoringConfigForm(buildConfigForm(activeConfig))
+      lastLoadedConfigUpdatedAtRef.current = activeUpdatedAt
+    }
+
+    lastSelectedScoringConfigIdRef.current = selectedScoringConfigId
+  }, [selectedScoringConfigId, scoringConfigs, hasInitializedScoring])
+
+  const activeScoringConfig =
+    selectedScoringConfigId === "new"
+      ? null
+      : scoringConfigs.find((config) => String(config._id) === selectedScoringConfigId)
+
+  const handleScoringConfigSelect = (value: string) => {
+    setSelectedScoringConfigId(value)
+  }
+
+  const handleCreateNewScoringConfig = () => {
+    setSelectedScoringConfigId("new")
+    setScoringConfigForm(buildConfigForm())
+  }
+
+  const handleResetScoringConfig = () => {
+    if (selectedScoringConfigId === "new") {
+      setScoringConfigForm(buildConfigForm())
+      toast.success("Reset to starter values")
+      return
+    }
+    const existing = scoringConfigs.find((config) => String(config._id) === selectedScoringConfigId)
+    if (existing) {
+      setScoringConfigForm(buildConfigForm(existing))
+      toast.success("Reverted configuration changes")
+    }
+  }
+
+  const handleThresholdInputChange =
+    (key: keyof ConfigFormState["thresholds"]) => (event: ChangeEvent<HTMLInputElement>) => {
+      const rawValue = Number(event.target.value)
+      if (!Number.isFinite(rawValue)) {
+        return
+      }
+      const bounded = Math.max(0, Math.min(100, rawValue))
+      setScoringConfigForm((prev) => ({
+        ...prev,
+        thresholds: {
+          ...prev.thresholds,
+          [key]: bounded,
+        },
+      }))
+    }
+
+  const formatTimestamp = (value?: number) => (value ? new Date(value).toLocaleString() : "—")
+  const titleCase = (value: string) => value.charAt(0).toUpperCase() + value.slice(1)
+
+  const handleSaveScoringConfig = async () => {
+    if (!scoringConfigForm.name.trim()) {
+      toast.error("Configuration name is required")
+      return
+    }
+
+    setIsSavingScoring(true)
+    const payload = {
+      name: scoringConfigForm.name.trim(),
+      isDefault: scoringConfigForm.isDefault,
+      severityWeights: scoringConfigForm.severityWeights,
+      categoryWeights: scoringConfigForm.categoryWeights,
+      thresholds: scoringConfigForm.thresholds,
+    }
+
+    try {
+      if (selectedScoringConfigId !== "new") {
+        await updateScoringConfigMutation({
+          id: selectedScoringConfigId as Id<"scoringConfigs">,
+          ...payload,
+        })
+        toast.success("Scoring configuration updated")
+      } else {
+        const id = await createScoringConfig(payload)
+        toast.success("Scoring configuration created")
+        setSelectedScoringConfigId(String(id))
+      }
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Failed to save scoring configuration"
+      toast.error(message)
+    } finally {
+      setIsSavingScoring(false)
+    }
+  }
 
   const handleAddRule = async () => {
     if (newRule.name && newRule.pattern) {
@@ -170,8 +344,9 @@ export default function SettingsPage() {
         </div>
 
         <Tabs defaultValue="rules" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="rules">Custom Rules</TabsTrigger>
+            <TabsTrigger value="scoring">Scoring</TabsTrigger>
             <TabsTrigger value="compliance">Compliance</TabsTrigger>
             <TabsTrigger value="notifications">Notifications</TabsTrigger>
             <TabsTrigger value="general">General</TabsTrigger>
@@ -475,6 +650,197 @@ export default function SettingsPage() {
                 ))
               )}
             </div>
+          </TabsContent>
+
+          <TabsContent value="scoring" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Scoring Configurations</CardTitle>
+                <CardDescription>
+                  Customise severity weights, category multipliers, and pass thresholds used during scoring.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="scoring-config-select">Configuration</Label>
+                    <Select
+                      value={selectedScoringConfigId}
+                      onValueChange={handleScoringConfigSelect}
+                    >
+                      <SelectTrigger id="scoring-config-select">
+                        <SelectValue placeholder="Select configuration" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="new">Create new configuration</SelectItem>
+                        {scoringConfigs.map((config) => (
+                          <SelectItem key={String(config._id)} value={String(config._id)}>
+                            {config.name} {config.isDefault ? "(Default)" : ""}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="scoring-config-name">Name</Label>
+                    <Input
+                      id="scoring-config-name"
+                      placeholder="e.g. Legal heavy weighting"
+                      value={scoringConfigForm.name}
+                      onChange={(event) =>
+                        setScoringConfigForm((prev) => ({ ...prev, name: event.target.value }))
+                      }
+                    />
+                  </div>
+                </div>
+
+                <p className="text-xs text-gray-500">
+                  Current default:{" "}
+                  {scoringConfigs.find((config) => config.isDefault)?.name ?? DEFAULT_SCORING_CONFIG.name}
+                </p>
+
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div className="flex items-center space-x-2">
+                    <Switch
+                      id="scoring-config-default"
+                      checked={scoringConfigForm.isDefault}
+                      onCheckedChange={(checked) =>
+                        setScoringConfigForm((prev) => ({ ...prev, isDefault: checked }))
+                      }
+                    />
+                    <Label htmlFor="scoring-config-default" className="text-sm">
+                      Make this the default configuration
+                    </Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" onClick={handleCreateNewScoringConfig}>
+                      <Plus className="w-4 h-4 mr-2" />
+                      New Configuration
+                    </Button>
+                  </div>
+                </div>
+
+                {activeScoringConfig && (
+                  <div className="text-xs text-gray-500 flex flex-wrap gap-3">
+                    <span>Created: {formatTimestamp(activeScoringConfig.createdAt)}</span>
+                    <span>Updated: {formatTimestamp(activeScoringConfig.updatedAt)}</span>
+                  </div>
+                )}
+
+                <div className="space-y-6">
+                  <div>
+                    <h4 className="text-sm font-semibold text-gray-700 mb-2">
+                      Severity Weights (0 - 50 points)
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+                      {SCORING_SEVERITY_KEYS.map((key) => (
+                        <div key={key} className="space-y-2 rounded-lg border border-gray-200 p-4">
+                          <div className="flex items-center justify-between text-sm font-medium text-gray-700">
+                            <span>{titleCase(key)}</span>
+                            <span className="font-mono">
+                              {scoringConfigForm.severityWeights[key]}
+                            </span>
+                          </div>
+                          <Slider
+                            min={0}
+                            max={50}
+                            step={1}
+                            value={[scoringConfigForm.severityWeights[key]]}
+                            onValueChange={([value]) =>
+                              setScoringConfigForm((prev) => ({
+                                ...prev,
+                                severityWeights: {
+                                  ...prev.severityWeights,
+                                  [key]: Math.round(value),
+                                },
+                              }))
+                            }
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="text-sm font-semibold text-gray-700 mb-2">
+                      Category Multipliers (0.5 - 2.0)
+                    </h4>
+                    <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-4">
+                      {SCORING_CATEGORIES.map((category) => (
+                        <div key={category} className="space-y-2 rounded-lg border border-gray-200 p-4">
+                          <div className="flex items-center justify-between text-sm font-medium text-gray-700">
+                            <span>{titleCase(category)}</span>
+                            <span className="font-mono">
+                              {scoringConfigForm.categoryWeights[category].toFixed(2)}
+                            </span>
+                          </div>
+                          <Slider
+                            min={0.5}
+                            max={2}
+                            step={0.1}
+                            value={[scoringConfigForm.categoryWeights[category]]}
+                            onValueChange={([value]) =>
+                              setScoringConfigForm((prev) => ({
+                                ...prev,
+                                categoryWeights: {
+                                  ...prev.categoryWeights,
+                                  [category]: Number(value.toFixed(2)),
+                                },
+                              }))
+                            }
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="text-sm font-semibold text-gray-700 mb-2">Score Thresholds</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      {(["pass", "warning", "fail"] as Array<keyof ConfigFormState["thresholds"]>).map(
+                        (key) => (
+                          <div key={key} className="space-y-2">
+                            <Label htmlFor={`threshold-${key}`} className="text-sm font-medium">
+                              {titleCase(key)} Threshold
+                            </Label>
+                            <Input
+                              id={`threshold-${key}`}
+                              type="number"
+                              min={0}
+                              max={100}
+                              value={scoringConfigForm.thresholds[key]}
+                              onChange={handleThresholdInputChange(key)}
+                            />
+                          </div>
+                        ),
+                      )}
+                    </div>
+                    <p className="text-xs text-gray-500 mt-2">
+                      Ensure pass ≥ warning &gt; fail. Values must stay within 0 - 100.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-end gap-3">
+                  <Button variant="outline" onClick={handleResetScoringConfig} disabled={isSavingScoring}>
+                    Reset
+                  </Button>
+                  <Button onClick={handleSaveScoringConfig} disabled={isSavingScoring}>
+                    {isSavingScoring ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Saving...
+                      </>
+                    ) : (
+                      <>
+                        <Save className="w-4 h-4 mr-2" />
+                        Save Configuration
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="compliance" className="space-y-6">

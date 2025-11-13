@@ -1,4 +1,4 @@
-export default {
+const dictionary = {
   version: 0.1,
   files: {
     "../app/auth/signin/page.tsx": {
@@ -17013,3 +17013,5 @@ export default {
     },
   },
 };
+
+export default dictionary;

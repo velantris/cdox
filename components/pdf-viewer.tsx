@@ -1237,7 +1237,7 @@ function PdfViewerClient({
                     ⚠️ Text Extraction Failed
                   </h4>
                   <p className="text-sm text-yellow-700 mt-2 leading-relaxed">
-                    Issue highlighting is not available for this PDF. You can still view the document normally, but clicking on issues won't highlight text.
+                    Issue highlighting is not available for this PDF. You can still view the document normally, but clicking on issues won&apos;t highlight text.
                   </p>
                   <details className="mt-2">
                     <summary className="text-xs text-yellow-600 cursor-pointer hover:text-yellow-800 transition-colors">

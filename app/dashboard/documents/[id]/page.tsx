@@ -16,6 +16,9 @@ import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/components/ui/use-toast"
 import { api } from "@/convex/_generated/api"
 import type { Id } from "@/convex/_generated/dataModel"
+import type { LanguageComplexityAnalysis } from "@/lib/language-complexity-analyzer"
+import type { ComprehensibilityReportData } from "@/lib/report"
+import { DEFAULT_SCORING_CONFIG, type ScoringConfig } from "@/lib/scoring-service"
 import { useAction, useMutation, useQuery } from "convex/react"
 import {
   ArrowLeft,
@@ -30,6 +33,147 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { use, useEffect, useState } from "react"
 
+type IssueSeverity = "critical" | "high" | "medium" | "low"
+type IssueStatus = "open" | "inprogress" | "verified" | "closed" | "false_positive"
+
+interface AnalyzedIssue {
+  _id: string
+  severity: IssueSeverity | string
+  type: string
+  status: IssueStatus | string
+  section?: string
+  originalText?: string
+  issueExplanation?: string
+  suggestedRewrite?: string
+  offsetStart?: number
+  offsetEnd?: number
+  createdAt?: number
+}
+
+interface StructuredRecommendation {
+  heading: string
+  points: string[]
+  priority: "low" | "medium" | "high"
+  category?: string
+  impact_score?: number
+  implementation_effort?: "low" | "medium" | "high"
+}
+
+type Recommendation = string | StructuredRecommendation
+
+interface ComplianceStatus {
+  regulatory_alignment?: string
+  transparency_score?: number
+  improvement_priority?: string
+  legal_risk_areas?: string[]
+}
+
+interface SectionAggregation {
+  issues: AnalyzedIssue[]
+  totalIssues: number
+  severityWeights: Record<IssueSeverity, number>
+  score: number
+}
+
+interface DocumentInfo {
+  _id: string
+  name: string
+  url?: string
+  fileId?: string
+  language?: string
+  documentType?: string
+  targetAudience?: string
+  jurisdiction?: string
+  regulations?: string[] | string | null
+  createdAt: number | string
+}
+
+interface Analysis {
+  summary?: string
+  recommendations?: Recommendation[]
+  score?: number
+  status?: string
+  readability_metrics?: {
+    flesch_kincaid_grade?: number
+    coleman_liau_index?: number
+    reading_time_minutes?: number
+    grade_level?: string
+    reading_ease_score?: number
+    passive_voice_percentage?: number
+    [key: string]: number | string | undefined
+  } | null
+  accessibility_assessment?: {
+    assessment_summary?: string
+    readability_score?: number
+    clarity_score?: number
+    key_findings?: { title: string; detail: string }[]
+    quickWins?: string[]
+    quick_wins?: string[]
+    quick_wins_recommendations?: string[]
+    wcag_compliance_level?: "AA" | "A" | "Non-compliant"
+    screen_reader_compatibility?: "high" | "medium" | "low"
+    cognitive_accessibility?: "high" | "medium" | "low"
+    multilingual_considerations?: string
+    [key: string]: unknown
+  } | null
+  compliance_status?: ComplianceStatus
+  pdf_structure_compliance?: {
+    overall?: string
+    issues?: string[]
+    compliantElements?: string[]
+    nonCompliantElements?: string[]
+    summary?: string
+    [key: string]: unknown
+  } | null
+  language_complexity?: LanguageComplexityAnalysis
+  createdAt?: number | string
+  documentText?: string
+  analysisId?: string
+  _id?: string
+  scoringConfig?: AnalysisScoringConfig
+  scoringConfigId?: string
+}
+
+type ViewerIssue = {
+  _id: string
+  originalText: string
+  offsetStart?: number
+  offsetEnd?: number
+  severity: string
+  type: string
+}
+
+type ReportAnalysis = NonNullable<ComprehensibilityReportData["analysis"]>
+type ReportIssue = ComprehensibilityReportData["issues"][number]
+type ReportAccessibilityAssessment = NonNullable<ReportAnalysis["accessibility_assessment"]>
+type ReportComplianceStatus = NonNullable<ReportAnalysis["compliance_status"]>
+
+interface AnalysisScoringConfig extends ScoringConfig {
+  createdAt?: number
+  updatedAt?: number
+  _id?: string
+}
+
+const SCORING_SEVERITY_ORDER: Array<keyof AnalysisScoringConfig["severityWeights"]> = [
+  "critical",
+  "high",
+  "medium",
+  "low",
+]
+
+const SCORING_CATEGORY_ORDER: Array<keyof AnalysisScoringConfig["categoryWeights"]> = [
+  "clarity",
+  "grammar",
+  "style",
+  "legal",
+  "compliance",
+  "structure",
+  "accessibility",
+  "security",
+  "transparency",
+  "other",
+]
+
 export default function DocumentAnalysisPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const [isAnalyzing, setIsAnalyzing] = useState(false)
@@ -38,15 +182,41 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
   const { toast } = useToast()
 
   // Convex hooks for data fetching
-  const scanData = useQuery(api.scans.getScanWithAnalysisAndIssues, { id: id as Id<"scans"> })
+  const scanData = useQuery(api.scans.getScanWithAnalysisAndIssues, { id: id })
   const performAnalysis = useAction(api.analysis_action.performDocumentAnalysis)
   const updateIssue = useMutation(api.issues.updateIssue)
   const generateReport = useAction(api.report_action.generateReport)
+  const scoringConfigs = useQuery(api.scoringConfigs.getScoringConfigs, {}) ?? []
 
   // Extract data from Convex response
-  const document = scanData?.document
-  const analysis = scanData?.analysis
-  const issues = scanData?.issues || []
+  const document = scanData?.document as DocumentInfo | undefined
+  const analysis = scanData?.analysis as Analysis | undefined
+  const issues: AnalyzedIssue[] = (scanData?.issues as AnalyzedIssue[] | undefined) ?? []
+  const readabilityMetrics = analysis?.readability_metrics ?? undefined
+  const languageComplexity = analysis?.language_complexity ?? undefined
+  const analysisScoringConfig: AnalysisScoringConfig | null =
+    analysis?.scoringConfig ??
+    (analysis && !analysis.scoringConfigId
+      ? {
+        ...DEFAULT_SCORING_CONFIG,
+        _id: undefined,
+        createdAt: undefined,
+        updatedAt: undefined,
+      }
+      : null)
+  const [selectedScoringConfigId, setSelectedScoringConfigId] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (analysis?.scoringConfigId) {
+      setSelectedScoringConfigId(analysis.scoringConfigId)
+    }
+  }, [analysis?.scoringConfigId])
+
+  const defaultScoringConfig = scoringConfigs.find((config: ScoringConfig) => config.isDefault)
+  const nextScoringConfig =
+    selectedScoringConfigId
+      ? scoringConfigs.find((config: ScoringConfig) => String(config._id) === selectedScoringConfigId) ?? null
+      : defaultScoringConfig ?? null
 
   // --- Move fileSize state and effect here, before any return ---
   const [fileSize, setFileSize] = useState<string | null>(null);
@@ -75,12 +245,12 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
   // --- End move ---
 
   // Calculate counts per severity and filtered issues list
-  const severityCounts: Record<string, number> = issues.reduce((acc: Record<string, number>, issue: any) => {
+  const severityCounts: Record<string, number> = issues.reduce<Record<string, number>>((acc, issue) => {
     const sev = issue.severity.charAt(0).toUpperCase() + issue.severity.slice(1).toLowerCase()
     acc[sev] = (acc[sev] || 0) + 1
     return acc
-  }, {} as Record<string, number>)
-  const filteredIssues = issues.filter((issue: any) =>
+  }, {})
+  const filteredIssues = issues.filter((issue) =>
     severityFilter === "All" ||
     issue.severity.toLowerCase() === severityFilter.toLowerCase()
   )
@@ -111,13 +281,28 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
   const [showPdfViewer, setShowPdfViewer] = useState(false)
   const [selectedIssueId, setSelectedIssueId] = useState<string | null>(null)
 
+  const selectedAnalyzedIssue = selectedIssueId
+    ? issues.find((issue) => issue._id === selectedIssueId) ?? null
+    : null
+
+  const viewerSelectedIssue: ViewerIssue | null = selectedAnalyzedIssue
+    ? {
+      _id: selectedAnalyzedIssue._id,
+      originalText: selectedAnalyzedIssue.originalText ?? "",
+      offsetStart: selectedAnalyzedIssue.offsetStart,
+      offsetEnd: selectedAnalyzedIssue.offsetEnd,
+      severity: String(selectedAnalyzedIssue.severity),
+      type: selectedAnalyzedIssue.type,
+    }
+    : null
+
   // Handle issue selection for PDF viewer
-  const handleIssueClick = (issue: any) => {
+  const handleIssueClick = (issue: AnalyzedIssue) => {
     setSelectedIssueId(issue._id)
   }
 
   // Handle PDF highlighting feedback
-  const handleIssueHighlight = (issue: any, success: boolean) => {
+  const handleIssueHighlight = (issue: ViewerIssue, success: boolean) => {
     if (success) {
       toast({
         title: "Issue Located",
@@ -166,34 +351,46 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
     setIsAnalyzing(true)
     toast({
       title: "Analysis Started",
-      description: "The document is being re-analyzed. This may take a moment.",
+      description: `The document is being re-analyzed${nextScoringConfig ? ` using "${nextScoringConfig.name}" scoring weights` : ""}. This may take a moment.`,
     })
     try {
       await performAnalysis({
         scanId: id as Id<"scans">,
-        customRuleIds: selectedRules.length > 0 ? selectedRules : undefined
+        customRuleIds: selectedRules.length > 0 ? selectedRules : undefined,
+        scoringConfigId: selectedScoringConfigId
+          ? (selectedScoringConfigId as Id<"scoringConfigs">)
+          : undefined,
       })
 
-      setIsAnalyzing(false)
       toast({
         title: "Analysis Complete",
         description: "The document has been successfully re-analyzed.",
       })
       // No need to call router.refresh() - Convex will update automatically
     } catch (error) {
-      console.error("Failed to re-analyze document:", error)
       const errorMessage = error instanceof Error ? error.message : "Unknown error occurred"
-      toast({
-        title: "Analysis Failed",
-        description: `Could not start the re-analysis process: ${errorMessage}`,
-        variant: "destructive",
-      })
+      const connectionLost = errorMessage.includes("Connection lost while action was in flight")
+
+      if (connectionLost) {
+        toast({
+          title: "Analysis Continuing",
+          description:
+            "The connection to the analysis worker dropped, but the job is still running. Results will refresh automatically once it finishes.",
+        })
+      } else {
+        toast({
+          title: "Analysis Failed",
+          description: `Could not start the re-analysis process: ${errorMessage}`,
+          variant: "destructive",
+        })
+      }
+    } finally {
       setIsAnalyzing(false)
     }
   }
 
   // Define handler for issue status change
-  const handleStatusChange = async (issueId: string, newStatus: "open" | "inprogress" | "verified" | "closed" | "false_positive") => {
+  const handleStatusChange = async (issueId: string, newStatus: IssueStatus) => {
     try {
       await updateIssue({
         id: issueId as Id<"issues">,
@@ -284,51 +481,130 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
           throw new Error("Analysis data not available for PDF generation");
         }
 
-        const reportData = {
+        const analysisCreatedAtValue = analysis.createdAt ?? Date.now()
+        const analysisCreatedAtDate = new Date(analysisCreatedAtValue)
+        const documentCreatedAtDate = new Date(document.createdAt)
+        const documentUpdatedAtDate = new Date(document.createdAt)
+        const regulationsString =
+          Array.isArray(document.regulations)
+            ? document.regulations.join(", ")
+            : document.regulations ?? "N/A"
+        const recommendationsForReport = (analysis.recommendations ?? []) as Recommendation[]
+
+        let analysisSection: ReportAnalysis | undefined
+
+        if (
+          (analysis.summary && analysis.summary.trim().length > 0) ||
+          recommendationsForReport.length > 0 ||
+          analysis.readability_metrics ||
+          analysis.language_complexity ||
+          analysis.accessibility_assessment ||
+          analysis.compliance_status ||
+          analysis.pdf_structure_compliance ||
+          analysis.scoringConfig
+        ) {
+          analysisSection = {
+            summary: analysis.summary ?? "",
+            recommendations: recommendationsForReport,
+          }
+
+          if (analysis.readability_metrics) {
+            const rm = analysis.readability_metrics
+            const readabilityForReport: NonNullable<ReportAnalysis["readability_metrics"]> = {}
+
+            if (typeof rm.flesch_kincaid_grade === "number") {
+              readabilityForReport.flesch_kincaid_grade = rm.flesch_kincaid_grade
+            }
+            if (typeof rm.avg_sentence_length === "number") {
+              readabilityForReport.avg_sentence_length = rm.avg_sentence_length
+            }
+            if (typeof rm.complex_words_percentage === "number") {
+              readabilityForReport.complex_words_percentage = rm.complex_words_percentage
+            }
+            if (typeof rm.passive_voice_percentage === "number") {
+              readabilityForReport.passive_voice_percentage = rm.passive_voice_percentage
+            }
+
+            if (Object.keys(readabilityForReport).length > 0) {
+              analysisSection.readability_metrics = readabilityForReport
+            }
+          }
+
+          if (analysis.language_complexity) {
+            analysisSection.language_complexity = analysis.language_complexity
+          }
+
+          if (analysis.accessibility_assessment) {
+            const aa = analysis.accessibility_assessment
+            const mapped: ReportAccessibilityAssessment = {
+              wcag_compliance_level: aa.wcag_compliance_level as ReportAccessibilityAssessment["wcag_compliance_level"],
+              screen_reader_compatibility: aa.screen_reader_compatibility as ReportAccessibilityAssessment["screen_reader_compatibility"],
+              cognitive_accessibility: aa.cognitive_accessibility as ReportAccessibilityAssessment["cognitive_accessibility"],
+              multilingual_considerations: aa.multilingual_considerations as ReportAccessibilityAssessment["multilingual_considerations"],
+            }
+            analysisSection.accessibility_assessment = mapped
+          }
+
+          if (analysis.compliance_status) {
+            const cs = analysis.compliance_status
+            const mapped: ReportComplianceStatus = {
+              regulatory_alignment: cs.regulatory_alignment as ReportComplianceStatus["regulatory_alignment"],
+              transparency_score: cs.transparency_score,
+              legal_risk_areas: cs.legal_risk_areas,
+              improvement_priority: cs.improvement_priority as ReportComplianceStatus["improvement_priority"],
+            }
+            analysisSection.compliance_status = mapped
+          }
+
+          if (analysisScoringConfig) {
+            analysisSection.scoringConfig = analysisScoringConfig
+          }
+
+          // Skip pdf_structure_compliance for now unless it matches expected schema
+        }
+
+        const reportIssues: ReportIssue[] = issues.map((issue) => ({
+          id: issue._id,
+          severity: String(issue.severity),
+          type: issue.type,
+          status: String(issue.status),
+          section: issue.section ?? "N/A",
+          originalText: issue.originalText ?? "",
+          issueExplanation: issue.issueExplanation ?? "",
+          suggestedRewrite: issue.suggestedRewrite ?? "",
+          offsetStart: issue.offsetStart,
+          offsetEnd: issue.offsetEnd,
+        }))
+
+        const reportData: ComprehensibilityReportData = {
           id: document._id,
           name: document.name,
-          documentType: document.documentType,
-          language: document.language,
-          targetAudience: document.targetAudience,
-          jurisdiction: document.jurisdiction,
-          regulations: document.regulations,
-          status: analysis.status,
-          url: document.url,
-          startedAt: new Date(analysis.createdAt).toISOString(),
-          completedAt: analysis.status === 'completed' ? new Date(analysis.createdAt).toISOString() : undefined,
-          createdAt: new Date(document.createdAt).toISOString(),
-          updatedAt: new Date(document.createdAt).toISOString(),
-          analysisId: analysis._id,
+          documentType: document.documentType ?? "Unknown",
+          language: document.language ?? "Unknown",
+          targetAudience: document.targetAudience ?? "General",
+          jurisdiction: document.jurisdiction ?? "N/A",
+          regulations: regulationsString,
+          status: analysis.status ?? "unknown",
+          url: document.url ?? "",
+          startedAt: analysisCreatedAtDate.toISOString(),
+          completedAt: analysis.status === "completed" ? analysisCreatedAtDate.toISOString() : undefined,
+          createdAt: documentCreatedAtDate.toISOString(),
+          updatedAt: documentUpdatedAtDate.toISOString(),
+          analysisId: analysis.analysisId ?? analysis._id,
+          scoringConfigId: analysis.scoringConfigId,
           comprehensibilityScore: analysis.score,
-          analysis: {
-            summary: analysis.summary,
-            recommendations: analysis.recommendations,
-            readability_metrics: analysis.readability_metrics,
-            accessibility_assessment: analysis.accessibility_assessment,
-            compliance_status: analysis.compliance_status,
-          },
-          issues: issues.map(issue => ({
-            id: issue._id,
-            severity: issue.severity,
-            type: issue.type,
-            status: issue.status,
-            section: issue.section,
-            originalText: issue.originalText,
-            issueExplanation: issue.issueExplanation,
-            suggestedRewrite: issue.suggestedRewrite,
-            offsetStart: issue.offsetStart,
-            offsetEnd: issue.offsetEnd,
-          })),
+          analysis: analysisSection,
+          issues: reportIssues,
           stats: {
             total: issues.length,
-            critical: issues.filter((i: any) => i.severity === 'critical').length,
-            high: issues.filter((i: any) => i.severity === 'high').length,
-            medium: issues.filter((i: any) => i.severity === 'medium').length,
-            low: issues.filter((i: any) => i.severity === 'low').length,
-            openCount: issues.filter(i => i.status === 'open' || i.status === 'inprogress').length,
-            closedCount: issues.filter(i => i.status === 'closed' || i.status === 'verified').length,
-          }
-        };
+            critical: issues.filter((i) => i.severity === "critical").length,
+            high: issues.filter((i) => i.severity === "high").length,
+            medium: issues.filter((i) => i.severity === "medium").length,
+            low: issues.filter((i) => i.severity === "low").length,
+            openCount: issues.filter((i) => i.status === "open" || i.status === "inprogress").length,
+            closedCount: issues.filter((i) => i.status === "closed" || i.status === "verified").length,
+          },
+        }
 
         // Generate PDF
         const pdfBuffer = await generatePDFReport(reportData);
@@ -393,10 +669,36 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
     )
   }
 
+  if (!scanData) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Document Not Found</h2>
+          <p className="text-gray-600 mb-6">
+            The document you&apos;re looking for doesn&apos;t exist or may have been deleted.
+          </p>
+          <Link href="/dashboard/documents" className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Documents
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
   if (!document) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <p>Document not found.</p>
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">Document Not Found</h2>
+          <p className="text-gray-600 mb-6">
+            The document you&apos;re looking for doesn&apos;t exist or may have been deleted.
+          </p>
+          <Link href="/dashboard/documents" className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Documents
+          </Link>
+        </div>
       </div>
     )
   }
@@ -440,6 +742,39 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                   <Download className="w-4 h-4 mr-2" />
                   {isGeneratingReport ? "Generating..." : "PDF Report"}
                 </Button>
+              </div>
+              <div className="flex flex-col space-y-1">
+                <span className="text-xs text-gray-500">Scoring Config</span>
+                <Select
+                  value={selectedScoringConfigId ?? "default"}
+                  onValueChange={(value) => {
+                    if (value === "default") {
+                      setSelectedScoringConfigId(null)
+                    } else {
+                      setSelectedScoringConfigId(value)
+                    }
+                  }}
+                  disabled={isAnalyzing || scoringConfigs.length === 0}
+                >
+                  <SelectTrigger className="w-[220px]">
+                    <SelectValue placeholder="Choose configuration" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="default">
+                      Use Default ({defaultScoringConfig?.name ?? "Platform Default"})
+                    </SelectItem>
+                    {scoringConfigs
+                      .filter((config: ScoringConfig) => !config.isDefault)
+                      .map((config: ScoringConfig) => (
+                        <SelectItem key={String(config._id)} value={String(config._id)}>
+                          {config.name}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+                <span className="text-xs text-gray-400">
+                  Next run: {nextScoringConfig?.name ?? defaultScoringConfig?.name ?? "Platform Default"}
+                </span>
               </div>
               <Button
                 variant="outline"
@@ -502,7 +837,7 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
               <CardTitle>Analysis Pending</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>The document is currently being analyzed. This page will update automatically when it's complete.</p>
+              <p>The document is currently being analyzed. This page will update automatically when it&apos;s complete.</p>
               <Button onClick={handleReanalysis} disabled={isAnalyzing} className="mt-4">
                 <RefreshCw className={`w-4 h-4 mr-2 ${isAnalyzing ? "animate-spin" : ""}`} />
                 {isAnalyzing ? "Analyzing..." : "Analyze Now"}
@@ -517,7 +852,7 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
               <CardTitle>Analysis in Progress</CardTitle>
             </CardHeader>
             <CardContent>
-              <p>The document is currently being analyzed. This page will update automatically when it's complete.</p>
+              <p>The document is currently being analyzed. This page will update automatically when it&apos;s complete.</p>
             </CardContent>
           </Card>
         )}
@@ -543,42 +878,113 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                     </CardContent>
                   </Card>
 
+                  {analysisScoringConfig && (
+                    <Card>
+                      <CardHeader className="space-y-2 sm:space-y-1 sm:flex sm:items-start sm:justify-between">
+                        <div>
+                          <CardTitle>Scoring Configuration</CardTitle>
+                          <p className="text-sm text-gray-500">
+                            Used for this analysis to compute the final score.
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline">{analysisScoringConfig.name}</Badge>
+                          {analysisScoringConfig.isDefault && <Badge variant="secondary">Default</Badge>}
+                        </div>
+                      </CardHeader>
+                      <CardContent className="space-y-6">
+                        <div>
+                          <h4 className="text-sm font-semibold text-gray-700 mb-2">Severity Weights</h4>
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            {SCORING_SEVERITY_ORDER.map((severity) => (
+                              <div key={severity} className="p-3 bg-gray-50 rounded-lg border border-gray-100">
+                                <div className="text-xs uppercase text-gray-500">{cap(severity)}</div>
+                                <div className="text-lg font-semibold text-gray-900">
+                                  {analysisScoringConfig.severityWeights[severity]}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-semibold text-gray-700 mb-2">Category Multipliers</h4>
+                          <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-3">
+                            {SCORING_CATEGORY_ORDER.map((category) => (
+                              <div key={category} className="p-3 bg-white rounded-lg border border-gray-200">
+                                <div className="text-xs font-medium text-gray-500">{cap(category)}</div>
+                                <div className="text-base font-semibold text-gray-900">
+                                  {analysisScoringConfig.categoryWeights[category].toFixed(2)}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-semibold text-gray-700 mb-2">Score Thresholds</h4>
+                          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div className="p-3 rounded-lg bg-green-50 border border-green-100">
+                              <div className="text-xs font-medium text-green-700">Pass</div>
+                              <div className="text-lg font-semibold text-green-900">
+                                score &gt;= {analysisScoringConfig.thresholds.pass}
+                              </div>
+                            </div>
+                            <div className="p-3 rounded-lg bg-yellow-50 border border-yellow-100">
+                              <div className="text-xs font-medium text-yellow-700">Warning</div>
+                              <div className="text-lg font-semibold text-yellow-900">
+                                score &gt;= {analysisScoringConfig.thresholds.warning}
+                              </div>
+                            </div>
+                            <div className="p-3 rounded-lg bg-red-50 border border-red-100">
+                              <div className="text-xs font-medium text-red-700">Fail</div>
+                              <div className="text-lg font-semibold text-red-900">
+                                score &lt;= {analysisScoringConfig.thresholds.fail}
+                              </div>
+                              <p className="text-xs text-red-600 mt-1">
+                                Warning range covers scores between fail and pass thresholds.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
+
                   {/* Readability Metrics */}
-                  {analysis?.readability_metrics && (
+                  {readabilityMetrics && (
                     <Card>
                       <CardHeader>
                         <CardTitle>Readability Metrics</CardTitle>
                       </CardHeader>
                       <CardContent>
                         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                          {analysis.readability_metrics.flesch_kincaid_grade && (
+                          {typeof readabilityMetrics.flesch_kincaid_grade === "number" && (
                             <div className="text-center">
                               <div className="text-2xl font-bold text-blue-600">
-                                {analysis.readability_metrics.flesch_kincaid_grade.toFixed(1)}
+                                {readabilityMetrics.flesch_kincaid_grade.toFixed(1)}
                               </div>
                               <div className="text-sm text-gray-500">Reading Level</div>
                             </div>
                           )}
-                          {analysis.readability_metrics.avg_sentence_length && (
+                          {typeof readabilityMetrics.avg_sentence_length === "number" && (
                             <div className="text-center">
                               <div className="text-2xl font-bold text-green-600">
-                                {analysis.readability_metrics.avg_sentence_length.toFixed(1)}
+                                {readabilityMetrics.avg_sentence_length.toFixed(1)}
                               </div>
                               <div className="text-sm text-gray-500">Avg Sentence Length</div>
                             </div>
                           )}
-                          {analysis.readability_metrics.complex_words_percentage && (
+                          {typeof readabilityMetrics.complex_words_percentage === "number" && (
                             <div className="text-center">
                               <div className="text-2xl font-bold text-orange-600">
-                                {analysis.readability_metrics.complex_words_percentage.toFixed(1)}%
+                                {readabilityMetrics.complex_words_percentage.toFixed(1)}%
                               </div>
                               <div className="text-sm text-gray-500">Complex Words</div>
                             </div>
                           )}
-                          {analysis.readability_metrics.passive_voice_percentage && (
+                          {typeof readabilityMetrics.passive_voice_percentage === "number" && (
                             <div className="text-center">
                               <div className="text-2xl font-bold text-purple-600">
-                                {analysis.readability_metrics.passive_voice_percentage.toFixed(1)}%
+                                {readabilityMetrics.passive_voice_percentage.toFixed(1)}%
                               </div>
                               <div className="text-sm text-gray-500">Passive Voice</div>
                             </div>
@@ -708,6 +1114,96 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                     </Card>
                   )}
 
+                  {/* Language Complexity */}
+                  {languageComplexity && (
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Language Complexity Assessment (CEFR B2)</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                          <div className="text-center">
+                            <div className="text-2xl font-bold text-blue-600">
+                              {languageComplexity.cefrLevel}
+                            </div>
+                            <div className="text-sm text-gray-500">CEFR Level</div>
+                          </div>
+                          {languageComplexity.b2ComplianceScore > 0 && (
+                            <div className="text-center">
+                              <div className="text-2xl font-bold text-green-600">
+                                {languageComplexity.b2ComplianceScore.toFixed(1)}%
+                              </div>
+                              <div className="text-sm text-gray-500">B2 Compliance</div>
+                            </div>
+                          )}
+                          {languageComplexity.plainLanguageScore > 0 && (
+                            <div className="text-center">
+                              <div className="text-2xl font-bold text-purple-600">
+                                {languageComplexity.plainLanguageScore.toFixed(1)}%
+                              </div>
+                              <div className="text-sm text-gray-500">Plain Language Score</div>
+                            </div>
+                          )}
+                          <div className="text-center">
+                            <div className="text-2xl font-bold text-orange-600">
+                              {languageComplexity.readabilityAdjusted.toFixed(1)}
+                            </div>
+                            <div className="text-sm text-gray-500">Adjusted FK Grade</div>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span className="text-sm font-medium">Avg Sentence Length</span>
+                            <Badge variant="outline">
+                              {languageComplexity.sentenceComplexity.averageSentenceLength.toFixed(1)} words
+                            </Badge>
+                          </div>
+                          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span className="text-sm font-medium">Passive Voice</span>
+                            <Badge variant="outline">
+                              {languageComplexity.sentenceComplexity.passiveVoicePercentage.toFixed(1)}%
+                            </Badge>
+                          </div>
+                          <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <span className="text-sm font-medium">Advanced Vocabulary</span>
+                            <Badge variant="outline">
+                              {languageComplexity.vocabularyComplexity.advancedWordPercentage.toFixed(1)}%
+                            </Badge>
+                          </div>
+                        </div>
+
+                        {languageComplexity.vocabularyComplexity.jargonCount > 0 && (
+                          <div className="p-3 bg-yellow-50 rounded-lg">
+                            <h4 className="font-medium text-yellow-800 mb-2">
+                              Jargon Detected ({languageComplexity.vocabularyComplexity.jargonCount})
+                            </h4>
+                            <p className="text-sm text-yellow-700">
+                              {languageComplexity.vocabularyComplexity.jargonTerms.slice(0, 5).join(", ") || "Terms detected"}
+                              {languageComplexity.vocabularyComplexity.jargonTerms.length > 5 && (
+                                <span>
+                                  {" "}
+                                  (+{languageComplexity.vocabularyComplexity.jargonTerms.length - 5} more)
+                                </span>
+                              )}
+                            </p>
+                          </div>
+                        )}
+
+                        {languageComplexity.plainLanguageRecommendations.length > 0 && (
+                          <div className="p-3 bg-blue-50 rounded-lg">
+                            <h4 className="font-medium text-blue-800 mb-2">Plain Language Recommendations</h4>
+                            <ul className="text-sm text-blue-700 space-y-1 list-disc list-inside">
+                              {languageComplexity.plainLanguageRecommendations.slice(0, 3).map((rec, index) => (
+                                <li key={index}>{rec}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </CardContent>
+                    </Card>
+                  )}
+
                   <Card>
                     <CardHeader>
                       <CardTitle>Recommendations</CardTitle>
@@ -813,7 +1309,7 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                       <div className="order-2 xl:order-1">
                         <PdfViewer
                           documentUrl={document?.url || ''}
-                          selectedIssue={issues.find(issue => issue._id === selectedIssueId) || null}
+                          selectedIssue={viewerSelectedIssue}
                           onIssueHighlight={handleIssueHighlight}
                           className="h-[400px] sm:h-[500px] lg:h-[600px] xl:h-[700px]"
                         />
@@ -836,7 +1332,7 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                       </p>
                     ) : (
                       <>
-                        {filteredIssues.map((issue: any) => (
+                        {filteredIssues.map((issue) => (
                           <Card key={issue._id}>
                             <CardHeader>
                               <div className="flex items-start justify-between">
@@ -929,13 +1425,14 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                       <div className="space-y-4">
                         {(() => {
                           // Group issues by section and calculate scores
-                          const sectionData = issues.reduce((acc: Record<string, any>, issue: any) => {
+                          const sectionData = issues.reduce<Record<string, SectionAggregation>>((acc, issue) => {
                             const section = issue.section || "Unknown Section";
                             if (!acc[section]) {
                               acc[section] = {
                                 issues: [],
                                 totalIssues: 0,
-                                severityWeights: { critical: 0, high: 0, medium: 0, low: 0 }
+                                severityWeights: { critical: 0, high: 0, medium: 0, low: 0 },
+                                score: 100
                               };
                             }
                             acc[section].issues.push(issue);
@@ -1149,10 +1646,10 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                       <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
                         <h4 className="font-medium text-gray-800 mb-2">How to use:</h4>
                         <ol className="text-sm text-gray-600 space-y-1 list-decimal list-inside">
-                          <li>Paste the text you want to improve in the "Original" box</li>
-                          <li>Click "Rewrite Text" to generate an improved version</li>
+                          <li>Paste the text you want to improve in the &quot;Original&quot; box</li>
+                          <li>Click &quot;Rewrite Text&quot; to generate an improved version</li>
                           <li>Review the improved version and comprehensibility score</li>
-                          <li>Download the rewrite if you're satisfied with the results</li>
+                          <li>Download the rewrite if you&apos;re satisfied with the results</li>
                         </ol>
                       </div>
                     </CardContent>
@@ -1168,7 +1665,7 @@ export default function DocumentAnalysisPage({ params }: { params: Promise<{ id:
                     <CardTitle>Comprehensibility Score</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <ComprehensibilityGauge score={analysis.score} />
+                    <ComprehensibilityGauge score={analysis.score ?? 50} />
                   </CardContent>
                 </Card>
 

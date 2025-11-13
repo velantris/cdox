@@ -1,4 +1,5 @@
-import { DOCUMENT_TYPE_FEE_SCHEDULE, DOCUMENT_TYPE_LOAN_AGREEMENT, DOCUMENT_TYPE_OTHER, DOCUMENT_TYPE_PP, DOCUMENT_TYPE_REGULATORY_DISPUTE, DOCUMENT_TYPE_TNC, GDPR, JURISDICTION_EU, JURISDICTION_FRANCE, JURISDICTION_GERMANY, JURISDICTION_ITALY, JURISDICTION_NETHERLANDS, JURISDICTION_SPAIN, MIFID, PSD2, TARGET_AUDIENCE_BUSINESS_CUSTOMER, TARGET_AUDIENCE_GENERAL_PUBLIC, TARGET_AUDIENCE_INSTITUTIONAL_CLIENT, TARGET_AUDIENCE_RETAIL_CUSTOMER } from "./prompt.js"
+import type { LanguageComplexityAnalysis } from "../language-complexity-analyzer";
+import { DOCUMENT_TYPE_FEE_SCHEDULE, DOCUMENT_TYPE_LOAN_AGREEMENT, DOCUMENT_TYPE_OTHER, DOCUMENT_TYPE_PP, DOCUMENT_TYPE_REGULATORY_DISPUTE, DOCUMENT_TYPE_TNC, GDPR, JURISDICTION_EU, JURISDICTION_FRANCE, JURISDICTION_GERMANY, JURISDICTION_ITALY, JURISDICTION_NETHERLANDS, JURISDICTION_SPAIN, MIFID, PSD2, TARGET_AUDIENCE_BUSINESS_CUSTOMER, TARGET_AUDIENCE_GENERAL_PUBLIC, TARGET_AUDIENCE_INSTITUTIONAL_CLIENT, TARGET_AUDIENCE_RETAIL_CUSTOMER } from "./prompt.js";
 
 export const makePrompt = (
     document: string,
@@ -7,7 +8,8 @@ export const makePrompt = (
     jurisdiction: string,
     regulations: string,
     language: string = "english",
-    customRules: any[] = []
+    customRules: any[] = [],
+    languageComplexity?: LanguageComplexityAnalysis
 ) => {
     // Map UI option values (used in /new and /upload pages) to their corresponding prompt templates
     const documentTypePrompt =
@@ -87,16 +89,39 @@ export const makePrompt = (
     - All suggested rewrites must be written in ${language}
     `;
 
+    const languageComplexityContext = languageComplexity ? `
+        LANGUAGE COMPLEXITY SNAPSHOT (Pre-analysis Metrics):
+        - Estimated CEFR Level: ${languageComplexity.cefrLevel}
+        - B2 Compliance Score: ${languageComplexity.b2ComplianceScore.toFixed(1)}%
+        - Plain Language Score: ${languageComplexity.plainLanguageScore.toFixed(1)}%
+        - Average Sentence Length: ${languageComplexity.sentenceComplexity.averageSentenceLength.toFixed(1)} words
+        - Passive Voice Usage: ${languageComplexity.sentenceComplexity.passiveVoicePercentage.toFixed(1)}%
+        - Advanced Vocabulary Share: ${languageComplexity.vocabularyComplexity.advancedWordPercentage.toFixed(1)}%
+
+        Compare your findings with these metrics. Highlight any discrepancies (higher or lower) in your summary and recommendations.
+        Prioritise guidance that moves the document toward CEFR B2 accessibility and WCAG plain language alignment.
+    ` : "";
+
     const final_prompt = `
     You are an expert document comprehensibility analyst specializing in legal and regulatory documents.
     
-    Your task is to thoroughly analyze the provided document for clarity, accessibility, and compliance.
+    Your task is to analyze the provided document for clarity, accessibility, and compliance.
     
-    ANALYSIS STANDARDS:
-    - Apply rigorous but fair evaluation (aim for 70% strictness on a 1-100 scale)
-    - Focus on substantive issues that impact user understanding
-    - Prioritize issues that affect legal compliance or user rights
+    ANALYSIS STANDARDS & ISSUE SELECTION:
+    - Be SELECTIVE and FLAG ONLY SUBSTANTIVE PROBLEMS that materially impact user understanding
+    - NOT EVERY improvable sentence is an "issue" - focus on significant barriers to comprehension
+    - An issue should be flagged ONLY if it:
+      * Uses unnecessarily complex legal jargon without explanation for a lay audience
+      * Contains ambiguous or misleading language that could confuse users about their rights/obligations
+      * Violates regulatory requirements for plain language or disclosure
+      * Has structural problems (missing headings, wall-of-text paragraphs >10 lines, poor formatting)
+      * Uses passive voice or complex syntax that materially obscures meaning for the target audience
+    - DO NOT flag minor stylistic preferences, slightly long sentences that are still clear, or industry-standard terms appropriate for the audience
+    - Typical high-quality financial documents should have 10-30 issues, not 50-100
+    - Your goal is to identify the TOP priority improvements, not to catalog every possible refinement
     - Consider the specific document type, audience, and regulatory context
+    - Explicitly evaluate whether the document meets CEFR B2 expectations and WCAG plain language guidance
+    - Flag overly advanced vocabulary (outside the most common 3000-4000 words) only when it creates a real barrier for the target audience
 
         Document:
         ${document}
@@ -116,6 +141,8 @@ export const makePrompt = (
         ${customRulesPrompt}
 
         ${languageInstructions}
+
+        ${languageComplexityContext}
 
         RESPONSE FORMAT:
         Return your analysis in valid JSON format with the following structure:
@@ -160,8 +187,16 @@ export const makePrompt = (
         - You are judged on whether the original_text map to **exact** characters in the document
         - Ensure all JSON is properly formatted and escaped
         - Provide specific, implementable rewrites based on the actual document content
-        - Score should reflect overall document comprehensibility (0-100 dont play safe here)
-        - Summary should describe what the document actually contains, not just generic analysis
+        - Score should reflect OVERALL document comprehensibility (0-100):
+          * 85-100: Excellent - Clear, accessible, minor improvements only
+          * 70-84: Good - Generally clear with some areas for improvement
+          * 50-69: Fair - Multiple significant issues that impact comprehension
+          * 30-49: Poor - Major barriers to understanding, substantial work needed
+          * 0-29: Critical - Document is very difficult to understand, requires major revision
+        - Consider that professional financial documents often score 60-80, not 20-40
+        - The score should reflect the document's fitness for its target audience
+        - Summary must include a sentence assessing CEFR B2 alignment and calling out any gaps
+        - Include at least one recommendation explicitly focused on plain language or vocabulary simplification
         - Recommendations should be specific to problems found in this document
     `
 

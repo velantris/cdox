@@ -79,8 +79,8 @@ const highlightStyles = `
   }
 `
 
-// Inject styles into document head
-if (typeof document !== 'undefined') {
+// Inject styles into document head (skip during tests)
+if (typeof document !== 'undefined' && typeof window !== 'undefined' && !window.navigator?.userAgent?.includes?.('jsdom')) {
     const styleElement = document.createElement('style')
     styleElement.textContent = highlightStyles
     document.head.appendChild(styleElement)
@@ -179,11 +179,16 @@ export function PdfHighlightOverlay({
         })[] = []
 
         for (const highlight of pageHighlights) {
-            const boundingRect = await calculateTextBoundingRect(
-                textLayer as HTMLElement,
-                highlight.startOffset,
-                highlight.endOffset
-            )
+            // Use provided boundingRect if available, otherwise calculate it
+            let boundingRect = (highlight as any).boundingRect
+
+            if (!boundingRect) {
+                boundingRect = await calculateTextBoundingRect(
+                    textLayer as HTMLElement,
+                    highlight.startOffset,
+                    highlight.endOffset
+                )
+            }
 
             if (boundingRect) {
                 newRenderedHighlights.push({
@@ -205,7 +210,7 @@ export function PdfHighlightOverlay({
         // Delay calculation to ensure text layer is rendered
         const timer = setTimeout(calculateHighlightPositions, 100)
         return () => clearTimeout(timer)
-    }, [calculateHighlightPositions, pageHighlights.length])
+    }, [calculateHighlightPositions, pageHighlights.length, pageRef])
 
     return (
         <div className="absolute inset-0 pointer-events-none">

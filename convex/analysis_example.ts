@@ -40,7 +40,7 @@ Example workflow for using the analysis processing system:
 Key Features:
 - Scan-based data structure (replaces document-based)
 - Real-time status tracking (pending -> completed/failed)
-- Dual AI model processing (OpenAI + Gemini)
+- AI model processing (OpenAI)
 - Automatic issue extraction and creation
 - Comprehensive error handling
 - Support for multiple document formats (PDF, DOCX, DOC, TXT)

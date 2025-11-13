@@ -45,6 +45,7 @@ async function debugScans() {
             }
         }
 
+
     } catch (error) {
         console.error("Error fetching scans:", error);
     }

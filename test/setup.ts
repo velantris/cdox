@@ -13,52 +13,11 @@ beforeAll(() => {
         }
     }
 
-    // Mock document methods for DOM manipulation
-    Object.defineProperty(document, 'createElement', {
-        value: vi.fn().mockImplementation((tagName: string) => {
-            const element = {
-                tagName: tagName.toUpperCase(),
-                id: '',
-                textContent: '',
-                nodeType: 1, // ELEMENT_NODE
-                appendChild: vi.fn().mockImplementation((child) => child),
-                querySelector: vi.fn(),
-                querySelectorAll: vi.fn(() => []),
-                addEventListener: vi.fn(),
-                removeEventListener: vi.fn(),
-                style: {},
-                classList: {
-                    add: vi.fn(),
-                    remove: vi.fn(),
-                    contains: vi.fn(),
-                },
-                getBoundingClientRect: vi.fn(() => ({
-                    x: 0,
-                    y: 0,
-                    width: 100,
-                    height: 20,
-                    top: 0,
-                    left: 0,
-                    bottom: 20,
-                    right: 100,
-                })),
-            }
-            return element
-        }),
-        writable: true,
-    })
-
-    // Mock document.head for style injection
+    // Skip style injection during tests by mocking document.head completely
     Object.defineProperty(document, 'head', {
-        value: {
-            appendChild: vi.fn().mockImplementation((element) => {
-                // Mock successful appendChild
-                return element
-            }),
-            querySelector: vi.fn().mockReturnValue(null),
-        },
+        value: null,
         writable: true,
-    })
+    });
 
     // Mock window methods
     Object.defineProperty(window, 'requestAnimationFrame', {

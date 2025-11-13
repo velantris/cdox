@@ -5,10 +5,6 @@ vi.mock("@ai-sdk/openai", () => ({
     openai: vi.fn(() => "mocked-openai-model"),
 }));
 
-vi.mock("@ai-sdk/google", () => ({
-    google: vi.fn(() => "mocked-gemini-model"),
-}));
-
 vi.mock("ai", () => ({
     generateText: vi.fn(),
 }));

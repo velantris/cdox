@@ -14,6 +14,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { api } from "@/convex/_generated/api";
 import type { Id } from "@/convex/_generated/dataModel";
 import { useAction, useQuery } from "convex/react";
+import { DEFAULT_SCORING_CONFIG } from "@/lib/scoring-service";
 import { AlertCircle, ArrowLeft, CheckCircle, Clock, Loader2, Upload, Zap } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -54,10 +55,14 @@ export default function UploadPage() {
   } | null>(null);
   const backendDoneRef = useRef<null | "completed" | "failed">(null);
   const [validationErrors, setValidationErrors] = useState<{ [key: string]: string }>({});
+  const [selectedScoringConfigId, setSelectedScoringConfigId] = useState<string | null>(null);
 
   // Convex actions
   const uploadDocument = useAction(api.upload.uploadDocument);
   const performAnalysis = useAction(api.analysis_action.performDocumentAnalysis);
+  const scoringConfigsQuery = useQuery(api.scoringConfigs.getScoringConfigs, {})
+  const scoringConfigs = useMemo(() => scoringConfigsQuery ?? [], [scoringConfigsQuery]);
+  const defaultScoringConfig = scoringConfigs.find((config) => config.isDefault);
 
   const [analysisSteps, setAnalysisSteps] = useState<AnalysisStep[]>([
     { id: "extraction", label: "Extracting text content", status: "pending" },
@@ -74,6 +79,21 @@ export default function UploadPage() {
       ? { scanId: currentScanId }
       : "skip"
   );
+
+  useEffect(() => {
+    if (scoringConfigs.length === 0) return;
+    if (!defaultScoringConfig && selectedScoringConfigId === null) {
+      const firstConfigId = scoringConfigs[0]?._id;
+      if (firstConfigId) {
+        setSelectedScoringConfigId(String(firstConfigId));
+      }
+    }
+  }, [scoringConfigs, defaultScoringConfig, selectedScoringConfigId]);
+
+  const selectedScoringConfigLabel =
+    selectedScoringConfigId
+      ? scoringConfigs.find((config) => String(config._id) === selectedScoringConfigId)?.name ?? "Custom configuration"
+      : defaultScoringConfig?.name ?? DEFAULT_SCORING_CONFIG.name;
 
   // Simulate step progress, pausing at last step
   useEffect(() => {
@@ -155,9 +175,10 @@ export default function UploadPage() {
 
   // Cleanup polling on unmount
   useEffect(() => {
+    const pollInterval = pollIntervalRef.current;
     return () => {
-      if (pollIntervalRef.current) {
-        clearInterval(pollIntervalRef.current);
+      if (pollInterval) {
+        clearInterval(pollInterval);
       }
     };
   }, []);
@@ -233,6 +254,16 @@ export default function UploadPage() {
     return Object.keys(errors).length === 0;
   };
 
+  const handleComplianceToggle =
+    (flag: string) => (checked: boolean | "indeterminate") => {
+      setCompliance((prev) => {
+        if (checked === true) {
+          return prev.includes(flag) ? prev : [...prev, flag];
+        }
+        return prev.filter((item) => item !== flag);
+      });
+    };
+
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -304,7 +335,12 @@ export default function UploadPage() {
       setTimeout(async () => {
         setUploadStep("analyzing");
         try {
-          await performAnalysis({ scanId: result.scanId });
+          await performAnalysis({
+            scanId: result.scanId,
+            scoringConfigId: selectedScoringConfigId
+              ? (selectedScoringConfigId as Id<"scoringConfigs">)
+              : undefined,
+          });
         } catch (err) {
           setAnalysisError("Failed to start analysis: " + (err instanceof Error ? err.message : "Unknown error"));
           setUploadStep("upload");
@@ -514,53 +550,95 @@ export default function UploadPage() {
                   />
                 </div>
 
+                <div className="space-y-2">
+                  <Label htmlFor="scoring-config">Scoring Configuration</Label>
+                  <Select
+                    value={selectedScoringConfigId ?? "default"}
+                    onValueChange={(value) => setSelectedScoringConfigId(value === "default" ? null : value)}
+                    disabled={scoringConfigs.length === 0}
+                  >
+                    <SelectTrigger id="scoring-config">
+                      <SelectValue placeholder="Choose configuration" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="default">
+                        Use Default ({defaultScoringConfig?.name ?? DEFAULT_SCORING_CONFIG.name})
+                      </SelectItem>
+                      {scoringConfigs
+                        .filter((config) => !config.isDefault)
+                        .map((config) => (
+                          <SelectItem key={String(config._id)} value={String(config._id)}>
+                            {config.name}
+                          </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </Select>
+                  <p className="text-xs text-gray-500">
+                    {scoringConfigs.length === 0
+                      ? "No saved scoring profiles yet. The platform default weights will be used."
+                      : `Current selection: ${selectedScoringConfigLabel}`}
+                  </p>
+                </div>
+
                 <div className="space-y-4">
                   <Label className="text-base font-medium">Analysis Options</Label>
                   <div className="space-y-3">
                     <div className="flex items-center space-x-2">
-                      <Checkbox id="gdpr" checked={compliance.includes("GDPR")} onCheckedChange={(checked) => {
-                        if (checked) {
-                          setCompliance([...compliance, "GDPR"]);
-                        } else {
-                          setCompliance(compliance.filter((c) => c !== "GDPR"));
-                        }
-                      }} />
+                      <Checkbox
+                        id="gdpr"
+                        checked={compliance.includes("GDPR")}
+                        onCheckedChange={handleComplianceToggle("GDPR")}
+                      />
                       <Label htmlFor="gdpr" className="text-sm">
                         GDPR Compliance Check
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Checkbox id="mifid" checked={compliance.includes("MiFID")} onCheckedChange={(checked) => {
-                        if (checked) {
-                          setCompliance([...compliance, "MiFID"]);
-                        } else {
-                          setCompliance(compliance.filter((c) => c !== "MiFID"));
-                        }
-                      }} />
+                      <Checkbox
+                        id="mifid"
+                        checked={compliance.includes("MiFID")}
+                        onCheckedChange={handleComplianceToggle("MiFID")}
+                      />
                       <Label htmlFor="mifid" className="text-sm">
                         MiFID II Requirements
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Checkbox id="psd2" checked={compliance.includes("PSD2")} onCheckedChange={(checked) => {
-                        if (checked) {
-                          setCompliance([...compliance, "PSD2"]);
-                        } else {
-                          setCompliance(compliance.filter((c) => c !== "PSD2"));
-                        }
-                      }} />
+                      <Checkbox
+                        id="psd2"
+                        checked={compliance.includes("PSD2")}
+                        onCheckedChange={handleComplianceToggle("PSD2")}
+                      />
                       <Label htmlFor="psd2" className="text-sm">
                         PSD2 Transparency Standards
                       </Label>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Checkbox id="custom-rules" checked={compliance.includes("Custom")} onCheckedChange={(checked) => {
-                        if (checked) {
-                          setCompliance([...compliance, "Custom"]);
-                        } else {
-                          setCompliance(compliance.filter((c) => c !== "Custom"));
-                        }
-                      }} />
+                      <Checkbox
+                        id="pdf-iso"
+                        checked={compliance.includes("PDF ISO")}
+                        onCheckedChange={handleComplianceToggle("PDF ISO")}
+                      />
+                      <Label htmlFor="pdf-iso" className="text-sm">
+                        PDF ISO Standards (ISO 32000 / PDF/A)
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="cefr"
+                        checked={compliance.includes("CEFR")}
+                        onCheckedChange={handleComplianceToggle("CEFR")}
+                      />
+                      <Label htmlFor="cefr" className="text-sm">
+                        CEFR Reading Level Benchmark
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Checkbox
+                        id="custom-rules"
+                        checked={compliance.includes("Custom")}
+                        onCheckedChange={handleComplianceToggle("Custom")}
+                      />
                       <Label htmlFor="custom-rules" className="text-sm">
                         Apply Custom Organization Rules
                       </Label>
@@ -696,6 +774,9 @@ export default function UploadPage() {
                       <p className="text-sm text-blue-700 mt-1">
                         Our AI is examining your document for readability, compliance, and improvement opportunities.
                         This typically takes 2-5 minutes.
+                      </p>
+                      <p className="text-xs text-blue-600 mt-2">
+                        Scoring profile: {selectedScoringConfigLabel}
                       </p>
                     </div>
                   </div>

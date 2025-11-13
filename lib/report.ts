@@ -1,5 +1,34 @@
-
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
+import {
+    DEFAULT_SCORING_CONFIG,
+    applyCategoryWeights,
+    calculateScore as calculateConfiguredScore,
+    getScoreInterpretation as interpretScoreBand,
+    type ScoringConfig,
+    type SeverityWeights,
+} from "./scoring-service";
+
+export type PdfStructureSeverity = "low" | "medium" | "high" | "critical";
+
+export interface PdfStructureIssue {
+    code: string;
+    message: string;
+    severity: PdfStructureSeverity;
+    context?: string;
+}
+
+export interface PdfStructureComplianceSection {
+    pdf_ua_compliance: {
+        compliant: boolean;
+        issues: PdfStructureIssue[];
+    };
+    pdf_a_compliance: {
+        compliant: boolean;
+        version?: "PDF/A-1" | "PDF/A-2" | "PDF/A-3";
+        issues: PdfStructureIssue[];
+    };
+    structure_issues: PdfStructureIssue[];
+}
 
 export interface ComprehensibilityReportData {
     id: string;
@@ -16,6 +45,7 @@ export interface ComprehensibilityReportData {
     createdAt: string;
     updatedAt: string;
     analysisId?: string;
+    scoringConfigId?: string;
     comprehensibilityScore?: number;
     analysis?: {
         summary: string;
@@ -33,6 +63,35 @@ export interface ComprehensibilityReportData {
             complex_words_percentage?: number;
             passive_voice_percentage?: number;
         };
+        language_complexity?: {
+            cefrLevel: string;
+            b2ComplianceScore: number;
+            plainLanguageScore: number;
+            readabilityAdjusted: number;
+            fleschKincaidGrade: number;
+            vocabularyComplexity: {
+                totalWords: number;
+                uniqueWords: number;
+                lexicalDensity: number;
+                averageWordLength: number;
+                simpleWordPercentage: number;
+                advancedWordPercentage: number;
+                complexWordPercentage: number;
+                jargonCount: number;
+                jargonTerms: string[];
+                advancedSample: string[];
+            };
+            sentenceComplexity: {
+                sentenceCount: number;
+                averageSentenceLength: number;
+                complexSentencePercentage: number;
+                subordinateClauseDensity: number;
+                passiveVoicePercentage: number;
+                modalVerbPercentage: number;
+                conditionalSentencePercentage: number;
+            };
+            plainLanguageRecommendations: string[];
+        };
         accessibility_assessment?: {
             wcag_compliance_level?: "AA" | "A" | "Non-compliant";
             screen_reader_compatibility?: "high" | "medium" | "low";
@@ -45,6 +104,8 @@ export interface ComprehensibilityReportData {
             legal_risk_areas?: string[];
             improvement_priority?: "high" | "medium" | "low";
         };
+        pdf_structure_compliance?: PdfStructureComplianceSection;
+        scoringConfig?: ScoringConfig;
     };
     issues: {
         id: string;
@@ -198,20 +259,67 @@ const severityLevels = {
     }
 };
 
-export function calculateComprehensibilityScore(issues: ComprehensibilityReportData['issues']): number {
-    if (issues.length === 0) return 100;
+export function calculateComprehensibilityScore(
+    issues: ComprehensibilityReportData["issues"],
+    config: Partial<ScoringConfig> | null | undefined = DEFAULT_SCORING_CONFIG,
+): number {
+    return calculateConfiguredScore(issues, config);
+}
 
-    const totalDeduction = issues.reduce((total, issue) => {
-        const severity = severityLevels[issue.severity as keyof typeof severityLevels];
-        const weight = severity?.weight || 5;
-        return total + weight;
-    }, 0);
+function resolveScoringConfig(config?: Partial<ScoringConfig> | null): ScoringConfig {
+    const base = {
+        ...DEFAULT_SCORING_CONFIG,
+        severityWeights: { ...DEFAULT_SCORING_CONFIG.severityWeights },
+        categoryWeights: { ...DEFAULT_SCORING_CONFIG.categoryWeights },
+        thresholds: { ...DEFAULT_SCORING_CONFIG.thresholds },
+    };
 
-    return Math.max(0, Math.min(100, 100 - totalDeduction));
+    if (!config) {
+        return base;
+    }
+
+    return {
+        ...base,
+        ...config,
+        severityWeights: {
+            ...base.severityWeights,
+            ...(config.severityWeights ?? {}),
+        },
+        categoryWeights: {
+            ...base.categoryWeights,
+            ...(config.categoryWeights ?? {}),
+        },
+        thresholds: {
+            ...base.thresholds,
+            ...(config.thresholds ?? {}),
+        },
+    };
+}
+
+function resolveSeverityWeight(severity: string, weights: SeverityWeights): number {
+    const lowered = severity.toLowerCase();
+    if (lowered === "critical" || lowered === "high" || lowered === "medium" || lowered === "low") {
+        return weights[lowered];
+    }
+    return weights.medium;
+}
+
+function getScoreInterpretationMessage(score: number, config: ScoringConfig): string {
+    const band = interpretScoreBand(score, config.thresholds);
+    if (band === "pass") {
+        return `Pass - Score meets configured pass threshold (${config.thresholds.pass}+).`;
+    }
+    if (band === "warning") {
+        return `Warning - Score between ${config.thresholds.warning} and ${config.thresholds.pass}.`;
+    }
+    return `Fail - Score below ${config.thresholds.warning}.`;
 }
 
 export async function generateCSVReport(data: ComprehensibilityReportData): Promise<string> {
-    const comprehensibilityScore = data.comprehensibilityScore || calculateComprehensibilityScore(data.issues);
+    const scoringConfig = resolveScoringConfig(data.analysis?.scoringConfig);
+    const comprehensibilityScore =
+        data.comprehensibilityScore ?? calculateComprehensibilityScore(data.issues, scoringConfig);
+    const scoreInterpretation = getScoreInterpretationMessage(comprehensibilityScore, scoringConfig);
     const rows: string[][] = [];
 
     // === DOCUMENT METADATA & EXECUTIVE SUMMARY ===
@@ -246,7 +354,8 @@ export async function generateCSVReport(data: ComprehensibilityReportData): Prom
     rows.push(["EXECUTIVE SUMMARY"]);
     rows.push([]);
     rows.push(["Overall Comprehensibility Score", `${comprehensibilityScore}%`]);
-    rows.push(["Score Interpretation", getScoreInterpretation(comprehensibilityScore)]);
+    rows.push(["Score Interpretation", scoreInterpretation]);
+    rows.push(["Scoring Configuration", scoringConfig.name || "Platform Default"]);
     rows.push(["Total Issues Identified", data.stats.total.toString()]);
     rows.push(["Critical Issues Requiring Immediate Action", data.stats.critical.toString()]);
     rows.push(["High Priority Issues", data.stats.high.toString()]);
@@ -314,6 +423,63 @@ export async function generateCSVReport(data: ComprehensibilityReportData): Prom
         rows.push([]);
     }
 
+    if (data.analysis?.language_complexity) {
+        const complexity = data.analysis.language_complexity;
+        rows.push(["LANGUAGE COMPLEXITY ASSESSMENT"]);
+        rows.push([]);
+        rows.push(["Metric", "Value", "Assessment", "Target"]);
+        rows.push([
+            "Estimated CEFR Level",
+            complexity.cefrLevel,
+            complexity.cefrLevel === "B2" ? "Aligned with target" : `Requires adjustment (current ${complexity.cefrLevel})`,
+            "B2",
+        ]);
+        rows.push([
+            "B2 Compliance Score",
+            `${complexity.b2ComplianceScore.toFixed(1)}%`,
+            complexity.b2ComplianceScore >= 75 ? "Acceptable" : "Below target",
+            ">= 75%",
+        ]);
+        rows.push([
+            "Plain Language Score",
+            `${complexity.plainLanguageScore.toFixed(1)}%`,
+            complexity.plainLanguageScore >= 80 ? "Strong plain language" : "Needs improvement",
+            ">= 80%",
+        ]);
+        rows.push([
+            "Average Sentence Length",
+            `${complexity.sentenceComplexity.averageSentenceLength.toFixed(1)} words`,
+            getSentenceLengthInterpretation(complexity.sentenceComplexity.averageSentenceLength),
+            "15-20 words",
+        ]);
+        rows.push([
+            "Passive Voice Percentage",
+            `${complexity.sentenceComplexity.passiveVoicePercentage.toFixed(1)}%`,
+            getPassiveVoiceInterpretation(complexity.sentenceComplexity.passiveVoicePercentage),
+            "< 20%",
+        ]);
+        rows.push([
+            "Advanced Vocabulary Share",
+            `${complexity.vocabularyComplexity.advancedWordPercentage.toFixed(1)}%`,
+            complexity.vocabularyComplexity.advancedWordPercentage <= 25 ? "Appropriate for B2" : "Too advanced",
+            "<= 25%",
+        ]);
+        rows.push([
+            "Jargon Terms Detected",
+            complexity.vocabularyComplexity.jargonCount.toString(),
+            complexity.vocabularyComplexity.jargonCount <= 5 ? "Limited jargon" : "Define or remove jargon",
+            "< 5",
+        ]);
+        rows.push([]);
+        if (complexity.plainLanguageRecommendations.length > 0) {
+            rows.push(["Plain Language Recommendations"]);
+            complexity.plainLanguageRecommendations.forEach((rec, index) => {
+                rows.push([`Recommendation ${index + 1}`, rec, "", ""]);
+            });
+            rows.push([]);
+        }
+    }
+
     // === ACCESSIBILITY ASSESSMENT ===
     if (data.analysis?.accessibility_assessment) {
         rows.push(["ACCESSIBILITY & INCLUSION ASSESSMENT"]);
@@ -350,6 +516,43 @@ export async function generateCSVReport(data: ComprehensibilityReportData): Prom
 
         if (access.multilingual_considerations) {
             rows.push(["Multilingual Support", access.multilingual_considerations, "Full Support", "Assessment Pending"]);
+        }
+        rows.push([]);
+    }
+
+    // === PDF STRUCTURE COMPLIANCE ===
+    if (data.analysis?.pdf_structure_compliance) {
+        const structure = data.analysis.pdf_structure_compliance;
+        rows.push(["PDF STRUCTURE COMPLIANCE"]);
+        rows.push([]);
+        rows.push([
+            "PDF/UA Status",
+            structure.pdf_ua_compliance.compliant ? "Compliant" : "Non-compliant",
+            "",
+            ""
+        ]);
+        const pdfAStatus = structure.pdf_a_compliance.compliant
+            ? `Compliant${structure.pdf_a_compliance.version ? ` (${structure.pdf_a_compliance.version})` : ""}`
+            : "Non-compliant";
+        rows.push([
+            "PDF/A Status",
+            pdfAStatus,
+            "",
+            ""
+        ]);
+        rows.push([]);
+        if (structure.structure_issues.length > 0) {
+            rows.push(["Severity", "Issue Code", "Description", "Context"]);
+            structure.structure_issues.forEach(issue => {
+                rows.push([
+                    issue.severity.toUpperCase(),
+                    issue.code,
+                    issue.message,
+                    issue.context || ""
+                ]);
+            });
+        } else {
+            rows.push(["Structural Issues", "None Detected", "", ""]);
         }
         rows.push([]);
     }
@@ -402,7 +605,7 @@ export async function generateCSVReport(data: ComprehensibilityReportData): Prom
     rows.push(["COMPREHENSIVE CATEGORY ANALYSIS"]);
     rows.push([]);
 
-    const categoryAnalysis = generateDetailedCategoryAnalysis(data.issues);
+    const categoryAnalysis = generateDetailedCategoryAnalysis(data.issues, scoringConfig);
     rows.push([
         "Category",
         "Total Issues",
@@ -680,7 +883,7 @@ export async function generateCSVReport(data: ComprehensibilityReportData): Prom
         "Improvement Strategy"
     ]);
 
-    const qualityMetrics = calculateQualityMetrics(data);
+    const qualityMetrics = calculateQualityMetrics(data, scoringConfig);
     Object.entries(qualityMetrics).forEach(([category, metrics]) => {
         rows.push([
             category,
@@ -710,7 +913,10 @@ export async function generateCSVReport(data: ComprehensibilityReportData): Prom
 }
 
 export async function generatePDFReport(data: ComprehensibilityReportData): Promise<Buffer> {
-    const comprehensibilityScore = data.comprehensibilityScore || calculateComprehensibilityScore(data.issues);
+    const scoringConfig = resolveScoringConfig(data.analysis?.scoringConfig);
+    const comprehensibilityScore =
+        data.comprehensibilityScore ?? calculateComprehensibilityScore(data.issues, scoringConfig);
+    const scoreBand = interpretScoreBand(comprehensibilityScore, scoringConfig.thresholds);
 
     // Enhanced Color Palette
     const colors = {
@@ -755,9 +961,12 @@ export async function generatePDFReport(data: ComprehensibilityReportData): Prom
     });
 
     // Score Badge
-    const scoreColor = comprehensibilityScore >= 85 ? colors.success :
-        comprehensibilityScore >= 70 ? colors.medium :
-            comprehensibilityScore >= 50 ? colors.warning : colors.critical;
+    const scoreColor =
+        scoreBand === "pass"
+            ? colors.success
+            : scoreBand === "warning"
+                ? colors.warning
+                : colors.critical;
 
     const badgeX = width - 200;
     const badgeY = height - 140;
@@ -864,7 +1073,7 @@ export async function generatePDFReport(data: ComprehensibilityReportData): Prom
     // Add accent line
     page.drawRectangle({ x: 40, y: insightsY - 80, width: 5, height: 90, color: colors.primary });
 
-    const insights = generateKeyInsights(data);
+    const insights = generateKeyInsights(data, scoringConfig);
     insights.slice(0, 3).forEach((insight, i) => {
         page.drawText(`• ${insight}`, {
             x: 70,
@@ -893,6 +1102,10 @@ export async function generatePDFReport(data: ComprehensibilityReportData): Prom
         y = drawReadabilityMetrics(page, data.analysis.readability_metrics, y, colors, helvetica, helveticaBold, width);
     }
 
+    if (data.analysis?.language_complexity) {
+        y = drawLanguageComplexity(page, data.analysis.language_complexity, y, colors, helvetica, helveticaBold, width);
+    }
+
     // Accessibility Assessment
     if (data.analysis?.accessibility_assessment) {
         y = drawAccessibilityAssessment(page, data.analysis.accessibility_assessment, y, colors, helvetica, helveticaBold, width);
@@ -901,6 +1114,10 @@ export async function generatePDFReport(data: ComprehensibilityReportData): Prom
     // Compliance Status
     if (data.analysis?.compliance_status) {
         y = drawComplianceStatus(page, data.analysis.compliance_status, y, colors, helvetica, helveticaBold, width);
+    }
+
+    if (data.analysis?.pdf_structure_compliance) {
+        y = drawPdfStructureCompliance(page, data.analysis.pdf_structure_compliance, y, colors, helvetica, helveticaBold, width);
     }
 
     // === ISSUES PAGES (Multiple pages for detailed issues) ===
@@ -935,8 +1152,11 @@ export async function generatePDFReport(data: ComprehensibilityReportData): Prom
 
 // Utility function to generate a comprehensive text report
 export function generateTextReport(data: ComprehensibilityReportData): string {
-    const comprehensibilityScore = data.comprehensibilityScore || calculateComprehensibilityScore(data.issues);
-    const categoryAnalysis = generateDetailedCategoryAnalysis(data.issues);
+    const scoringConfig = resolveScoringConfig(data.analysis?.scoringConfig);
+    const comprehensibilityScore =
+        data.comprehensibilityScore ?? calculateComprehensibilityScore(data.issues, scoringConfig);
+    const categoryAnalysis = generateDetailedCategoryAnalysis(data.issues, scoringConfig);
+    const scoreInterpretation = getScoreInterpretationMessage(comprehensibilityScore, scoringConfig);
 
     return `
 +------------------------------------------------------------------------------+
@@ -957,7 +1177,8 @@ Current Status: ${data.status.toUpperCase()}
 EXECUTIVE SUMMARY
 ===================
 Overall Comprehensibility Score: ${comprehensibilityScore}% ${getScoreEmoji(comprehensibilityScore)}
-Score Interpretation: ${getScoreInterpretation(comprehensibilityScore)}
+Score Interpretation: ${scoreInterpretation}
+Scoring Configuration: ${scoringConfig.name || "Platform Default"}
 
 Issues Overview:
 • Total Issues Identified: ${data.stats.total}
@@ -984,6 +1205,36 @@ ${data.analysis.readability_metrics.flesch_kincaid_grade ? `• Reading Level: $
 ${data.analysis.readability_metrics.avg_sentence_length ? `• Average Sentence Length: ${data.analysis.readability_metrics.avg_sentence_length.toFixed(1)} words (${getSentenceLengthInterpretation(data.analysis.readability_metrics.avg_sentence_length)})` : ''}
 ${data.analysis.readability_metrics.complex_words_percentage ? `• Complex Words: ${data.analysis.readability_metrics.complex_words_percentage.toFixed(1)}% (${getComplexWordsInterpretation(data.analysis.readability_metrics.complex_words_percentage)})` : ''}
 ${data.analysis.readability_metrics.passive_voice_percentage ? `• Passive Voice: ${data.analysis.readability_metrics.passive_voice_percentage.toFixed(1)}% (${getPassiveVoiceInterpretation(data.analysis.readability_metrics.passive_voice_percentage)})` : ''}
+` : ''}
+
+${data.analysis?.language_complexity ? `
+LANGUAGE COMPLEXITY ASSESSMENT
+=============================
+• CEFR Estimate: ${data.analysis.language_complexity.cefrLevel}
+• B2 Compliance Score: ${data.analysis.language_complexity.b2ComplianceScore.toFixed(1)}%
+• Plain Language Score: ${data.analysis.language_complexity.plainLanguageScore.toFixed(1)}%
+• Adjusted Flesch-Kincaid Grade: ${data.analysis.language_complexity.readabilityAdjusted.toFixed(1)}
+• Average Sentence Length: ${data.analysis.language_complexity.sentenceComplexity.averageSentenceLength.toFixed(1)} words
+• Passive Voice Usage: ${data.analysis.language_complexity.sentenceComplexity.passiveVoicePercentage.toFixed(1)}%
+• Advanced Vocabulary Share: ${data.analysis.language_complexity.vocabularyComplexity.advancedWordPercentage.toFixed(1)}%
+• Jargon Terms: ${data.analysis.language_complexity.vocabularyComplexity.jargonCount}${data.analysis.language_complexity.vocabularyComplexity.jargonTerms.length ? ` (${data.analysis.language_complexity.vocabularyComplexity.jargonTerms.slice(0, 5).join(", ")})` : ""}
+${data.analysis.language_complexity.plainLanguageRecommendations.length
+        ? data.analysis.language_complexity.plainLanguageRecommendations.map(rec => `  - ${rec}`).join('\n')
+        : ''}
+` : ''}
+
+${data.analysis?.pdf_structure_compliance ? `
+PDF STRUCTURE COMPLIANCE
+========================
+PDF/UA Status: ${data.analysis.pdf_structure_compliance.pdf_ua_compliance.compliant ? 'Compliant' : 'Non-compliant'}
+PDF/A Status: ${data.analysis.pdf_structure_compliance.pdf_a_compliance.compliant
+    ? `Compliant${data.analysis.pdf_structure_compliance.pdf_a_compliance.version ? ` (${data.analysis.pdf_structure_compliance.pdf_a_compliance.version})` : ''}`
+    : 'Non-compliant'}
+${data.analysis.pdf_structure_compliance.structure_issues.length
+        ? data.analysis.pdf_structure_compliance.structure_issues
+            .map(issue => `• [${issue.severity.toUpperCase()}] ${issue.code}: ${issue.message}${issue.context ? ` (Context: ${issue.context})` : ''}`)
+            .join('\n')
+        : 'No structural issues detected.'}
 ` : ''}
 
 CATEGORY ANALYSIS
@@ -1052,7 +1303,7 @@ ${index + 1}. ${rec.heading} (${rec.priority?.toUpperCase() || 'MEDIUM'} PRIORIT
 
 QUALITY METRICS
 ==============
-${Object.entries(calculateQualityMetrics(data)).map(([category, metrics]) =>
+${Object.entries(calculateQualityMetrics(data, scoringConfig)).map(([category, metrics]) =>
                 `${category}: ${metrics.current}% (Target: ${metrics.target}%, Gap: ${metrics.gap}%)`
             ).join('\n')}
 
@@ -1088,14 +1339,6 @@ function formatDocumentType(type: string): string {
 
 function truncateText(text: string, maxLength: number): string {
     return text.length > maxLength ? text.substring(0, maxLength - 3) + "..." : text;
-}
-
-function getScoreInterpretation(score: number): string {
-    if (score >= 90) return "Excellent - Document meets highest standards";
-    if (score >= 80) return "Good - Minor improvements recommended";
-    if (score >= 70) return "Satisfactory - Several improvements needed";
-    if (score >= 60) return "Below Average - Significant improvements required";
-    return "Poor - Major overhaul needed";
 }
 
 function getScoreEmoji(score: number): string {
@@ -1134,11 +1377,13 @@ function getPassiveVoiceInterpretation(percentage: number): string {
     return "Poor - Too much passive voice";
 }
 
-function generateDetailedCategoryAnalysis(issues: ComprehensibilityReportData['issues']) {
+function generateDetailedCategoryAnalysis(
+    issues: ComprehensibilityReportData["issues"],
+    config: ScoringConfig,
+) {
     const categories: Record<string, any> = {};
 
-    // Initialize all categories
-    Object.keys(complianceCategories).forEach(key => {
+    Object.keys(complianceCategories).forEach((key) => {
         categories[key] = {
             total: 0,
             critical: 0,
@@ -1146,25 +1391,37 @@ function generateDetailedCategoryAnalysis(issues: ComprehensibilityReportData['i
             medium: 0,
             low: 0,
             complianceScore: 100,
-            topIssueTypes: [] as string[]
+            topIssueTypes: [] as string[],
+            deduction: 0,
         };
     });
 
-    issues.forEach(issue => {
-        const category = categories[issue.type] || categories.other;
-        category.total++;
-        category[issue.severity as keyof Omit<typeof category, 'total' | 'complianceScore' | 'topIssueTypes'>]++;
+    const weightedIssues = applyCategoryWeights(issues, config.categoryWeights);
+
+    weightedIssues.forEach((issue) => {
+        const category = categories[issue.category] || categories.other;
+        const severityKey = issue.severity?.toLowerCase() || "medium";
+
+        category.total += 1;
+        if (severityKey === "critical" || severityKey === "high" || severityKey === "medium" || severityKey === "low") {
+            category[severityKey] += 1;
+        } else {
+            category.medium += 1;
+        }
+
+        const severityWeight = resolveSeverityWeight(issue.severity, config.severityWeights);
+        category.deduction += severityWeight * issue.multiplier;
 
         if (!category.topIssueTypes.includes(issue.type)) {
             category.topIssueTypes.push(issue.type);
         }
     });
 
-    // Calculate compliance scores
-    Object.keys(categories).forEach(key => {
+    Object.keys(categories).forEach((key) => {
         const category = categories[key];
-        const deduction = category.critical * 25 + category.high * 15 + category.medium * 8 + category.low * 3;
-        category.complianceScore = Math.max(0, 100 - deduction);
+        const score = Math.max(0, 100 - category.deduction);
+        category.complianceScore = Math.round(score);
+        delete category.deduction;
     });
 
     return { categories };
@@ -1388,8 +1645,8 @@ function generateImplementationRoadmap(data: ComprehensibilityReportData) {
     return roadmap;
 }
 
-function calculateQualityMetrics(data: ComprehensibilityReportData) {
-    const score = data.comprehensibilityScore || calculateComprehensibilityScore(data.issues);
+function calculateQualityMetrics(data: ComprehensibilityReportData, config: ScoringConfig) {
+    const score = data.comprehensibilityScore ?? calculateComprehensibilityScore(data.issues, config);
 
     return {
         "Overall Comprehensibility": {
@@ -1424,23 +1681,24 @@ function calculateQualityMetrics(data: ComprehensibilityReportData) {
     };
 }
 
-function generateKeyInsights(data: ComprehensibilityReportData): string[] {
+function generateKeyInsights(data: ComprehensibilityReportData, config: ScoringConfig): string[] {
     const insights = [];
-    const score = data.comprehensibilityScore || calculateComprehensibilityScore(data.issues);
+    const score = data.comprehensibilityScore ?? calculateComprehensibilityScore(data.issues, config);
+    const band = interpretScoreBand(score, config.thresholds);
 
     if (data.stats.critical > 0) {
         insights.push(`${data.stats.critical} critical issues require immediate attention to ensure compliance`);
     }
 
-    if (score >= 85) {
-        insights.push("Document meets high comprehensibility standards with minor improvements needed");
-    } else if (score >= 70) {
-        insights.push("Document has good foundation but needs focused improvements in key areas");
+    if (band === "pass") {
+        insights.push("Document meets configured comprehensibility standards.");
+    } else if (band === "warning") {
+        insights.push("Document is near the configured threshold; targeted improvements recommended.");
     } else {
-        insights.push("Document requires significant improvements to meet accessibility standards");
+        insights.push("Document is below the configured threshold and needs significant remediation.");
     }
 
-    const topCategory = Object.entries(generateDetailedCategoryAnalysis(data.issues).categories)
+    const topCategory = Object.entries(generateDetailedCategoryAnalysis(data.issues, config).categories)
         .sort(([, a], [, b]) => b.total - a.total)[0];
 
     if (topCategory && topCategory[1].total > 0) {
@@ -1452,6 +1710,16 @@ function generateKeyInsights(data: ComprehensibilityReportData): string[] {
         const grade = data.analysis.readability_metrics.flesch_kincaid_grade;
         if (grade > 12) {
             insights.push(`Reading level (${grade.toFixed(1)}) may be too advanced for target audience`);
+        }
+    }
+
+    if (data.analysis?.pdf_structure_compliance) {
+        const structure = data.analysis.pdf_structure_compliance;
+        if (!structure.pdf_ua_compliance.compliant) {
+            insights.push("PDF/UA non-compliance detected; remediate tagging and accessibility structure");
+        }
+        if (!structure.pdf_a_compliance.compliant) {
+            insights.push("PDF/A requirements not satisfied; review archival metadata and font embedding");
         }
     }
 
@@ -1568,6 +1836,39 @@ function drawReadabilityMetrics(page: any, metrics: any, y: number, colors: any,
     return y - metricsHeight - 20;
 }
 
+function drawLanguageComplexity(page: any, complexity: any, y: number, colors: any, font: any, boldFont: any, width: number): number {
+    const blockHeight = 110;
+
+    page.drawRectangle({ x: 40, y: y - blockHeight, width: width - 80, height: blockHeight, color: colors.background });
+    page.drawRectangle({ x: 40, y: y - blockHeight, width: width - 80, height: blockHeight, borderColor: colors.border, borderWidth: 1 });
+
+    page.drawText("Language Complexity (CEFR B2)", { x: 60, y: y - 25, size: 14, font: boldFont, color: colors.primary });
+
+    const lines = [
+        `CEFR Estimate: ${complexity.cefrLevel} | B2 Compliance: ${complexity.b2ComplianceScore.toFixed(1)}%`,
+        `Plain Language Score: ${complexity.plainLanguageScore.toFixed(1)}% | Adjusted FK Grade: ${complexity.readabilityAdjusted.toFixed(1)}`,
+        `Avg Sentence Length: ${complexity.sentenceComplexity.averageSentenceLength.toFixed(1)} words`,
+        `Passive Voice: ${complexity.sentenceComplexity.passiveVoicePercentage.toFixed(1)}% | Advanced Vocab: ${complexity.vocabularyComplexity.advancedWordPercentage.toFixed(1)}%`,
+        `Jargon Terms: ${complexity.vocabularyComplexity.jargonCount} (${complexity.vocabularyComplexity.jargonTerms.slice(0, 5).join(", ") || "None detected"})`,
+    ];
+
+    lines.slice(0, 4).forEach((line, index) => {
+        page.drawText(line, { x: 60, y: y - 45 - index * 12, size: 10, font, color: colors.text });
+    });
+
+    if (complexity.plainLanguageRecommendations.length > 0) {
+        page.drawText(`Plain Language Focus: ${truncateText(complexity.plainLanguageRecommendations[0], 90)}`, {
+            x: 60,
+            y: y - 93,
+            size: 9,
+            font,
+            color: colors.textLight,
+        });
+    }
+
+    return y - blockHeight - 20;
+}
+
 function drawAccessibilityAssessment(page: any, assessment: any, y: number, colors: any, font: any, boldFont: any, width: number): number {
     const assessmentHeight = 80;
 
@@ -1614,6 +1915,54 @@ function drawComplianceStatus(page: any, compliance: any, y: number, colors: any
     }
 
     return y - complianceHeight - 20;
+}
+
+function drawPdfStructureCompliance(page: any, structure: PdfStructureComplianceSection, y: number, colors: any, font: any, boldFont: any, width: number): number {
+    const issuesToShow = structure.structure_issues.slice(0, 4);
+    const baseHeight = 80;
+    const dynamicHeight = Math.max(baseHeight, 60 + issuesToShow.length * 16);
+
+    page.drawRectangle({ x: 40, y: y - dynamicHeight, width: width - 80, height: dynamicHeight, color: colors.background });
+    page.drawRectangle({ x: 40, y: y - dynamicHeight, width: width - 80, height: dynamicHeight, borderColor: colors.border, borderWidth: 1 });
+
+    page.drawText("PDF Structure Compliance", { x: 60, y: y - 25, size: 14, font: boldFont, color: colors.primary });
+
+    const pdfUaStatus = structure.pdf_ua_compliance.compliant ? "Compliant" : "Non-compliant";
+    const pdfAStatus = structure.pdf_a_compliance.compliant
+        ? `Compliant${structure.pdf_a_compliance.version ? ` (${structure.pdf_a_compliance.version})` : ""}`
+        : "Non-compliant";
+
+    page.drawText(`• PDF/UA: ${pdfUaStatus}`, { x: 60, y: y - 45, size: 10, font, color: colors.text });
+    page.drawText(`• PDF/A: ${pdfAStatus}`, { x: 60, y: y - 60, size: 10, font, color: colors.text });
+
+    let issueY = y - 80;
+    if (issuesToShow.length > 0) {
+        page.drawText("Key Structural Issues:", { x: 60, y: issueY, size: 10, font: boldFont, color: colors.text });
+        issueY -= 15;
+        issuesToShow.forEach(issue => {
+            const severityColor = (severityLevels[issue.severity as keyof typeof severityLevels]?.color) || "#6B7280";
+            const severityRgb = rgb(
+                parseInt(severityColor.slice(1, 3), 16) / 255,
+                parseInt(severityColor.slice(3, 5), 16) / 255,
+                parseInt(severityColor.slice(5, 7), 16) / 255
+            );
+            page.drawText(
+                `• ${issue.severity.toUpperCase()} ${issue.code}: ${truncateText(issue.message, 80)}`,
+                { x: 70, y: issueY, size: 9, font, color: severityRgb }
+            );
+            issueY -= 14;
+        });
+        if (structure.structure_issues.length > issuesToShow.length) {
+            page.drawText(
+                `+ ${structure.structure_issues.length - issuesToShow.length} additional issue(s)`,
+                { x: 70, y: issueY, size: 8, font, color: colors.textLight }
+            );
+        }
+    } else {
+        page.drawText("No structural issues detected.", { x: 60, y: issueY, size: 10, font, color: colors.text });
+    }
+
+    return y - dynamicHeight - 20;
 }
 
 function drawCategoryAnalysis(page: any, analysis: any, y: number, colors: any, font: any, boldFont: any, width: number): number {
@@ -1675,18 +2024,18 @@ function drawIssueCard(page: any, issue: any, y: number, colors: any, font: any,
     page.drawRectangle({ x: 40, y: y - issueHeight, width: width - 80, height: issueHeight, borderColor: cardColor, borderWidth: 2 });
 
     // Header
-    page.drawText(`${severityInfo?.label || issue.severity.toUpperCase()} - ${categoryInfo.icon} ${categoryInfo.title}`, {
+    page.drawText(safeText(`${severityInfo?.label || issue.severity.toUpperCase()} - ${safeIcon(categoryInfo.icon)} ${categoryInfo.title}`), {
         x: 55, y: y - 20, size: 12, font: boldFont, color: cardColor
     });
-
+   
     // Status badge with box
     page.drawRectangle({ x: width - 130, y: y - 25, width: 70, height: 15, color: cardColor, opacity: 0.2 });
     const status = issue.status.toUpperCase().replace(/[^\x20-\x7E]/g, '');
     page.drawText(status, { x: width - 125, y: y - 22, size: 8, font: boldFont, color: cardColor });    // Content
-    page.drawText(`Section: ${issue.section}`, { x: 55, y: y - 35, size: 9, font, color: colors.text });
-    page.drawText(`Issue: ${truncateText(issue.issueExplanation, 80)}`, { x: 55, y: y - 50, size: 9, font, color: colors.text });
-    page.drawText(`Original: "${truncateText(issue.originalText, 60)}"`, { x: 55, y: y - 65, size: 8, font, color: colors.textLight });
-    page.drawText(`Suggested: "${truncateText(issue.suggestedRewrite, 60)}"`, { x: 55, y: y - 80, size: 8, font, color: colors.textLight });
+    page.drawText(safeText(`Section: ${issue.section}`), { x: 55, y: y - 35, size: 9, font, color: colors.text });
+    page.drawText(safeText(`Issue: ${truncateText(issue.issueExplanation, 80)}`), { x: 55, y: y - 50, size: 9, font, color: colors.text });
+    page.drawText(safeText(`Original: "${truncateText(issue.originalText, 60)}"`), { x: 55, y: y - 65, size: 8, font, color: colors.textLight });
+    page.drawText(safeText(`Suggested: "${truncateText(issue.suggestedRewrite, 60)}"`), { x: 55, y: y - 80, size: 8, font, color: colors.textLight });
 
     return y - issueHeight - 15;
 }
@@ -1739,7 +2088,7 @@ function drawRoadmap(page: any, roadmap: any[], y: number, colors: any, font: an
 
         // Details
         page.drawText(`Focus: ${phase.focusAreas.join(", ")}`, { x: 65, y: cardY - 40, size: 9, font, color: colors.text });
-        page.drawText(`Deliverables: ${truncateText(phase.deliverables.join("; "), 80)}`, { x: 65, y: cardY - 55, size: 9, font, color: colors.text });
+        page.drawText(truncateText(phase.deliverables.join("; "), 80), { x: 65, y: cardY - 55, size: 9, font, color: colors.text });
         page.drawText(`Success: ${phase.successCriteria}`, { x: 65, y: cardY - 70, size: 9, font, color: colors.text });
 
         y = cardY - phaseHeight - 20;
@@ -1799,5 +2148,17 @@ function drawFooter(page: any, pageNum: number, totalPages: number, colors: any,
         x: width - 150, y: 20, size: 8, font, color: colors.mediumGray,
         opacity: 0.7
     });
+}
+
+// Add this helper near the top (after complianceCategories):
+function safeIcon(icon: string): string {
+    // Only allow single ASCII character, else fallback to 'O'
+    return /^[\x00-\x7F]$/.test(icon) ? icon : "O";
+}
+
+// Add this helper near the top (after safeIcon):
+function safeText(text: string): string {
+    // Replace all non-ASCII characters with a fallback (e.g., '?')
+    return text.replace(/[^\x00-\x7F]/g, "?");
 }
 

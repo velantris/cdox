@@ -1,12 +1,18 @@
 "use node";
-import { anthropic } from "@ai-sdk/anthropic";
-import { google } from "@ai-sdk/google";
 import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai";
 import { v } from "convex/values";
 import { extractText as extractPdfText } from "unpdf";
 import { z } from "zod";
+import { analyzeLanguageComplexity } from "../lib/language-complexity-analyzer";
 import { makePrompt } from "../lib/prompts/prompt-maker1";
+import { validatePdfStructure } from "../lib/pdf-structure-validator";
+import {
+    DEFAULT_SCORING_CONFIG,
+    calculateScore as calculateWeightedScore,
+    combineAiAndIssueScores,
+    getScoreInterpretation as interpretScore,
+} from "../lib/scoring-service";
 import { api } from "./_generated/api";
 import { action } from "./_generated/server";
 
@@ -89,7 +95,9 @@ async function extractText(
     fileName: string
 ): Promise<string> {
     if (contentType.includes("pdf") || fileName.toLowerCase().endsWith(".pdf")) {
-        const { text } = await extractPdfText(new Uint8Array(bytes), { mergePages: true });
+        // Clone the byte buffer before passing it to unpdf; it transfers (detaches) the ArrayBuffer it receives.
+        const clonedBytes = new Uint8Array(bytes).slice();
+        const { text } = await extractPdfText(clonedBytes, { mergePages: true });
         if (!text.trim()) {
             // @ts-ignore: missing types for tesseract.js
             const { createWorker } = await import("tesseract.js");
@@ -157,9 +165,7 @@ function matchCustomRules(doc: string, rules: any[]) {
                         offsetEnd: m.index + m[0].length,
                     });
                 }
-            } catch (_) {
-                console.error(`Bad regex in rule ${rule.name}`);
-            }
+            } catch (_) { }
             continue;
         }
 
@@ -188,6 +194,11 @@ function matchCustomRules(doc: string, rules: any[]) {
 
 /** Run OpenAI analysis and validate structure with zod. */
 async function analyseWithOpenAI(prompt: string) {
+    const apiKey = process.env.OPENAI_API_KEY;
+    if (!apiKey) {
+        throw new Error("OPENAI_API_KEY environment variable is not set");
+    }
+
     const schema = z.object({
         summary: z.string().default("Analysis completed"),
         recommendations: z.preprocess(
@@ -222,7 +233,10 @@ async function analyseWithOpenAI(prompt: string) {
                 z.object({
                     offset_start: z.number().optional(),
                     offset_end: z.number().optional(),
-                    original_text: z.string().max(300).default(""),
+                    original_text: z.preprocess(
+                        (val) => typeof val === "string" ? val.slice(0, 300) : val,
+                        z.string().max(300)
+                    ).default(""),
                     issue_explanation: z.string().default(""),
                     suggested_rewrite: z.string().default(""),
                     grading: z.string().default("medium"),
@@ -272,72 +286,81 @@ async function analyseWithOpenAI(prompt: string) {
     let object;
     let lastError: Error | null = null;
 
-    // Try Claude first
+    // Ensure API key is set in process.env (it should be from Convex env vars)
+    // @ai-sdk/openai reads from process.env.OPENAI_API_KEY automatically
+    process.env.OPENAI_API_KEY = apiKey;
+
+    // Try OpenAI GPT-5 first
+    // Note: GPT-5 models only support temperature: 1 (default), not 0
     try {
         ({ object } = await generateObject({
-            model: anthropic("claude-sonnet-4-20250514"),
-            // model: openai("gpt-4o"),
+            model: openai("gpt-5"),
             prompt,
             schema,
+            temperature: 1, // GPT-5 requires temperature: 1, cannot be 0
             maxRetries: 2,
         }));
-        console.log("Claude success", object);
         return object;
-    } catch (claudeError) {
-        // Enhanced logging for debugging
-        if (claudeError && typeof claudeError === "object") {
-            if ("value" in claudeError) {
-                console.error("Model output that failed validation:", (claudeError as any).value);
+    } catch (openaiError) {
+        let errorInstance = openaiError instanceof Error ? openaiError : new Error(String(openaiError));
+        if (openaiError && typeof openaiError === "object") {
+            const details: string[] = [];
+            if ("value" in openaiError) {
+                try {
+                    details.push(`value=${JSON.stringify((openaiError as any).value).slice(0, 500)}`);
+                } catch {
+                    details.push("value=[unserializable]");
+                }
             }
-            if ("errors" in claudeError) {
-                console.error("Zod validation errors:", (claudeError as any).errors);
+            if ("errors" in openaiError) {
+                try {
+                    details.push(`validation=${JSON.stringify((openaiError as any).errors).slice(0, 500)}`);
+                } catch {
+                    details.push("validation=[unserializable]");
+                }
+            }
+            if (details.length) {
+                errorInstance = new Error(`${errorInstance.message} | ${details.join(" | ")}`);
             }
         }
-        console.error("Claude failed:", claudeError);
-        lastError = claudeError instanceof Error ? claudeError : new Error(String(claudeError));
+        lastError = errorInstance;
     }
 
-    // Try OpenAI
+    // Try OpenAI GPT-5-mini as fallback
+    // Note: GPT-5-mini models only support temperature: 1 (default), not 0
+    try {
+        ({ object } = await generateObject({
+            model: openai("gpt-5-mini"),
+            prompt,
+            schema,
+            temperature: 1, // GPT-5-mini requires temperature: 1, cannot be 0
+            maxRetries: 2,
+        }));
+        return object;
+    } catch (openaiMiniError) {
+        lastError =
+            openaiMiniError instanceof Error ? openaiMiniError : new Error(String(openaiMiniError));
+    }
+
+    // Try OpenAI GPT-4o as fallback (supports temperature: 0)
     try {
         ({ object } = await generateObject({
             model: openai("gpt-4o"),
             prompt,
             schema,
+            temperature: 0, // GPT-4o supports temperature: 0 for deterministic output
             maxRetries: 2,
         }));
-        console.log("OpenAI success", object);
         return object;
-    } catch (openaiError) {
-        console.error("OpenAI failed:", openaiError);
-        lastError = openaiError instanceof Error ? openaiError : new Error(String(openaiError));
+    } catch (gpt4oError) {
+        lastError = gpt4oError instanceof Error ? gpt4oError : new Error(String(gpt4oError));
     }
 
-    // Try Google
-    try {
-        ({ object } = await generateObject({
-            model: google("gemini-2.0-flash-exp"),
-            prompt,
-            schema,
-            maxRetries: 2,
-        }));
-        console.log("Google success", object);
-        return object;
-    } catch (googleError) {
-        console.error("Google failed:", googleError);
-        lastError = googleError instanceof Error ? googleError : new Error(String(googleError));
+    // If all models fail, surface the underlying error (if any)
+    if (lastError) {
+        throw lastError;
     }
-
-    // If all models fail, create a fallback response
-    console.warn("All AI models failed, using fallback response");
-    return {
-        summary: "Analysis could not be completed due to technical issues. Please try again.",
-        recommendations: [],
-        score: 50,
-        issues: [],
-        readability_metrics: {},
-        accessibility_assessment: {},
-        compliance_status: {},
-    };
+    throw new Error("All AI models failed with no additional error details. Check provider credentials and network connectivity.");
 }
 
 // ----------------------------------------------------------------------------
@@ -347,8 +370,9 @@ export const performDocumentAnalysis = action({
     args: {
         scanId: v.id("scans"),
         customRuleIds: v.optional(v.array(v.id("customRules"))),
+        scoringConfigId: v.optional(v.id("scoringConfigs")),
     },
-    handler: async (ctx, { scanId, customRuleIds }) => {
+    handler: async (ctx, { scanId, customRuleIds, scoringConfigId }) => {
         // --------------------------------------------------------------------
         // 1. Fetch scan & create analysis shell
         // --------------------------------------------------------------------
@@ -358,6 +382,7 @@ export const performDocumentAnalysis = action({
         const analysisId = await ctx.runMutation(api.analysis.createAnalysis, {
             scanId,
             customRuleIds,
+            scoringConfigId,
         });
 
         try {
@@ -366,6 +391,14 @@ export const performDocumentAnalysis = action({
             // ------------------------------------------------------------------
             const { bytes, contentType, fileName } = await readDocumentBytes(ctx, scan);
             const documentText = await extractText(bytes, contentType, fileName);
+            const isPdfDocument =
+                contentType.toLowerCase().includes("pdf") ||
+                fileName.toLowerCase().endsWith(".pdf");
+            const pdfStructureCompliance = isPdfDocument
+                ? await validatePdfStructure(bytes)
+                : undefined;
+
+            const languageComplexity = analyzeLanguageComplexity(documentText, scan.language);
 
             // ------------------------------------------------------------------
             // 3. Load active custom rules (if any)
@@ -389,7 +422,8 @@ export const performDocumentAnalysis = action({
                 scan.jurisdiction,
                 scan.regulations,
                 scan.language || "english",
-                rules
+                rules,
+                languageComplexity
             );
 
             const openAIRes = await analyseWithOpenAI(prompt);
@@ -423,8 +457,18 @@ export const performDocumentAnalysis = action({
             });
 
             const customIssues = matchCustomRules(documentText, rules);
+            const structuralIssues = (pdfStructureCompliance?.structure_issues ?? []).map((issue) => ({
+                severity: issue.severity,
+                type: "structure",
+                section: "PDF Structure Compliance",
+                originalText: issue.context ?? issue.message,
+                issueExplanation: `${issue.code}: ${issue.message}`,
+                suggestedRewrite: "Update the PDF structure to meet compliance requirements.",
+                offsetStart: undefined,
+                offsetEnd: undefined,
+            }));
 
-            const allIssues = [...aiIssues, ...customIssues];
+            const allIssues = [...aiIssues, ...customIssues, ...structuralIssues];
             const validTypes = [
                 "clarity",
                 "grammar",
@@ -457,8 +501,59 @@ export const performDocumentAnalysis = action({
             });
 
             // ------------------------------------------------------------------
-            // 6. Persist analysis & issues
+            // 6. Calculate Score (Hybrid Approach)
             // ------------------------------------------------------------------
+            const scoringConfig =
+                (scoringConfigId
+                    ? await ctx.runQuery(api.scoringConfigs.getScoringConfig, {
+                        id: scoringConfigId,
+                    })
+                    : await ctx.runQuery(api.scoringConfigs.getDefaultConfig, {})) ?? null;
+
+            const resolvedConfig = scoringConfig ?? DEFAULT_SCORING_CONFIG;
+
+            // Calculate issue-based score
+            const issueBasedScore = calculateWeightedScore(dbIssues, resolvedConfig);
+
+            // Use AI's score if provided, otherwise fall back to issue-based calculation
+            // The AI's holistic assessment is often more accurate than pure issue counting
+            const aiProvidedScore = typeof openAIRes.score === "number" &&
+                openAIRes.score >= 0 &&
+                openAIRes.score <= 100
+                ? openAIRes.score
+                : null;
+
+            // Count issues by severity for diagnostics and scoring
+            const issueCounts = {
+                total: dbIssues.length,
+                critical: dbIssues.filter(iss => iss.severity === "critical").length,
+                high: dbIssues.filter(iss => iss.severity === "high").length,
+                medium: dbIssues.filter(iss => iss.severity === "medium").length,
+                low: dbIssues.filter(iss => iss.severity === "low").length,
+                aiIssues: aiIssues.length,
+                customIssues: customIssues.length,
+                structuralIssues: structuralIssues.length,
+            };
+
+            const {
+                finalScore,
+                aiAdjustedScore,
+                severityPenalty,
+                aiWeight,
+                issueWeight,
+            } = combineAiAndIssueScores({
+                aiScore: aiProvidedScore,
+                issueScore: issueBasedScore,
+                issueCounts: {
+                    critical: issueCounts.critical,
+                    high: issueCounts.high,
+                    medium: issueCounts.medium,
+                    low: issueCounts.low,
+                },
+            });
+
+            const scoreBand = interpretScore(finalScore, resolvedConfig.thresholds);
+
             await ctx.runMutation(api.analysis.updateAnalysisResults, {
                 id: analysisId,
                 summary: openAIRes.summary,
@@ -478,7 +573,7 @@ export const performDocumentAnalysis = action({
                         };
                     })
                     : [],
-                score: typeof openAIRes.score === "number" ? Math.round(openAIRes.score) : 50,
+                score: finalScore,
                 status: "completed",
                 providerRaw: {
                     openai: {
@@ -486,22 +581,62 @@ export const performDocumentAnalysis = action({
                         readability_metrics: openAIRes.readability_metrics,
                         accessibility_assessment: openAIRes.accessibility_assessment,
                         compliance_status: openAIRes.compliance_status,
-                    }
+                        aiProvidedScore,
+                        issueBasedScore,
+                        finalScore,
+                        scoreBand,
+                        issueCounts,
+                        aiAdjustedScore,
+                        severityPenalty,
+                        scoreWeights: {
+                            ai: aiWeight,
+                            issues: issueWeight,
+                        },
+                    },
+                    language_complexity: languageComplexity,
                 },
                 readability_metrics: openAIRes.readability_metrics,
                 accessibility_assessment: openAIRes.accessibility_assessment,
                 compliance_status: openAIRes.compliance_status,
                 customRuleIds: customRuleIds,
+                scoringConfigId: scoringConfig?._id,
                 documentText: documentText,
+                language_complexity: languageComplexity,
+                ...(pdfStructureCompliance
+                    ? { pdf_structure_compliance: pdfStructureCompliance }
+                    : {}),
             });
 
             if (dbIssues.length) {
                 await ctx.runMutation(api.issues.createIssues, { analysisId, issues: dbIssues });
             }
         } catch (err) {
+            // Even on error, calculate a score based on any issues we might have found
+            // This ensures comprehensibility score is always non-zero and meaningful
+            const scoringConfig =
+                (scoringConfigId
+                    ? await ctx.runQuery(api.scoringConfigs.getScoringConfig, {
+                        id: scoringConfigId,
+                    })
+                    : await ctx.runQuery(api.scoringConfigs.getDefaultConfig, {})) ?? null;
+            const resolvedConfig = scoringConfig ?? DEFAULT_SCORING_CONFIG;
+
+            // Try to get any issues that were created before the error
+            const existingIssues = await ctx.runQuery(api.issues.getIssuesByAnalysis, { analysisId });
+            const fallbackScore = existingIssues && existingIssues.length > 0
+                ? calculateWeightedScore(
+                    existingIssues.map((iss: any) => ({
+                        severity: iss.severity,
+                        type: iss.type,
+                    })),
+                    resolvedConfig
+                )
+                : 50; // Default to 50 if no issues found
+
             await ctx.runMutation(api.analysis.updateAnalysisError, {
                 id: analysisId,
                 error: err instanceof Error ? err.message : String(err),
+                score: fallbackScore,
             });
             throw err;
         }

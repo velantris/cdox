@@ -44,7 +44,8 @@ export default function DocumentsPage() {
   const [scoreFilter, setScoreFilter] = useState("all")
 
   // Fetch scans with analysis data using optimized Convex query
-  const scansWithData = useQuery(api.scans.getScansWithAnalysisData, { limit: 100 }) || []
+  const scansQuery = useQuery(api.scans.getScansWithAnalysisData, { limit: 100 })
+  const scansWithData = useMemo(() => scansQuery || [], [scansQuery])
 
   // Process documents with analysis and issues data
   const documents = useMemo(() => {

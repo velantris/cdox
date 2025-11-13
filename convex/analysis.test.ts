@@ -56,7 +56,7 @@ describe("Analysis Functions", () => {
         });
 
         test("should have correct provider raw structure", () => {
-            const expectedProviderFields = ["openai", "gemini"];
+            const expectedProviderFields = ["openai", "language_complexity"];
 
             expectedProviderFields.forEach(provider => {
                 expect(provider).toBeTruthy();

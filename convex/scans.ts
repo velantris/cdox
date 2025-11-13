@@ -372,34 +372,123 @@ export const getDashboardData = query({
 });
 
 // Query to get scan with analysis and issues (equivalent to /api/documents/[id])
+// Accepts either a scans ID or analysis ID (as string to bypass type validation)
 export const getScanWithAnalysisAndIssues = query({
-  args: { id: v.id("scans") },
+  args: { id: v.string() },
   handler: async (ctx, args) => {
-    const scan = await ctx.db.get(args.id);
+    let scan;
+    let analysis;
+    const idStr = args.id;
+
+    // Try to get as scans ID first
+    try {
+      scan = await ctx.db.get(idStr as any);
+    } catch {
+      scan = null;
+    }
+    
+    // If not found as scan, also try querying all scans to find by string match
     if (!scan) {
-      throw new ConvexError("Scan not found");
+      const allScans = await ctx.db.query("scans").collect();
+      scan = allScans.find(s => String(s._id) === idStr);
+    }
+    
+    // If still not found as scan, try as analysis ID by querying
+    if (!scan) {
+      // Query all analyses to find one with matching ID string
+      const allAnalyses = await ctx.db.query("analysis").collect();
+      // Try both string comparison and direct ID comparison
+      analysis = allAnalyses.find(a => {
+        const analysisIdStr = String(a._id);
+        // Also try comparing the ID object directly if types match
+        return analysisIdStr === idStr || a._id === idStr || String(a._id) === String(idStr);
+      });
+      
+      if (analysis) {
+        // Get the scan from the analysis
+        scan = await ctx.db.get(analysis.scanId);
+        if (!scan) {
+          throw new ConvexError("Scan not found for analysis");
+        }
+      } else {
+        // If still not found, return null to indicate not found
+        return null;
+      }
+    } else {
+      // Get the most recent analysis for this scan
+      analysis = await ctx.db
+        .query("analysis")
+        .withIndex("by_scan", (q) => q.eq("scanId", scan._id))
+        .order("desc")
+        .first();
     }
 
-    // Get the most recent analysis for this scan
-    const analysis = await ctx.db
-      .query("analysis")
-      .withIndex("by_scan", (q) => q.eq("scanId", args.id))
-      .order("desc")
-      .first();
-
     let issues: any[] = [];
+    let scoringConfig = null;
     if (analysis) {
       issues = await ctx.db
         .query("issues")
         .withIndex("by_analysis", (q) => q.eq("analysisId", analysis._id))
         .order("asc")
         .collect();
+      if (analysis.scoringConfigId) {
+        scoringConfig = await ctx.db.get(analysis.scoringConfigId);
+      }
     }
 
     return {
-      document: scan, // Keep the same structure as the API
-      analysis: analysis ? { ...analysis, documentText: analysis.documentText } : undefined,
-      issues,
+      document: {
+        _id: String(scan._id), // Convert to string to avoid validation issues
+        name: scan.name,
+        url: scan.url,
+        fileId: scan.fileId,
+        language: scan.language,
+        documentType: scan.documentType,
+        targetAudience: scan.targetAudience,
+        jurisdiction: scan.jurisdiction,
+        regulations: scan.regulations,
+        createdAt: scan.createdAt,
+      },
+      analysis: analysis ? {
+        // Exclude all ID fields to avoid validation issues
+        summary: analysis.summary,
+        recommendations: analysis.recommendations,
+        score: analysis.score,
+        status: analysis.status,
+        readability_metrics: analysis.readability_metrics,
+        accessibility_assessment: analysis.accessibility_assessment,
+        compliance_status: analysis.compliance_status,
+        pdf_structure_compliance: analysis.pdf_structure_compliance,
+        language_complexity: analysis.language_complexity,
+        createdAt: analysis.createdAt,
+        documentText: analysis.documentText,
+        scoringConfigId: analysis.scoringConfigId ? String(analysis.scoringConfigId) : undefined,
+        scoringConfig: scoringConfig
+          ? {
+              _id: String(scoringConfig._id),
+              name: scoringConfig.name,
+              isDefault: scoringConfig.isDefault,
+              severityWeights: scoringConfig.severityWeights,
+              categoryWeights: scoringConfig.categoryWeights,
+              thresholds: scoringConfig.thresholds,
+            }
+          : undefined,
+        // Explicitly exclude providerRaw, _id, scanId, and customRuleIds to avoid validation issues
+      } : undefined,
+      issues: issues.map(issue => ({
+        _id: String(issue._id), // Convert to string to avoid validation issues
+        severity: issue.severity,
+        type: issue.type,
+        status: issue.status,
+        section: issue.section,
+        originalText: issue.originalText,
+        issueExplanation: issue.issueExplanation,
+        suggestedRewrite: issue.suggestedRewrite,
+        offsetStart: issue.offsetStart,
+        offsetEnd: issue.offsetEnd,
+        createdAt: issue.createdAt,
+        // Exclude analysisId to avoid validation issues - it's redundant since we already have analysis
+      })),
     };
   },
 });
@@ -542,6 +631,7 @@ export const getReportData = query({
 
       // Analysis info
       analysisId: analysis?._id,
+      scoringConfigId: analysis?.scoringConfigId,
       comprehensibilityScore: analysis?.score,
       startedAt: analysis ? new Date(analysis.createdAt).toISOString() : new Date(scan.createdAt).toISOString(),
       completedAt: analysis?.status === 'completed' ? new Date(analysis.createdAt).toISOString() : undefined,
@@ -553,6 +643,17 @@ export const getReportData = query({
         readability_metrics: analysis.readability_metrics,
         accessibility_assessment: analysis.accessibility_assessment,
         compliance_status: analysis.compliance_status,
+        pdf_structure_compliance: analysis.pdf_structure_compliance,
+        scoringConfig: scoringConfig
+          ? {
+              _id: scoringConfig._id,
+              name: scoringConfig.name,
+              isDefault: scoringConfig.isDefault,
+              severityWeights: scoringConfig.severityWeights,
+              categoryWeights: scoringConfig.categoryWeights,
+              thresholds: scoringConfig.thresholds,
+            }
+          : undefined,
       } : undefined,
 
       // Issues data

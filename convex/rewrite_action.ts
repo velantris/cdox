@@ -3,9 +3,9 @@
 import { v } from "convex/values";
 import { api } from "./_generated/api";
 import { action } from "./_generated/server";
+import type { Doc } from "./_generated/dataModel";
 
 // AI SDK imports
-import { google } from "@ai-sdk/google";
 import { openai } from "@ai-sdk/openai";
 import { generateText } from "ai";
 
@@ -97,7 +97,7 @@ export const performTextRewrite = action({
                 const rulePromises = args.customRuleIds.map(ruleId =>
                     ctx.runQuery(api.customRules.getCustomRule, { id: ruleId })
                 );
-                customRules = (await Promise.all(rulePromises)).filter(rule => rule && rule.active);
+                customRules = (await Promise.all(rulePromises)).filter((rule: Doc<"customRules"> | null): rule is Doc<"customRules"> => rule !== null && rule.active);
             }
 
             // Use documentText if provided, otherwise fallback to text
@@ -112,9 +112,8 @@ export const performTextRewrite = action({
                 customRules
             );
 
-            // Try OpenAI first, fallback to Gemini
+            // Use OpenAI for rewrite
             const openaiModel = openai(process.env.OPENAI_MODEL || "gpt-4o");
-            const geminiModel = google(process.env.GEMINI_MODEL || "gemini-2.5-pro");
 
             let rewrittenText = "";
 
@@ -122,25 +121,13 @@ export const performTextRewrite = action({
                 console.log("Attempting rewrite with OpenAI...");
                 const openaiResult = await generateText({
                     model: openaiModel,
-                    prompt,
-                    temperature: 0.3 // Lower temperature for more consistent rewrites
+                    prompt
                 });
                 rewrittenText = openaiResult.text.trim();
                 console.log("OpenAI rewrite successful");
             } catch (openaiError) {
-                console.log("OpenAI failed, trying Gemini...", openaiError);
-                try {
-                    const geminiResult = await generateText({
-                        model: geminiModel,
-                        prompt,
-                        temperature: 0.3
-                    });
-                    rewrittenText = geminiResult.text.trim();
-                    console.log("Gemini rewrite successful");
-                } catch (geminiError) {
-                    console.error("Both AI models failed:", { openaiError, geminiError });
-                    throw new Error("AI rewrite service unavailable. Please try again later.");
-                }
+                console.error("OpenAI rewrite failed:", openaiError);
+                throw new Error("AI rewrite service unavailable. Please try again later.");
             }
 
             // Clean up the rewritten text

@@ -361,7 +361,7 @@ describe('PDF Text Extraction', () => {
                 isReady: true
             }
 
-            const result = searchTextInPdf(specialCharsExtractor, 'special chars: @#$%')$')
+            const result = searchTextInPdf(specialCharsExtractor, 'special chars: @#$%\')$')
             expect(result.found).toBe(true)
         })
 
