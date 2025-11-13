@@ -7,6 +7,7 @@ import { z } from "zod";
 import { analyzeLanguageComplexity } from "../lib/language-complexity-analyzer";
 import { makePrompt } from "../lib/prompts/prompt-maker1";
 import { validatePdfStructure } from "../lib/pdf-structure-validator";
+import { getPdfStructureGuidance } from "../lib/pdf-issue-guidance";
 import {
     DEFAULT_SCORING_CONFIG,
     calculateScore as calculateWeightedScore,
@@ -457,16 +458,23 @@ export const performDocumentAnalysis = action({
             });
 
             const customIssues = matchCustomRules(documentText, rules);
-            const structuralIssues = (pdfStructureCompliance?.structure_issues ?? []).map((issue) => ({
-                severity: issue.severity,
-                type: "structure",
-                section: "PDF Structure Compliance",
-                originalText: issue.context ?? issue.message,
-                issueExplanation: `${issue.code}: ${issue.message}`,
-                suggestedRewrite: "Update the PDF structure to meet compliance requirements.",
-                offsetStart: undefined,
-                offsetEnd: undefined,
-            }));
+            const structuralIssues = (pdfStructureCompliance?.structure_issues ?? []).map((issue) => {
+                const guidance = getPdfStructureGuidance(issue);
+                const issueExplanation = guidance.reference
+                    ? `${issue.code}: ${issue.message} Reference: ${guidance.reference}`
+                    : `${issue.code}: ${issue.message}`;
+
+                return {
+                    severity: issue.severity,
+                    type: "structure",
+                    section: guidance.section,
+                    originalText: issue.context ?? issue.message,
+                    issueExplanation,
+                    suggestedRewrite: guidance.remediation,
+                    offsetStart: undefined,
+                    offsetEnd: undefined,
+                };
+            });
 
             const allIssues = [...aiIssues, ...customIssues, ...structuralIssues];
             const validTypes = [
